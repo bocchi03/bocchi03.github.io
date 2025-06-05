@@ -1,1080 +1,197 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
+    <meta name="author" content="John Doe">
 
 
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.23.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js" defer></script>
-
-    <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:locale" content="en_US">
-<meta property="article:author" content="John Doe">
-<meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/">
-
-
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"en","comments":"","permalink":"","path":"index.html","title":""}</script>
-
-<script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>Hexo</title>
-  
+
+
+
+    <link rel="icon" href="/favicon.ico">
 
 
 
 
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
 
 
 
-
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
-<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
-
-  
-
-
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
 
 
 
-
-  
-
-
-
-
-
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
-
-  <main class="main">
-    <div class="column">
-      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Toggle navigation bar" role="button">
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <h1 class="site-title">Hexo</h1>
-      <i class="logo-line"></i>
-    </a>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="Search" role="button">
-    </div>
-  </div>
-</div>
+    
+    
+        
+    
 
 
+<meta name="generator" content="Hexo 7.3.0"></head>
 
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
 
+            function setTheme(status) {
 
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
 
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
 
 </header>
-        
-  
-  <aside class="sidebar">
-
-    <div class="sidebar-inner sidebar-overview-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          Table of Contents
-        </li>
-        <li class="sidebar-nav-overview">
-          Overview
-        </li>
-      </ul>
-
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                
+    <div class="container profile-container">
+    <div class="intro">
+        <div class="avatar">
+            <a href="/archives"><img src="/image/avatar.jpeg"></a>
         </div>
-        <!--/noindex-->
-
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">John Doe</p>
-  <div class="site-description" itemprop="description"></div>
+        <div class="nickname">Jeremy Bentham</div>
+        <div class="description"><p>Lorem ipsum dolor sit amet, <strong>consectetur adipiscing elit.</strong> <br>Fusce eget urna vitae velit <em>eleifend interdum at ac</em> nisi.</p>
 </div>
-<div class="site-state-wrap animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives/">
-          <span class="site-state-item-count">3</span>
-          <span class="site-state-item-name">posts</span>
-        </a>
-      </div>
-  </nav>
-</div>
-
+        <div class="links">
+            
+                
+                    <a class="link-item" title="Blog" href="/archives">
+                        
+                        
+                            <i class="iconfont icon-blog"></i>
+                        
+                    </a>
+                
+                    <a class="link-item" title="ZhiHu" target="_blank" rel="noopener" href="https://www.zhihu.com/people/sirice">
+                        
+                        
+                            <i class="iconfont icon-zhihu"></i>
+                        
+                    </a>
+                
+                    <a class="link-item" title="Instagram" href="">
+                        
+                        
+                            <i class="iconfont icon-instagram"></i>
+                        
+                    </a>
+                
+                    <a class="link-item" title="Reddit" href="">
+                        
+                        
+                            <i class="iconfont icon-reddit"></i>
+                        
+                    </a>
+                
+                    <a class="link-item" title="Github" target="_blank" rel="noopener" href="https://github.com/Siricee">
+                        
+                        
+                            <i class="iconfont icon-github"></i>
+                        
+                    </a>
+                
+            
         </div>
-      </div>
     </div>
-
-    
-  </aside>
+</div>
 
 
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© John Doe | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
     </div>
-
-    <div class="main-inner index posts-expand">
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/06/05/Wireless%20and%20Mobile%20Network/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hexo">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/06/05/Wireless%20and%20Mobile%20Network/" class="post-title-link" itemprop="url">Wireless and Mobile Network</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2025-06-05 20:33:51 / Modified: 20:35:29" itemprop="dateCreated datePublished" datetime="2025-06-05T20:33:51+08:00">2025-06-05</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="第七章-无线网络和移动网络"><a href="#第七章-无线网络和移动网络" class="headerlink" title="第七章 无线网络和移动网络"></a>第七章 无线网络和移动网络</h1><h2 id="7-1-概述"><a href="#7-1-概述" class="headerlink" title="7.1 概述"></a>7.1 概述</h2><h3 id="无线通信的重要性"><a href="#无线通信的重要性" class="headerlink" title="无线通信的重要性"></a>无线通信的重要性</h3><p>无线网络（如WiFi、蜂窝网络）是现代通信的核心，支撑多种应用：</p>
-<ul>
-<li><strong>移动计算</strong>：智能手机、平板电脑和笔记本电脑依赖无线连接访问互联网。</li>
-<li><strong>物联网（IoT）</strong>：智能恒温器、可穿戴设备和传感器通过无线通信互联。</li>
-<li><strong>智能基础设施</strong>：智能家居、城市和自动驾驶汽车等依赖可靠的无线网络。</li>
-</ul>
-<h3 id="无线网络与有线网络的主要区别"><a href="#无线网络与有线网络的主要区别" class="headerlink" title="无线网络与有线网络的主要区别"></a>无线网络与有线网络的主要区别</h3><p>无线网络和有线网络在以下方面存在显著差异：</p>
-<ul>
-<li><strong>物理介质</strong>：有线网络使用电缆（如以太网、光纤），而无线网络通过空气中的无线电波传输信号。</li>
-<li><strong>错误率</strong>：无线网络的误码率（BER）较高（10⁻³到10⁻⁵），而有线网络误码率极低（10⁻⁹或更低）。</li>
-<li><strong>干扰</strong>：无线信号容易受到其他设备（蓝牙、微波炉）或物理障碍的干扰。</li>
-<li><strong>安全性</strong>：无线信号是广播式传输，相比有线网络更容易被窃听。</li>
-</ul>
-<h3 id="无线链路的独特挑战"><a href="#无线链路的独特挑战" class="headerlink" title="无线链路的独特挑战"></a>无线链路的独特挑战</h3><p>无线通信因无线电波传播特性面临以下挑战：</p>
-<ul>
-<li><strong>多径传播</strong>：信号遇到障碍物（如墙壁、建筑物）时发生反射、折射，导致多个信号版本同时到达接收器，造成干扰。<ul>
-<li><strong>示例</strong>：在城市环境中，手机信号从基站发出后反射到建筑物，导致接收器接收到重叠信号。</li>
-</ul>
-</li>
-<li><strong>干扰</strong>：来自其他无线设备或电磁噪声的信号会降低信号质量。<ul>
-<li><strong>示例</strong>：WiFi路由器与微波炉共用2.4 GHz频段时，微波炉运行会降低WiFi性能。</li>
-</ul>
-</li>
-<li><strong>信道动态变化</strong>：用户移动、天气或环境变化导致信号强度波动。<ul>
-<li><strong>示例</strong>：用户在建筑物内走动时，远离接入点（AP）或遇到墙壁会导致信号衰减。</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h2 id="7-2-无线链路和网络特性"><a href="#7-2-无线链路和网络特性" class="headerlink" title="7.2 无线链路和网络特性"></a>7.2 无线链路和网络特性</h2><h3 id="带宽与速率变化"><a href="#带宽与速率变化" class="headerlink" title="带宽与速率变化"></a>带宽与速率变化</h3><p>无线链路的带宽受多种因素影响，导致速率高度可变：</p>
-<ul>
-<li><strong>信号质量</strong>：信噪比（SNR）决定可用的数据速率。SNR越高，可使用更高阶的调制方式（如64-QAM而非QPSK）。</li>
-<li><strong>速率自适应</strong>：协议（如IEEE 802.11）根据信道条件动态调整数据速率。<ul>
-<li><strong>示例</strong>：802.11n WiFi连接在用户远离AP时，可能从150 Mbps降至54 Mbps，因SNR降低。</li>
-</ul>
-</li>
-</ul>
-<p><img src="/../image/image-20250502180819585.png" alt="image-20250502180819585"></p>
-<h3 id="无线链路的错误处理"><a href="#无线链路的错误处理" class="headerlink" title="无线链路的错误处理"></a>无线链路的错误处理</h3><p>无线链路的误码率较高，需要强大的错误处理机制：</p>
-<ul>
-<li><strong>前向纠错（FEC）</strong>：通过添加冗余数据在接收端纠正错误，无需重传。</li>
-<li><strong>自动重传请求（ARQ）</strong>：接收器检测到错误帧后请求重传。<ul>
-<li><strong>示例</strong>：在WiFi中，若数据帧损坏，接收器不发送ACK，触发发送方重传。</li>
-</ul>
-</li>
-<li><strong>混合ARQ（HARQ）</strong>：结合FEC和ARQ，提高效率，广泛用于4G&#x2F;5G。</li>
-</ul>
-<h3 id="隐蔽节点问题"><a href="#隐蔽节点问题" class="headerlink" title="隐蔽节点问题"></a>隐蔽节点问题</h3><p>隐蔽节点问题指两个节点都能与AP通信，但彼此无法感知，导致发送冲突。</p>
-<ul>
-<li><strong>场景</strong>：节点A和C都能与AP B通信，但A和C相距太远，无法检测对方的信号。若A和C同时发送，信号在B处冲突。</li>
-<li><strong>解决方案</strong>：<strong>RTS&#x2F;CTS（请求发送&#x2F;清除发送）协议</strong>：<ol>
-<li>节点A向AP B发送RTS帧。</li>
-<li>AP B回复CTS帧，附近所有节点（包括C）都能接收。</li>
-<li>节点C暂停发送，避免冲突。</li>
-</ol>
-</li>
-<li><strong>权衡</strong>：RTS&#x2F;CTS增加开销，在低流量场景下可能降低吞吐量。</li>
-</ul>
-<p><img src="/../image/image-20250429202921575.png" alt="image-20250429202921575"></p>
-<h3 id="暴露节点问题"><a href="#暴露节点问题" class="headerlink" title="暴露节点问题"></a>暴露节点问题</h3><p>暴露节点问题指节点因听到其他节点的发送而错误地避免发送，即使其发送不会干扰。</p>
-<ul>
-<li><strong>场景</strong>：节点B正在向节点A发送数据。节点C能听到B的信号，想向节点D发送数据，但因担心干扰而等待。然而，C到D的发送不会影响B到A的通信。</li>
-<li><strong>影响</strong>：降低网络效率，限制并发传输。</li>
-<li><strong>缓解方法</strong>：高级调度或定向天线可减少影响，但802.11未完全解决此问题。</li>
-</ul>
-<hr>
-<h2 id="7-3-WiFi：IEEE-802-11-无线局域网"><a href="#7-3-WiFi：IEEE-802-11-无线局域网" class="headerlink" title="7.3 WiFi：IEEE 802.11 无线局域网"></a>7.3 WiFi：IEEE 802.11 无线局域网</h2><h3 id="7-3-1-802-11-架构"><a href="#7-3-1-802-11-架构" class="headerlink" title="7.3.1 802.11 架构"></a>7.3.1 802.11 架构</h3><p>IEEE 802.11（WiFi）是一组用于无线局域网（WLAN）的标准，其架构包括：</p>
-<ul>
-<li><strong>基本服务集（BSS）</strong>：一组无线设备通过单个接入点（AP）通信。<ul>
-<li><strong>示例</strong>：家庭WiFi网络，包括一个路由器（AP）和连接的设备（笔记本电脑、手机）。</li>
-</ul>
-</li>
-<li><strong>扩展服务集（ESS）</strong>：多个BSS通过分布系统（DS，通常是有线骨干网）互联。<ul>
-<li><strong>示例</strong>：大学校园WiFi网络，多个AP覆盖不同楼宇，支持无缝漫游。</li>
-</ul>
-</li>
-<li><strong>接入点（AP）</strong>：桥接无线设备与有线网络，负责帧转发、认证等功能。</li>
-</ul>
-<p><img src="/../image/image-20250429203007386.png" alt="image-20250429203007386"></p>
-<h3 id="7-3-2-802-11-MAC协议"><a href="#7-3-2-802-11-MAC协议" class="headerlink" title="7.3.2 802.11 MAC协议"></a>7.3.2 802.11 MAC协议</h3><p>**介质访问控制（MAC）<strong>协议使用</strong>CSMA&#x2F;CA（带冲突避免的载波侦听多路访问）**管理共享无线介质的访问：</p>
-<ul>
-<li><p><strong>运行机制</strong>：</p>
-<ol>
-<li>节点侦听信道（载波侦听）。</li>
-<li>若信道空闲，经过短帧间间隙（DIFS）后发送。</li>
-<li>若信道忙碌，等待信道空闲，然后随机选择退避时间（基于竞争窗口）。</li>
-<li>节点在信道空闲时递减退避计时器，计时器归零时发送。</li>
-</ol>
-</li>
-<li><p><strong>冲突避免</strong>：与以太网的CSMA&#x2F;CD不同，WiFi通过随机退避和可选的RTS&#x2F;CTS避免冲突。</p>
-</li>
-<li><p><strong>RTS(请求发送)&#x2F;CTS(允许发送)机制</strong>：</p>
-<ul>
-<li>用于大帧传输，减少冲突影响。</li>
-<li><strong>示例</strong>：节点发送RTS帧（20字节），AP回复CTS帧（14字节）。其他节点延迟发送，确保数据帧无冲突传输。</li>
-<li><img src="/../image/image-20250429203526124.png" alt="image-20250429203526124"></li>
-</ul>
-</li>
-<li><p><strong>确认（ACK）</strong>：</p>
-<ul>
-<li>数据帧成功接收后，接收方发送ACK确认。</li>
-<li>若未收到ACK，发送方在超时后重传。</li>
-</ul>
-</li>
-<li><p><strong>二进制指数退避</strong>：</p>
-<ul>
-<li>发生冲突（通过缺失ACK推断）后，竞争窗口大小加倍（如从32个时隙增至64个时隙），降低重复冲突概率。</li>
-<li><strong>示例</strong>：两次冲突后，竞争窗口可能增至128个时隙，增加平均等待时间。</li>
-</ul>
-</li>
-</ul>
-<h3 id="7-3-3-IEEE-802-11-物理层"><a href="#7-3-3-IEEE-802-11-物理层" class="headerlink" title="7.3.3 IEEE 802.11 物理层"></a>7.3.3 IEEE 802.11 物理层</h3><p>物理层定义数据在无线介质上的传输方式，主要特点包括：</p>
-<ul>
-<li><strong>标准与速率</strong>：<ul>
-<li><strong>802.11b</strong>：2.4 GHz，最高11 Mbps，使用DSSS（直接序列扩频）。</li>
-<li><strong>802.11g</strong>：2.4 GHz，最高54 Mbps，使用OFDM（正交频分复用）。</li>
-<li><strong>802.11n</strong>：2.4&#x2F;5 GHz，最高600 Mbps，使用MIMO（多输入多输出）和信道绑定。</li>
-<li><strong>802.11ac</strong>：5 GHz，最高1.3 Gbps，使用更宽信道（80 MHz）和高阶调制。</li>
-<li><strong>802.11ax (Wi-Fi 6)</strong>：2.4&#x2F;5 GHz，最高9.6 Gbps，优化高密度环境，支持OFDMA和MU-MIMO。</li>
-</ul>
-</li>
-<li><strong>调制技术</strong>：<ul>
-<li><strong>DSSS</strong>：将信号扩展到更宽频带，增强鲁棒性（用于802.11b）。</li>
-<li><strong>OFDM</strong>：将信道划分为多个子载波，提高效率（用于802.11g及后续标准）。</li>
-<li><strong>示例</strong>：802.11ac使用256-QAM（每符号8比特），相比802.11b的BPSK（每符号1比特）显著提高吞吐量。</li>
-</ul>
-</li>
-</ul>
-<h3 id="7-3-4-在同一IP子网中漫游"><a href="#7-3-4-在同一IP子网中漫游" class="headerlink" title="7.3.4 在同一IP子网中漫游"></a>7.3.4 在同一IP子网中漫游</h3><p>WiFi支持在同一ESS内无缝移动，无需更改设备的IP地址：</p>
-<ul>
-<li><strong>重新关联过程</strong>：<ol>
-<li>设备检测到新AP的信号更强。</li>
-<li>向新AP发送重新关联请求，新AP通过DS与旧AP协调。</li>
-<li>设备保持原有IP地址和会话。</li>
-</ol>
-</li>
-<li><strong>示例</strong>：用户从大学校园一端走到另一端，在同一ESS内切换AP，IP地址不变，视频流未中断。</li>
-<li><strong>挑战</strong>：快速重新关联对实时应用（如VoIP）至关重要，避免延迟。</li>
-</ul>
-<p><img src="/../image/image-20250429203739662.png" alt="image-20250429203739662"></p>
-<h3 id="7-3-5-802-11高级功能"><a href="#7-3-5-802-11高级功能" class="headerlink" title="7.3.5 802.11高级功能"></a>7.3.5 802.11高级功能</h3><p>现代WiFi标准引入高效功能：</p>
-<ul>
-<li><strong>MIMO（多输入多输出）</strong>：<ul>
-<li>使用多根天线同时发送和接收数据，提高吞吐量和可靠性。</li>
-<li><strong>示例</strong>：802.11n AP使用4x4 MIMO，传输四条空间流，达到600 Mbps。</li>
-</ul>
-</li>
-<li><strong>帧聚合</strong>：<ul>
-<li>将多个MAC帧合并为一个物理帧，减少开销。</li>
-<li><strong>类型</strong>：A-MPDU（聚合MAC协议数据单元）和A-MSDU（聚合MAC服务数据单元）。</li>
-<li><strong>示例</strong>：802.11n将十个1500字节帧聚合成一个15,000字节帧，降低头部开销。</li>
-</ul>
-</li>
-</ul>
-<h3 id="7-3-6-WiFi个人热点和安全性"><a href="#7-3-6-WiFi个人热点和安全性" class="headerlink" title="7.3.6 WiFi个人热点和安全性"></a>7.3.6 WiFi个人热点和安全性</h3><ul>
-<li><strong>个人热点</strong>：<ul>
-<li>设备（如智能手机）可充当AP，共享其蜂窝网络连接。</li>
-<li><strong>示例</strong>：手机创建热点，允许笔记本电脑通过手机的4G连接上网。</li>
-<li><strong>挑战</strong>：热点耗电量大，带宽可能受限。</li>
-</ul>
-</li>
-<li><strong>安全协议</strong>：<ul>
-<li><strong>WEP（有线等效加密）</strong>：已过时，加密弱，几分钟内可破解。</li>
-<li><strong>WPA&#x2F;WPA2（WiFi保护访问）</strong>：使用更强加密（WPA用TKIP，WPA2用AES）和动态密钥。</li>
-<li><strong>WPA3</strong>：2018年推出，提供更强加密（SAE协议）和防暴力破解保护。</li>
-<li><strong>示例</strong>：咖啡店WiFi使用WPA2-PSK共享密码，确保客户端与AP间通信加密。</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h2 id="7-4-蜂窝网络：4G和5G"><a href="#7-4-蜂窝网络：4G和5G" class="headerlink" title="7.4 蜂窝网络：4G和5G"></a>7.4 蜂窝网络：4G和5G</h2><h3 id="7-4-1-4G-LTE架构和组件"><a href="#7-4-1-4G-LTE架构和组件" class="headerlink" title="7.4.1 4G LTE架构和组件"></a>7.4.1 4G LTE架构和组件</h3><p>**长期演进（LTE）**是4G标准，旨在提供高速、低延迟的移动通信。其架构包括：</p>
-<ul>
-<li><strong>eNodeB（演进型节点B）</strong>：基站，直接与用户设备（UE，如智能手机）通信。<ul>
-<li><strong>功能</strong>：无线资源管理、调度和切换协调。</li>
-</ul>
-</li>
-<li><strong>演进分组核心（EPC）</strong>：核心网络，处理数据和信令：<ul>
-<li><strong>MME（移动管理实体）</strong>：管理UE注册、认证和切换。</li>
-<li><strong>SGW（服务网关）</strong>：在eNodeB与互联网之间路由数据。</li>
-<li><strong>PGW（分组数据网络网关）</strong>：连接EPC与外部网络（如互联网），分配IP地址。</li>
-</ul>
-</li>
-<li><strong>示例</strong>：用户观看视频时，eNodeB向UE传输数据，SGW通过EPC转发，PGW连接到视频服务器。</li>
-</ul>
-<h3 id="7-4-2-LTE协议栈"><a href="#7-4-2-LTE协议栈" class="headerlink" title="7.4.2 LTE协议栈"></a>7.4.2 LTE协议栈</h3><p>LTE协议栈管理UE与网络的通信：</p>
-<ul>
-<li><strong>RRC（无线资源控制）</strong>：处理连接建立、移动性和资源分配。</li>
-<li><strong>PDCP（分组数据汇聚协议）</strong>：执行头部压缩和加密。</li>
-<li><strong>RLC（无线链路控制）</strong>：分段和重组数据，处理重传。</li>
-<li><strong>MAC（介质访问控制）</strong>：调度传输，管理HARQ。</li>
-<li><strong>PHY（物理层）</strong>：编码和调制数据以进行空中传输。</li>
-<li><strong>示例</strong>：发送电子邮件时，PDCP压缩邮件头部，RLC分段数据，MAC调度传输。</li>
-</ul>
-<h3 id="7-4-3-LTE无线接入网"><a href="#7-4-3-LTE无线接入网" class="headerlink" title="7.4.3 LTE无线接入网"></a>7.4.3 LTE无线接入网</h3><p>**无线接入网（RAN）**管理无线通信：</p>
-<ul>
-<li><strong>空口技术</strong>：<ul>
-<li><strong>下行链路</strong>：使用**OFDMA（正交频分多址）**为多个用户分配子载波。</li>
-<li><strong>上行链路</strong>：使用<strong>SC-FDMA（单载波频分多址）</strong>，提高UE的功率效率。</li>
-</ul>
-</li>
-<li><strong>资源块（RB）</strong>：<ul>
-<li>资源块是时间-频率单元（0.5 ms x 180 kHz），动态分配给用户。</li>
-<li><strong>示例</strong>：下载文件的用户可能分配50个RB，而VoIP用户分配10个RB以确保低带宽高优先级。</li>
-</ul>
-</li>
-<li><strong>调度</strong>：eNodeB根据信道质量和QoS需求调度RB。</li>
-</ul>
-<h3 id="7-4-4-LTE高级功能"><a href="#7-4-4-LTE高级功能" class="headerlink" title="7.4.4 LTE高级功能"></a>7.4.4 LTE高级功能</h3><ul>
-<li><strong>切换与小区重选</strong>：<ul>
-<li>切换确保UE在eNodeB间移动时无缝连接。</li>
-<li><strong>示例</strong>：火车上的用户在切换基站时保持通话不中断。</li>
-</ul>
-</li>
-<li><strong>EPS承载</strong>：<ul>
-<li>为不同流量类型（语音、视频、数据）定义QoS。</li>
-<li><strong>示例</strong>：视频流承载具有更高带宽和更低延迟，相比电子邮件承载。</li>
-</ul>
-</li>
-</ul>
-<h3 id="7-4-5-全球蜂窝网络与漫游"><a href="#7-4-5-全球蜂窝网络与漫游" class="headerlink" title="7.4.5 全球蜂窝网络与漫游"></a>7.4.5 全球蜂窝网络与漫游</h3><ul>
-<li><strong>国际漫游</strong>：<ul>
-<li>运营商间的协议允许UE连接到外国网络。</li>
-<li><strong>示例</strong>：从美国到欧洲旅行的用户连接到当地4G网络，数据通过其国内运营商的PGW路由。</li>
-</ul>
-</li>
-<li><strong>协议</strong>：<strong>GTP（GPRS隧道协议）<strong>和</strong>Diameter</strong>协议管理漫游和计费。</li>
-</ul>
-<h3 id="7-4-6-5G网络"><a href="#7-4-6-5G网络" class="headerlink" title="7.4.6 5G网络"></a>7.4.6 5G网络</h3><p><strong>5G</strong>在4G基础上提供增强功能：</p>
-<ul>
-<li><strong>关键特性</strong>：<ul>
-<li><strong>eMBB（增强移动宽带）</strong>：支持4K流媒体等高带宽应用。</li>
-<li><strong>URLLC（超可靠低延迟通信）</strong>：支持关键任务应用（如自动驾驶）。</li>
-<li><strong>mMTC（大规模机器类通信）</strong>：连接数百万物联网设备。</li>
-</ul>
-</li>
-<li><strong>新技术</strong>：<ul>
-<li><strong>毫米波</strong>：使用高频段（24–100 GHz）提供巨大带宽。</li>
-<li><strong>网络切片</strong>：为特定应用创建虚拟网络（如物联网切片、游戏切片）。</li>
-<li><strong>MEC（多接入边缘计算）</strong>：在靠近用户的位置处理数据，降低延迟。</li>
-</ul>
-</li>
-<li><strong>示例</strong>：自动驾驶的5G网络切片确保低于1ms的延迟，而物联网切片优化低功耗。</li>
-</ul>
-<hr>
-<h2 id="7-5-移动性管理原理"><a href="#7-5-移动性管理原理" class="headerlink" title="7.5 移动性管理原理"></a>7.5 移动性管理原理</h2><h3 id="7-5-1-设备移动性：网络层视角"><a href="#7-5-1-设备移动性：网络层视角" class="headerlink" title="7.5.1 设备移动性：网络层视角"></a>7.5.1 设备移动性：网络层视角</h3><p>移动性对网络层带来挑战：</p>
-<ul>
-<li><strong>IP地址变更</strong>：设备移动到新子网时通常需要新IP地址，破坏现有会话。<ul>
-<li><strong>示例</strong>：笔记本电脑从家庭WiFi切换到咖啡店WiFi，若无移动性协议，TCP连接将中断。</li>
-</ul>
-</li>
-</ul>
-<h3 id="7-5-2-移动IP"><a href="#7-5-2-移动IP" class="headerlink" title="7.5.2 移动IP"></a>7.5.2 移动IP</h3><p><strong>移动IP</strong>允许设备在漫游时保留其家乡IP地址：</p>
-<ul>
-<li><strong>组件</strong>：<ul>
-<li><strong>家乡代理（HA）</strong>：家乡网络中的路由器，跟踪设备位置。</li>
-<li><strong>外地代理（FA）</strong>：访问网络中的路由器，分配转交地址（CoA）。</li>
-</ul>
-</li>
-<li><strong>过程</strong>：<ol>
-<li>设备通过FA向HA注册其CoA。</li>
-<li>HA使用IP-in-IP封装将数据包隧道传输到CoA。</li>
-<li>设备直接向通信对方发送数据包（直接路由）。</li>
-</ol>
-</li>
-<li><strong>三角路由问题</strong>：<ul>
-<li>通信对方的包通过HA转发，增加延迟。</li>
-<li><strong>优化</strong>：路由优化允许直接通信，但需额外信令。</li>
-</ul>
-</li>
-<li><strong>示例</strong>：出差员工的笔记本使用移动IP，无论连接到哪个网络，都能以相同IP地址访问公司服务器。</li>
-</ul>
-<h3 id="7-5-3-无缝移动性的直接支持"><a href="#7-5-3-无缝移动性的直接支持" class="headerlink" title="7.5.3 无缝移动性的直接支持"></a>7.5.3 无缝移动性的直接支持</h3><ul>
-<li><strong>隧道技术</strong>：<ul>
-<li><strong>GRE（通用路由封装）<strong>和</strong>IP-in-IP</strong>通过封装数据包保持会话连续性。</li>
-<li><strong>示例</strong>：4G网络中，UE在eNodeB间移动，数据通过SGW隧道传输，保持IP地址不变。</li>
-</ul>
-</li>
-<li><strong>代理解决方案</strong>：<ul>
-<li>**PMIP（代理移动IP）**代表设备处理移动性信令，降低UE复杂性。</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h2 id="7-6-移动性管理实践"><a href="#7-6-移动性管理实践" class="headerlink" title="7.6 移动性管理实践"></a>7.6 移动性管理实践</h2><h3 id="7-6-1-4G-5G网络中的移动性管理"><a href="#7-6-1-4G-5G网络中的移动性管理" class="headerlink" title="7.6.1 4G&#x2F;5G网络中的移动性管理"></a>7.6.1 4G&#x2F;5G网络中的移动性管理</h3><ul>
-<li><strong>4G LTE</strong>：<ul>
-<li>使用X2和S1接口实现eNodeB间切换。</li>
-<li><strong>示例</strong>：UE在小区间移动时触发X2切换，数据包丢失极少。</li>
-</ul>
-</li>
-<li><strong>5G</strong>：<ul>
-<li>引入<strong>N2&#x2F;N3接口</strong>和<strong>AMF（接入与移动性管理功能）</strong>，实现更快的切换。</li>
-<li>支持<strong>双连接</strong>（同时连接4G和5G），确保平滑过渡。</li>
-</ul>
-</li>
-</ul>
-<h3 id="7-6-2-移动IP的实际应用"><a href="#7-6-2-移动IP的实际应用" class="headerlink" title="7.6.2 移动IP的实际应用"></a>7.6.2 移动IP的实际应用</h3><ul>
-<li><strong>增强功能</strong>：<ul>
-<li><strong>安全性</strong>：结合IPsec实现安全隧道。</li>
-<li><strong>压缩</strong>：通过头部压缩降低隧道开销。</li>
-<li><strong>MPTCP（多路径TCP）</strong>：使用多条网络路径（如WiFi和蜂窝）提高鲁棒性。</li>
-</ul>
-</li>
-<li><strong>示例</strong>：视频会议应用使用MPTCP在WiFi和5G间切换，不中断通话。</li>
-</ul>
-<hr>
-<h2 id="7-7-无线与移动性对高层协议的影响"><a href="#7-7-无线与移动性对高层协议的影响" class="headerlink" title="7.7 无线与移动性对高层协议的影响"></a>7.7 无线与移动性对高层协议的影响</h2><h3 id="TCP性能问题"><a href="#TCP性能问题" class="headerlink" title="TCP性能问题"></a>TCP性能问题</h3><p>无线网络对TCP性能造成影响：</p>
-<ul>
-<li><strong>高丢包率</strong>：TCP将丢包误判为拥塞，错误地降低发送速率。<ul>
-<li><strong>示例</strong>：无线链路10%的丢包率导致TCP将拥塞窗口减半，尽管丢包由干扰引起。</li>
-</ul>
-</li>
-<li><strong>可变延迟</strong>：移动性引起的切换导致抖动，影响实时应用。</li>
-</ul>
-<h3 id="适配策略"><a href="#适配策略" class="headerlink" title="适配策略"></a>适配策略</h3><ul>
-<li><strong>Snoop协议</strong>：<ul>
-<li>AP上的代理缓存TCP数据包，局部重传丢失包，避免端到端重传。</li>
-<li><strong>示例</strong>：WiFi AP的Snoop代理重传丢失包给笔记本电脑，避免TCP超时。</li>
-</ul>
-</li>
-<li><strong>分割TCP</strong>：<ul>
-<li>将TCP连接分为有线和无线段，分别优化。</li>
-</ul>
-</li>
-<li><strong>TCP变种</strong>：<ul>
-<li><strong>TCP Westwood</strong>：估算带宽，避免丢包时过度降低速率。</li>
-<li><strong>示例</strong>：在4G链路5%丢包率下，TCP Westwood比标准TCP保持更高吞吐量。</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h2 id="7-8-小结"><a href="#7-8-小结" class="headerlink" title="7.8 小结"></a>7.8 小结</h2><ul>
-<li><strong>无线网络</strong>：与有线网络在介质、错误率和干扰方面不同，需专用协议如CSMA&#x2F;CA和OFDMA。</li>
-<li><strong>移动性管理</strong>：通过移动IP、隧道和4G&#x2F;5G切换机制实现无缝连接。</li>
-<li><strong>5G创新</strong>：提供高速、低延迟和大规模连接，支持新应用。</li>
-<li><strong>协议影响</strong>：无线挑战需TCP适配，如Snoop和Westwood。</li>
-</ul>
-<hr>
-<h2 id="课后复习题与练习"><a href="#课后复习题与练习" class="headerlink" title="课后复习题与练习"></a>课后复习题与练习</h2><ol>
-<li><strong>无线链路错误处理</strong>：<ul>
-<li>解释无线链路为何比有线链路误码率高。描述两种错误处理机制，并为每种在802.11中举例。</li>
-</ul>
-</li>
-<li><strong>802.11 MAC协议</strong>：<ul>
-<li>详细说明802.11中CSMA&#x2F;CA的步骤，包括RTS&#x2F;CTS和指数退避的作用。用涉及三个节点的场景说明。</li>
-</ul>
-</li>
-<li><strong>LTE与5G架构对比</strong>：<ul>
-<li>比较LTE的eNodeB与5G的gNodeB角色。列举两项5G特性（如网络切片、毫米波）及其优势。</li>
-</ul>
-</li>
-</ol>
-<hr>
-<p>这些笔记内容详尽，涵盖了理论、协议、实际应用和示例，适合深入学习或作为教学材料。如需进一步调整或补充，请告知！</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/06/05/The%20Network%20Layer%20Data%20Plane/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hexo">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/06/05/The%20Network%20Layer%20Data%20Plane/" class="post-title-link" itemprop="url">The Network Layer Data Plane</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2025-06-05 20:33:51 / Modified: 20:34:51" itemprop="dateCreated datePublished" datetime="2025-06-05T20:33:51+08:00">2025-06-05</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="第4章-网络层：数据平面"><a href="#第4章-网络层：数据平面" class="headerlink" title="第4章 网络层：数据平面"></a>第4章 网络层：数据平面</h1><p>本章深入探讨网络层的数据平面 (Data Plane)，这是网络层在本地路由器层面执行的功能。数据平面的核心任务是转发 (Forwarding) 分组：将到达路由器输入端口的分组，根据转发表（也称为转发信息库 FIB - Forwarding Information Base），快速有效地引导至合适的输出端口。与数据平面相对应的是控制平面 (Control Plane)，它负责计算和分发这些转发表，决定了分组在网络中的端到端路径（路由选择 Routing）。本章将聚焦于路由器内部的数据平面转发机制。</p>
-<h2 id="4-1-网络层概述"><a href="#4-1-网络层概述" class="headerlink" title="4.1 网络层概述"></a>4.1 网络层概述</h2><h3 id="4-1-1-转发和路由选择：数据平面和控制平面"><a href="#4-1-1-转发和路由选择：数据平面和控制平面" class="headerlink" title="4.1.1 转发和路由选择：数据平面和控制平面"></a>4.1.1 转发和路由选择：数据平面和控制平面</h3><ul>
-<li><p><strong>转发 (Forwarding)</strong>：发生在单个路由器上的本地动作。当一个数据分组到达路由器的输入端口时，路由器的数据平面会检查分组首部中的特定字段（最常见的是目的 IP 地址），并根据预先确定的转发表（FIB），将分组导向相应的输出端口。这个过程必须非常迅速，通常在硬件中实现，以便以线路速率处理分组。可以类比为高速公路上的交通路口，根据路牌（转发表）指示，将车辆（分组）引导到正确的出口车道（输出端口）。</p>
-</li>
-<li><p><strong>路由选择 (Routing)</strong>：这是一个网络范围的全局过程。它涉及使用路由选择算法（例如 RIP, OSPF, BGP 等）来计算从源主机到目的主机的最佳路径。路由选择算法运行在路由器中的控制平面，通过路由器之间的信息交换来构建和维护网络拓扑信息，并最终生成用于数据平面转发的转发表。这可以类比为规划整个驾车路线，确定从出发地到目的地的所有经过的路段。</p>
-</li>
-<li><p><strong>数据平面 (Data Plane)</strong>：也称为转发平面，负责执行转发功能。它包括路由器的输入端口、交换结构和输出端口。数据平面根据控制平面计算好的转发表来决定分组的出路。其关键特征是速度和效率，通常在专用的硬件（ASIC - Application-Specific Integrated Circuit）中实现。</p>
-</li>
-<li><p><strong>控制平面 (Control Plane)</strong>：负责运行路由选择协议，维护网络拓扑信息，计算路由路径，并生成或更新数据平面使用的转发表。控制平面可以是传统的分布式方式（路由器之间通过路由协议直接交互），也可以是集中式方式，如软件定义网络 (SDN) 中由一个中央控制器负责计算路由并分发流表到交换机。</p>
-</li>
-</ul>
-<p><img src="/../image/image-20250516190517680.png" alt="image-20250516190517680"></p>
-<p><img src="/../image/image-20250516190446281.png" alt="image-20250516190446281"></p>
-<p><strong>总结</strong>：路由选择确定路径，转发沿着路径将分组从输入转发到输出。控制平面计算路径和转发表，数据平面根据转发表执行转发。</p>
-<h3 id="4-1-2-网络服务模型"><a href="#4-1-2-网络服务模型" class="headerlink" title="4.1.2 网络服务模型"></a>4.1.2 网络服务模型</h3><p>网络层服务模型定义了网络层向上层（运输层）提供的服务质量和特性。不同的网络可能提供不同的服务模型。</p>
-<ul>
-<li><p><strong>尽力而为服务 (Best-Effort Service)</strong>：这是互联网 IP 层当前提供的服务模型。意味着网络尽最大努力发送分组，但不提供任何保证。分组可能丢失、乱序、延迟或重复。这种模型的优点是简单、灵活且易于实现，适合多种应用。然而，对于需要可靠性或实时性的应用（如视频会议、在线游戏），则需要在上层协议（如 TCP）或应用层进行补偿。</p>
-</li>
-<li><p><strong>服务质量 (Quality of Service, QoS)</strong>：一些网络和服务模型试图提供比尽力而为更好的服务，例如：</p>
-<ul>
-<li><strong>保证交付 (Guaranteed Delivery)</strong>：保证分组最终会到达目的地。</li>
-<li><strong>有时保证交付 (Guaranteed Delivery with Bounded Delay)</strong>：保证分组在特定最大时延内到达。</li>
-<li><strong>有序分组交付 (Ordered Packet Delivery)</strong>：保证分组按照发送顺序到达。</li>
-<li><strong>最小带宽保证 (Guaranteed Minimum Bandwidth)</strong>：为特定的流量流预留一定的带宽。</li>
-<li><strong>安全性 (Security)</strong>：如提供数据加密和完整性检查。</li>
-</ul>
-</li>
-</ul>
-<p>实现这些高级服务模型通常需要更复杂的机制，如资源预留、流量整形、拥塞控制等，并且可能需要网络中的所有路由器协同工作。IP 协议本身并不直接提供这些保证，但可以通过上层协议或网络层之上的机制（如 DiffServ, IntServ）来尝试实现。</p>
-<h2 id="4-2-路由器工作原理"><a href="#4-2-路由器工作原理" class="headerlink" title="4.2 路由器工作原理"></a>4.2 路由器工作原理</h2><p>路由器是网络层的核心设备，其主要功能是在数据平面接收、处理和转发分组。</p>
-<p><img src="/../image/image-20250516190647847.png" alt="image-20250516190647847"></p>
-<h3 id="4-2-1-输入端口处理和基于目的地转发"><a href="#4-2-1-输入端口处理和基于目的地转发" class="headerlink" title="4.2.1 输入端口处理和基于目的地转发"></a>4.2.1 输入端口处理和基于目的地转发</h3><p>路由器的输入端口是分组进入的地方。输入端口处理涉及多个步骤：</p>
-<p><img src="/../image/image-20250516191409344.png" alt="image-20250516191409344"></p>
-<ul>
-<li><p><strong>物理层处理</strong>：接收来自物理链路（如光纤、铜线）的原始比特流信号，并将其转换为数字信号。</p>
-</li>
-<li><p><strong>数据链路层处理</strong>：对接收到的数据链路层帧进行解封装。检查帧首部（如以太网首部）进行差错检测、帧同步等，提取出其中的网络层分组（如 IP 数据报）。</p>
-</li>
-<li><p><strong>查找&#x2F;转发决策 (Lookup&#x2F;Forwarding Decision)</strong>：这是输入端口处理的核心。路由器检查 IP 数据报的首部字段，最重要的是目的 IP 地址。根据目的 IP 地址，路由器查询其转发表 (FIB) 来确定该分组应该被转发到哪个输出端口。转发表是由控制平面通过路由选择算法构建和维护的。</p>
-<ul>
-<li><strong>最长前缀匹配 (Longest Prefix Matching)</strong>：转发表中的条目通常是网络地址前缀（例如，192.168.1.0&#x2F;24）。当一个分组的目的 IP 地址与多个转发表条目匹配时，路由器必须选择匹配前缀最长的那一个。例如，如果转发表中有 192.168.1.0&#x2F;24 和 192.168.1.128&#x2F;25 两个条目，而分组的目的 IP 地址是 192.168.1.130，则路由器会选择匹配前缀更长的 192.168.1.128&#x2F;25 对应的输出端口。这是因为更长的前缀对应更具体的网络或子网。为了实现高速查找，现代路由器使用特殊的硬件结构，如 TCAM (Ternary Content Addressable Memory)。</li>
-</ul>
-</li>
-<li><p><strong>排队 (Queueing)</strong>：如果分组需要转发到的输出端口正忙或交换结构正在处理其他分组，则该分组可能需要在输入端口的缓存（队列）中等待。这称为输入排队 (Input Queueing)。</p>
-</li>
-</ul>
-<h3 id="4-2-2-交换"><a href="#4-2-2-交换" class="headerlink" title="4.2.2 交换"></a>4.2.2 交换</h3><p>交换结构 (Switching Fabric) 是路由器内部连接输入端口和输出端口的核心组件，负责在输入端口查找到出端口后，将分组从输入端口快速无阻塞地传输到正确的输出端口。主要有三种类型：</p>
-<ul>
-<li><strong>经内存交换 (Switching via Memory)</strong>：这是早期路由器的实现方式。输入端口收到分组后，将其通过系统总线复制到处理器的内存中。处理器查看分组首部，查询转发表，然后将分组从内存通过总线复制到正确的输出端口的缓存中。这种方式简单，但交换速度受限于内存的读写速度和系统总线带宽，难以达到高线路速率。一次只能传输一个分组。</li>
-</ul>
-<p><img src="/../image/image-20250516191526610.png" alt="image-20250516191526610"></p>
-<ul>
-<li><strong>经总线交换 (Switching via a Bus)</strong>：输入端口通过一个共享的总线将分组直接传输到目标输出端口。输入端口将分组放置在总线上，输出端口侦听总线并接收属于自己的分组。总线只能在某一时刻传输一个分组，所以交换速度受限于总线带宽。如果有多个输入端口同时向不同输出端口发送分组，它们必须排队等待总线的空闲。</li>
-</ul>
-<p><img src="/../image/image-20250516191553348.png" alt="image-20250516191553348"></p>
-<ul>
-<li><strong>经互连网络交换 (Switching via an Interconnection Network)</strong>：这是现代高速路由器普遍采用的方式。它使用一个复杂的网络结构（如多级交换单元组成的网络，例如交叉开关 Crossbar Switch）来并行地在多个输入端口和输出端口之间传输分组。交叉开关是一个 N × N 的网格，可以在 N 个输入和 N 个输出之间同时建立多条连接，只要这些连接不冲突（即不同的输入连接到不同的输出，或相同的输入连接到不同的输出，或不同的输入连接到相同的输出）。这种方式可以提供很高的总交换容量，允许多个分组同时被转发。</li>
-</ul>
-<p><img src="/../image/image-20250516191541295.png" alt="image-20250516191541295"></p>
-<h3 id="4-2-3-输出端口处理"><a href="#4-2-3-输出端口处理" class="headerlink" title="4.2.3 输出端口处理"></a>4.2.3 输出端口处理</h3><p>分组通过交换结构到达输出端口后，还需要经过输出端口的处理才能发送到链路上。</p>
-<p><img src="/../image/image-20250516191648437.png" alt="image-20250516191648437"></p>
-<ul>
-<li><p><strong>排队 (Queueing)</strong>：如果分组到达输出端口的速率超过了输出链路的传输速率，或者有多个分组同时竞争同一输出链路，则分组必须在输出端口的缓存（队列）中等待。这称为输出排队 (Output Queueing)。这是路由器中最常见的排队位置。</p>
-</li>
-<li><p><strong>调度 (Scheduling)</strong>：当输出链路空闲时，需要决定从输出队列中选择哪个分组进行传输。这就是分组调度算法的作用。</p>
-</li>
-<li><p><strong>数据链路层处理</strong>：为分组添加数据链路层首部和尾部，形成帧。进行链路层特定的处理，如添加校验和。</p>
-</li>
-<li><p><strong>物理层处理</strong>：将数据链路层帧转换成物理信号，并通过输出链路传输出去。</p>
-</li>
-</ul>
-<h3 id="4-2-4-何处出现排队"><a href="#4-2-4-何处出现排队" class="headerlink" title="4.2.4 何处出现排队"></a>4.2.4 何处出现排队</h3><p>排队是路由器中不可避免的现象，主要发生在输入端口和输出端口的缓存中。</p>
-<ul>
-<li><strong>输入排队 (Input Queueing)</strong>：当交换结构的处理速度慢于输入端口接收分组的总速度时，或者当多个输入端口的分组需要通过交换结构发送到同一个输出端口，而交换结构无法并行处理时，分组会在输入端口排队。输入排队可能导致线路前部阻塞 (Head-of-Line Blocking, HoL Blocking)：在一个输入队列中，队头分组（即最先到达的分组）因为要转发到的输出端口被占用而等待，即使队列中后续的分组要转发到的输出端口是空闲的，它们也被队头分组阻塞，无法通过交换结构。</li>
-</ul>
-<p><img src="/../image/image-20250516191804522.png" alt="image-20250516191804522"></p>
-<ul>
-<li><strong>输出排队 (Output Queueing)</strong>：当分组从交换结构到达输出端口的速率超过了输出链路的传输速率时，分组会在输出端口排队。这是更常见且通常设计上倾向的排队位置，因为适当的输出排队可以更好地利用链路带宽，并通过调度算法实现不同的服务质量。为了避免输出队列溢出导致分组丢失，输出端口的缓存大小是一个关键的设计参数。</li>
-</ul>
-<p><img src="/../image/image-20250516191843699.png" alt="image-20250516191843699"></p>
-<p>现代路由器通常设计有高速的交换结构，使得交换速度远高于输入线路速率，从而将排队主要集中在输出端口，避免 HoL 阻塞。</p>
-<h3 id="4-2-5-分组调度"><a href="#4-2-5-分组调度" class="headerlink" title="4.2.5 分组调度"></a>4.2.5 分组调度</h3><p>当输出链路空闲时，输出端口的调度器 (Scheduler) 从输出队列中选择下一个要传输的分组。不同的调度算法会影响分组的发送顺序和时延。</p>
-<ul>
-<li><p><strong>先进先出 (First-In-First-Out, FIFO)</strong> 或 <strong>先来先服务 (First-Come-First-Served, FCFS)</strong>：最简单的调度策略，按照分组到达输出队列的顺序进行传输。简单易实现，但无法区分不同类型的流量，高优先级分组可能被低优先级分组阻塞。</p>
-</li>
-<li><p><strong>优先权排队 (Priority Queueing)</strong>：分组根据其服务类型 (ToS) 或其他字段被划分到不同的优先级队列中。调度器总是优先传输高优先级队列中的分组。只有当高优先级队列为空时，才传输低优先级队列中的分组。这可以保证高优先级流量的优先传输，但低优先级流量可能会面临饥饿（长时间无法获得服务）。</p>
-</li>
-</ul>
-<p><img src="/../image/image-20250516191950641.png" alt="image-20250516191950641"></p>
-<ul>
-<li><p><strong>循环调度 (Round Robin, RR)</strong>：适用于有多个分类队列的情况。调度器轮流从每个非空队列中取出一个分组进行传输。这提供了某种程度的公平性，避免了饥饿，但每个队列获得的带宽相同，无法满足不同流量对带宽的不同需求。</p>
-</li>
-<li><p><strong>加权公平排队 (Weighted Fair Queueing, WFQ)</strong>：是 RR 的泛化。每个队列被赋予一个权重，调度器根据权重比例为每个队列分配带宽或服务时间。例如，权重为 2 的队列会比权重为 1 的队列获得两倍的带宽。WFQ 可以在提供公平性的同时，根据权重为不同类型的流量提供不同的带宽保证。许多实际的 QoS 实现都基于 WFQ 或其变种。</p>
-</li>
-</ul>
-<p><img src="/../image/image-20250516192026706.png" alt="image-20250516192026706"></p>
-<h2 id="4-3-网际协议：IPv4、寻址、IPv6及其他"><a href="#4-3-网际协议：IPv4、寻址、IPv6及其他" class="headerlink" title="4.3 网际协议：IPv4、寻址、IPv6及其他"></a>4.3 网际协议：IPv4、寻址、IPv6及其他</h2><p>网际协议 (IP) 是互联网网络层的主导协议，负责在全球范围内的网络之间转发数据报。</p>
-<h3 id="4-3-1-IPv4数据报格式"><a href="#4-3-1-IPv4数据报格式" class="headerlink" title="4.3.1 IPv4数据报格式"></a>4.3.1 IPv4数据报格式</h3><p>IPv4 数据报是 IP 层传输的基本单元。它包含首部和数据载荷。IPv4 首部通常为 20 字节（不含选项字段），各字段含义如下：</p>
-<p><img src="/../image/image-20250516192110703.png" alt="image-20250516192110703"></p>
-<ul>
-<li><p><strong>版本 (Version)</strong>：4 位，表示 IP 协议版本，IPv4 固定为 4。</p>
-</li>
-<li><p><strong>首部长度 (Header Length, IHL)</strong>：4 位，表示 IP 首部长度，以 32 位字（4 字节）为单位。最小值是 5 (5 * 4 &#x3D; 20 字节，无选项)。最大值是 15 (15 * 4 &#x3D; 60 字节)。</p>
-</li>
-<li><p><strong>服务类型 (Type of Service, ToS)</strong>：8 位，用于指定数据报的服务类型，如优先级、延迟要求、吞吐量要求等。现在已被区分服务 (DiffServ) 字段（DS 字段和 ECN 字段）取代，用于实现 QoS。</p>
-</li>
-<li><p><strong>总长度 (Total Length)</strong>：16 位，表示整个 IP 数据报（首部 + 数据载荷）的长度，以字节为单位。最大长度为 2^{16} - 1 &#x3D; 65535 字节。</p>
-</li>
-<li><p><strong>标识 (Identification)</strong>：16 位，由发送方设置，用于唯一标识一个 IP 数据报。当数据报需要分片时，同一原始数据报的所有分片都具有相同的标识符。</p>
-</li>
-<li><p><strong>标志 (Flags)</strong>：3 位，用于控制和标识分片。</p>
-<ul>
-<li>位 0 (保留位)：未使用。</li>
-<li>位 1 (DF - Don’t Fragment)：如果设置为 1，表示数据报不能被分片。如果必须分片才能通过下一跳网络，数据报将被丢弃并返回一个 ICMP 错误消息。</li>
-<li>位 2 (MF - More Fragments)：如果设置为 1，表示这是分片的最后一个以外的片段；如果设置为 0，表示这是最后一个片段或者数据报未分片。</li>
-</ul>
-</li>
-<li><p><strong>片偏移 (Fragment Offset)</strong>：13 位，表示该分片在原始未分片数据报的数据载荷中的相对位置，以 8 字节为单位。第一个分片的片偏移为 0。</p>
-</li>
-<li><p><strong>生存时间 (Time To Live, TTL)</strong>：8 位，表示数据报可以经过的最大路由器跳数。数据报每经过一个路由器，TTL 值减 1。当 TTL 减到 0 时，路由器会丢弃该数据报，并通常向源发送一个 ICMP 错误消息（时间超出）。这可以防止数据报在网络中无限循环。</p>
-</li>
-<li><p><strong>协议 (Protocol)</strong>：8 位，指示数据载荷中封装的是哪个上层协议的数据。常见的协议号：TCP (6), UDP (17), ICMP (1), OSPF (89)。</p>
-</li>
-<li><p><strong>首部校验和 (Header Checksum)</strong>：16 位，用于检测 IP 首部在传输过程中是否发生差错。校验和只覆盖 IP 首部，不包括数据载荷。每经过一个路由器，TTL 会改变，所以校验和必须重新计算。这是 IPv6 移除校验和的原因之一，以提高处理速度。</p>
-</li>
-<li><p><strong>源 IP 地址 (Source IP Address)</strong>：32 位，发送该数据报的主机的 IP 地址。</p>
-</li>
-<li><p><strong>目的 IP 地址 (Destination IP Address)</strong>：32 位，接收该数据报的主机的 IP 地址。</p>
-</li>
-<li><p><strong>选项 (Options)</strong>：长度可变，用于支持一些可选功能，如记录路由、时间戳等。由于增加了处理开销，选项字段很少在互联网中使用。</p>
-</li>
-<li><p><strong>填充 (Padding)</strong>：填充 0，使得首部长度是 32 位字的整数倍。</p>
-</li>
-<li><p><strong>数据 (Data)</strong>：上层协议（如 TCP, UDP, ICMP 等）的数据载荷。</p>
-</li>
-</ul>
-<p><strong>IP 分片 (Fragmentation)</strong>：当一个 IP 数据报的大小超过了下一跳链路的最大传输单元 (MTU - Maximum Transmission Unit) 时，路由器或发送主机需要将数据报分片<strong>IP 分片 (Fragmentation)</strong>：当一个 IP 数据报的大小超过了下一跳链路的最大传输单元 (MTU - Maximum Transmission Unit) 时，路由器或发送主机需要将数据报分片。每个分片都成为一个独立的 IP 数据报，拥有自己的 IP 首部（复制原始数据报的首部信息并修改标识、标志和片偏移字段）。分片可能在路径中的任何路由器上进行，但通常只在目的主机上进行重组。IPv6 不允许在路由器上进行分片，只能在发送主机上进行。</p>
-<h3 id="4-3-2-IPv4编址"><a href="#4-3-2-IPv4编址" class="headerlink" title="4.3.2 IPv4编址"></a>4.3.2 IPv4编址</h3><p>IPv4 地址是 32 位的逻辑地址，用于唯一标识互联网上的一个接口。IP 地址被组织成网络和主机两部分。</p>
-<ul>
-<li><p><strong>点分十进制表示法</strong>：将 32 位地址分成 4 个字节，每个字节转换为十进制数，之间用点隔开（例如，192.168.1.1）。</p>
-</li>
-<li><p><strong>网络部分和主机部分</strong>：IP 地址的网络部分标识设备所在的网络，主机部分标识该网络中的具体设备接口。区分这两部分需要使用子网掩码 (Subnet Mask)。子网掩码也是 32 位，网络部分的位全为 1，主机部分的位全为 0。将 IP 地址和子网掩码进行按位与操作，即可得到网络地址。</p>
-</li>
-<li><p><strong>子网 (Subnet)</strong>：相互之间不通过路由器就可以直接通信的一组设备接口。一个子网对应一个网络地址。例如，IP 地址在 192.168.1.1 到 192.168.1.254 之间，子网掩码是 255.255.255.0 (即 &#x2F;24)，它们属于同一个子网，网络地址是 192.168.1.0。</p>
-</li>
-</ul>
-<p><img src="/../image/image-20250516192303805.png" alt="image-20250516192303805"></p>
-<ul>
-<li><p><strong>无类别域间路由选择 (Classless Inter-Domain Routing, CIDR)</strong>：取代了早期的类别编址 (A, B, C 类)。CIDR 使用网络前缀的概念，用 IP 地址后跟一个斜线和前缀长度来表示，例如 192.168.1.0&#x2F;24。&#x2F;24 表示前 24 位是网络前缀，后 8 位是主机部分。这使得 IP 地址分配更加灵活和高效。</p>
-</li>
-<li><p><strong>特殊 IP 地址</strong>：</p>
-<ul>
-<li><strong>网络地址</strong>：主机部分全为 0 的地址，表示整个网络。例如，192.168.1.0&#x2F;24 的网络地址是 192.168.1.0。</li>
-<li><strong>广播地址 (Broadcast Address)</strong>：主机部分全为 1 的地址，向该地址发送的分组会被发送到该网络中的所有设备。例如，192.168.1.0&#x2F;24 的广播地址是 192.168.1.255。</li>
-<li><strong>环回地址 (Loopback Address)</strong>：127.0.0.1，用于测试本地网络栈。</li>
-<li><strong>私有 IP 地址</strong>：在组织内部网络中使用，不能在互联网上直接路由。包括 10.0.0.0&#x2F;8, 172.16.0.0&#x2F;12, 192.168.0.0&#x2F;16 这几个地址段。</li>
-</ul>
-</li>
-<li><p><strong>IP 地址获取</strong>：</p>
-<ul>
-<li><strong>静态分配</strong>：管理员手动为设备配置固定的 IP 地址、子网掩码、默认网关和 DNS 服务器地址。</li>
-<li><strong>动态主机配置协议 (Dynamic Host Configuration Protocol, DHCP)</strong>：一种网络协议，允许设备（客户端）在加入网络时自动从 DHCP 服务器获取 IP 地址和其他网络配置信息。DHCP 过程通常包括四个步骤：DHCP Discover (客户端查找服务器)、DHCP Offer (服务器提供配置)、DHCP Request (客户端请求配置)、DHCP ACK (服务器确认配置)。</li>
-</ul>
-<p><img src="/../image/image-20250516192521084.png" alt="image-20250516192521084"></p>
-</li>
-</ul>
-<h3 id="4-3-3-网络地址转换（NAT）"><a href="#4-3-3-网络地址转换（NAT）" class="headerlink" title="4.3.3 网络地址转换（NAT）"></a>4.3.3 网络地址转换（NAT）</h3><p>网络地址转换 (NAT) 是一种解决 IPv4 地址空间不足的技术，尤其是在家庭网络和小型办公室中。它允许多个设备共享一个或少数几个公共 IP 地址访问互联网。</p>
-<ul>
-<li><strong>工作原理</strong>：NAT 路由器位于私有网络和公共网络（互联网）之间。私有网络中的设备使用私有 IP 地址。当私有网络中的主机向公共网络发送分组时，NAT 路由器会拦截该分组。它会修改分组的源 IP 地址（替换为 NAT 路由器的公共 IP 地址）和源端口号（分配一个新的端口号）。然后，NAT 路由器在内部维护一个NAT 转换表 (NAT Translation Table)，记录原始的私有 IP&#x2F;端口到新的公共 IP&#x2F;端口的映射关系。修改后的分组被发送到公共网络。当外部主机回复分组到达 NAT 路由器时，路由器检查分组的目的 IP 地址（即 NAT 路由器的公共 IP 地址）和目的端口号。它根据 NAT 转换表查找匹配的条目，找到对应的私有 IP&#x2F;端口。然后，路由器修改分组的目的 IP 地址和目的端口号为私有网络的地址，并将分组转发到私有网络中的相应主机。</li>
-</ul>
-<p><img src="/../image/image-20250516192718417.png" alt="image-20250516192718417"></p>
-<ul>
-<li><p><strong>优点</strong>：</p>
-<ul>
-<li>缓解了 IPv4 地址空间不足的问题，可以用少量的公共 IP 地址支持大量的私有设备。</li>
-<li>增强了内部网络的安全性，外部网络看不到内部主机的真实 IP 地址。</li>
-</ul>
-</li>
-<li><p><strong>缺点</strong>：</p>
-<ul>
-<li>违反了端到端原则（End-to-End Principle），因为网络层中间设备（NAT 路由器）修改了分组的首部信息，而不是只在端系统进行处理。这使得一些依赖于端到端连接和特定端口的应用（如某些 P2P 应用、VoIP）难以穿透 NAT。</li>
-<li>增加了 NAT 路由器的复杂性，需要维护转换表。</li>
-<li>使得追踪连接的源变得困难，因为多个内部主机看起来都来自同一个公共 IP 地址。</li>
-</ul>
-</li>
-</ul>
-<h3 id="4-3-4-IPv6"><a href="#4-3-4-IPv6" class="headerlink" title="4.3.4 IPv6"></a>4.3.4 IPv6</h3><p>IPv6 是为了解决 IPv4 地址耗尽问题而设计的下一代互联网协议，并改进了 IPv4 的一些设计。</p>
-<p><img src="/../image/image-20250516192812226.png" alt="image-20250516192812226"></p>
-<ul>
-<li><p><strong>IPv6 地址格式</strong>：IPv6 地址长度为 128 位，是 IPv4 地址的四倍。通常用冒号分隔的 8 组 16 进制数表示，每组 16 位（例如，2001:0db8:85a3:0000:0000:8a2e:0370:7334）。IPv6 提供了巨大的地址空间（约 3.4 × 10^{38} 个地址），足够未来互联网设备的需求。</p>
-<ul>
-<li><strong>地址简化规则</strong>：可以省略每组前导的零（0db8 可以写成 db8）。可以省略连续的零组（0000:0000 可以用 :: 代替，但一个地址中只能使用一次 ::）。</li>
-</ul>
-</li>
-<li><p><strong>IPv6 数据报格式</strong>：IPv6 设计简化了首部，固定长度为 40 字节（不包含扩展首部）。一些 IPv4 字段被移除或移到扩展首部中，以加快路由器处理速度。</p>
-<ul>
-<li><strong>移除的字段</strong>：首部校验和（由数据链路层和运输层负责）、标识、标志、片偏移（分片只能由源主机完成，不再在路由器进行）、首部长度（首部长度固定）。</li>
-<li><strong>新增或修改的字段</strong>：<ul>
-<li><strong>版本 (Version)</strong>：4 位，固定为 6。</li>
-<li><strong>流量类别 (Traffic Class)</strong>：8 位，类似 IPv4 的 ToS 字段，用于区分服务。</li>
-<li><strong>流标签 (Flow Label)</strong>：20 位，用于标记属于同一流的分组，以便路由器可以对这些分组进行统一处理（例如，提供 QoS）。</li>
-<li><strong>有效载荷长度 (Payload Length)</strong>：16 位，表示数据报中数据载荷的长度（包括扩展首部）。</li>
-<li><strong>下一首部 (Next Header)</strong>：8 位，指示紧跟在当前首部后面的首部类型（可以是上层协议，如 TCP 或 UDP，也可以是 IPv6 扩展首部）。</li>
-<li><strong>跳限制 (Hop Limit)</strong>：8 位，类似 IPv4 的 TTL，表示分组可以经过的最大跳数。</li>
-<li><strong>源地址 (Source Address)</strong>：128 位。</li>
-<li><strong>目的地址 (Destination Address)</strong>：128 位。</li>
-<li><strong>扩展首部 (Extension Headers)</strong>：IPv6 使用可选的扩展首部来提供 IPv4 选项字段的功能，例如分片、路由、目的地选项等。扩展首部不包含在基本首部中，只有当需要时才添加。路由器在处理分组时，通常只需要检查基本首部，除非需要处理特定的扩展首部。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><strong>IPv4 到 IPv6 的过渡</strong>：由于互联网不可能一夜之间从 IPv4 完全切换到 IPv6，需要过渡机制：</p>
-<ul>
-<li><strong>双栈 (Dual Stack)</strong>：主机和路由器同时运行 IPv4 和 IPv6 协议栈。设备可以同时拥有 IPv4 和 IPv6 地址，并根据目的地是 IPv4 地址还是 IPv6 地址来选择使用哪个协议发送分组。</li>
-<li><strong>隧道技术 (Tunneling)</strong>：将 IPv6 数据报完整地封装在 IPv4 数据报的数据载荷中，使其能够穿越只支持 IPv4 的网络。在隧道入口处，将 IPv6 数据报封装到 IPv4 数据报中；在隧道出口处，解封装取出 IPv6 数据报。反之亦然，也可以在 IPv6 网络中隧道传输 IPv4 数据报。</li>
-</ul>
-<p><img src="/../image/image-20250516192913054.png" alt="image-20250516192913054"></p>
-</li>
-</ul>
-<h2 id="4-4-泛化转发和SDN"><a href="#4-4-泛化转发和SDN" class="headerlink" title="4.4 泛化转发和SDN"></a>4.4 泛化转发和SDN</h2><p>传统的路由器数据平面主要基于目的地 IP 地址进行转发。泛化转发 (Generalized Forwarding) 扩展了这一概念，允许根据分组首部的更多字段进行匹配和操作，从而实现了更灵活和可编程的网络行为。这是软件定义网络 (SDN) 的核心理念之一。</p>
-<p><img src="/../image/image-20250516193130384.png" alt="image-20250516193130384"></p>
-<h3 id="4-4-1-匹配"><a href="#4-4-1-匹配" class="headerlink" title="4.4.1 匹配"></a>4.4.1 匹配</h3><p>泛化转发的关键在于灵活的匹配规则。数据平面设备（如支持 SDN 的交换机&#x2F;路由器）使用流表 (Flow Table) 来存储转发规则。流表中的每个条目都包含一个匹配字段集合，用于与到达分组的首部字段进行比较。匹配字段可以涵盖 OSI 模型第 2 层到第 4 层甚至更高层的首部信息，例如：</p>
-<ul>
-<li><strong>入端口 (In Port)</strong></li>
-<li><strong>源&#x2F;目的 MAC 地址 (Source&#x2F;Destination MAC Address)</strong></li>
-<li><strong>VLAN ID</strong></li>
-<li><strong>以太网类型 (EtherType)</strong></li>
-<li><strong>源&#x2F;目的 IP 地址 (Source&#x2F;Destination IP Address)</strong></li>
-<li><strong>IP 协议字段 (IP Protocol)</strong></li>
-<li><strong>源&#x2F;目的 TCP&#x2F;UDP 端口号 (Source&#x2F;Destination TCP&#x2F;UDP Port Number)</strong></li>
-<li><strong>其他字段（如 MPLS 标签）</strong></li>
-</ul>
-<p><img src="/../image/image-20250516193221051.png" alt="image-20250516193221051"></p>
-<p>一个分组到达后，会根据这些字段与流表中的条目进行匹配。</p>
-<h3 id="4-4-2-操作"><a href="#4-4-2-操作" class="headerlink" title="4.4.2 操作"></a>4.4.2 操作</h3><p>当分组匹配到流表中的某个条目后，数据平面设备会执行该条目关联的操作集合 (Set of Actions)。这些操作远比传统的“转发到某个输出端口”要丰富：</p>
-<ul>
-<li><strong>转发 (Forward)</strong>：将分组发送到一个或多个特定的输出端口、发送到一组端口（组播&#x2F;广播）、泛洪、或者通过隧道发送。</li>
-<li><strong>丢弃 (Drop)</strong>：丢弃分组。</li>
-<li><strong>修改字段 (Modify Field)</strong>：修改分组首部或载荷中的字段值，例如：重写源&#x2F;目的 MAC 地址、重写源&#x2F;目的 IP 地址、重写源&#x2F;目的端口号、修改 VLAN ID、修改 TTL&#x2F;跳限制。</li>
-<li><strong>发送到控制器 (Send to Controller)</strong>：将分组发送给 SDN 控制器。这通常用于处理第一次遇到的流（未知流），或者需要控制器进行特殊处理的情况。</li>
-<li><strong>添加到操作集并继续处理 (Add to Action Set and Continue)</strong>：将某些操作添加到待执行的操作列表中，然后继续处理（例如，跳转到流表中的下一个表进行进一步匹配和处理）。</li>
-</ul>
-<h3 id="4-4-3-运行中的匹配加操作的OpenFlow例子"><a href="#4-4-3-运行中的匹配加操作的OpenFlow例子" class="headerlink" title="4.4.3 运行中的匹配加操作的OpenFlow例子"></a>4.4.3 运行中的匹配加操作的OpenFlow例子</h3><p>OpenFlow 是一个被广泛采用的南向接口协议，它定义了 SDN 控制器如何与 OpenFlow 交换机进行通信和控制。OpenFlow 交换机是支持泛化转发的数据平面设备。</p>
-<p>OpenFlow 交换机内部维护一个或多个流表 (Flow Table)。每个流表包含一系列流条目 (Flow Entry)。每个流条目由以下组成部分：</p>
-<p><img src="/../image/image-20250516193424307.png" alt="image-20250516193424307"></p>
-<ul>
-<li><strong>匹配字段 (Match Fields)</strong>：如 4.4.1 所述，用于匹配分组的首部字段。</li>
-<li><strong>优先级 (Priority)</strong>：当一个分组可能匹配多个流条目时，优先级最高的那个条目会被选中。</li>
-<li><strong>计数器 (Counters)</strong>：记录匹配到该流条目的分组数量和总字节数，用于统计流量。</li>
-<li><strong>指令 (Instructions)</strong>：匹配成功后要执行的操作集合。指令可以包括：<ul>
-<li>将分组添加到动作集 (Action Set) 并继续处理流水线。动作集包含一组待执行的操作（如转发到端口、修改字段）。</li>
-<li>跳转到流水线中的下一个流表进行进一步处理（实现多阶段处理）。</li>
-<li>将分组发送到控制器。</li>
-</ul>
-</li>
-<li><strong>超时 (Timeouts)</strong>：流条目的有效期。可以设置为硬性超时（到达指定时间后删除）或空闲超时（在指定空闲时间后删除）。</li>
-<li><strong>Cookie</strong>：控制器用于标识流条目的不透明数据。</li>
-</ul>
-<p><strong>分组处理流水线 (Packet Processing Pipeline)</strong>：OpenFlow 交换机通常以流水线的方式处理分组。分组首先进入第一个流表进行匹配。根据匹配到的流条目中的指令，分组可能会被执行一些操作，然后传递给下一个流表，直到处理完成或被转发出去。</p>
-<p><strong>OpenFlow 工作流程示例</strong>：</p>
-<ol>
-<li>一个分组到达 OpenFlow 交换机的某个端口。</li>
-<li>分组进入第一个流表，与其中的流条目进行匹配。</li>
-<li>如果分组匹配到一个流条目（优先级最高的那个）：<ul>
-<li>更新该流条目的计数器。</li>
-<li>执行该流条目中的指令集。指令可能会导致分组被转发到某个端口、被修改、被丢弃，或者被发送到控制器。如果指令是跳转到下一个表，分组会进入下一个流表继续处理。</li>
-</ul>
-</li>
-<li>如果分组不匹配任何流条目：<ul>
-<li>根据交换机的配置，分组可能被发送到 SDN 控制器。</li>
-<li>或者，执行表末尾的默认规则（例如，丢弃分组或泛洪到所有端口）。</li>
-</ul>
-</li>
-<li>如果分组被发送到控制器，控制器根据其策略决定如何处理该流。控制器可能会向交换机下发新的流条目，以便以后到达的属于同一流的分组可以直接在数据平面处理，而无需再发送给控制器。</li>
-</ol>
-<p>这种基于流表和集中式控制器的泛化转发机制是实现网络可编程性、自动化和创新服务（如网络功能虚拟化 NFV）的关键技术。</p>
-<h2 id="4-5-中间盒"><a href="#4-5-中间盒" class="headerlink" title="4.5 中间盒"></a>4.5 中间盒</h2><p>中间盒 (Middlebox) 是位于端系统之间，在数据路径上执行除了标准网络层转发之外的更高级功能的网络设备或软件。它们通常检查和&#x2F;或修改分组的首部和&#x2F;或载荷，并基于这些信息做出转发或其他处理决定。中间盒使得网络行为复杂化，不再仅仅是路由器之间的简单跳跃。</p>
-<h3 id="常见的中间盒类型包括："><a href="#常见的中间盒类型包括：" class="headerlink" title="常见的中间盒类型包括："></a>常见的中间盒类型包括：</h3><ul>
-<li><p><strong>防火墙 (Firewall)</strong>：根据预先定义的规则集过滤网络流量。防火墙可以基于 IP 地址、端口号、协议类型，甚至应用层内容来允许或阻止分组通过，以增强网络的安全性。防火墙可以是无状态的（只检查单个分组的首部）或有状态的（跟踪连接的状态）。</p>
-</li>
-<li><p><strong>入侵检测系统 (Intrusion Detection System, IDS) &#x2F; 入侵防御系统 (Intrusion Prevention System, IPS)</strong>：IDS&#x2F;IPS 监控网络流量，检测是否有恶意活动、策略违规或入侵迹象。它们可以通过模式匹配、异常检测等技术来识别威胁。IPS 更进一步，可以主动阻止或中断恶意流量。</p>
-</li>
-<li><p><strong>网络地址转换器 (NAT)</strong>：如 4.3.3 所述，用于在私有和公共 IP 地址之间进行转换。</p>
-</li>
-<li><p><strong>代理服务器 (Proxy Server)</strong>：代表客户端向其他服务器发起请求。例如，Web 代理服务器可以缓存网页内容，减少对源服务器的访问和网络流量；或者用于访问控制和过滤。</p>
-</li>
-<li><p><strong>负载均衡器 (Load Balancer)</strong>：将入站网络流量分发到一组健康的服务器上，以提高应用的可用性、性能和可伸缩性。负载均衡器可以基于多种算法（如轮询、最少连接）来决定将新连接导向哪个服务器。</p>
-</li>
-<li><p><strong>WAN 加速器 (WAN Accelerator)</strong>：通过缓存、压缩、协议优化等技术来提高广域网上传输数据的速度和效率。</p>
-</li>
-<li><p><strong>流量整形器&#x2F;策略执行点 (Traffic Shaper&#x2F;Policy Enforcement Point)</strong>：用于控制流量速率、优先级，或根据策略对流量进行标记、限速或丢弃，以实现服务质量 (QoS) 或带宽管理。</p>
-</li>
-</ul>
-<p>中间盒部署在数据路径中，对分组进行处理，可能会修改分组，这会改变网络的端到端行为。虽然它们提供了重要的功能（如安全、性能优化），但也增加了网络的复杂性，可能引入额外的延迟，并对某些协议或应用造成兼容性问题。理解中间盒的功能和位置对于网络设计、故障排除和性能优化至关重要。</p>
-<h2 id="4-6-小结"><a href="#4-6-小结" class="headerlink" title="4.6 小结"></a>4.6 小结</h2><p>本章详细阐述了网络层的数据平面功能，即路由器如何接收、处理和转发分组。我们区分了发生在单个路由器的转发（数据平面）和发生在网络范围的路由选择（控制平面）。探讨了不同的网络服务模型，重点是互联网的尽力而为服务。</p>
-<p>深入研究了路由器的工作原理，包括：</p>
-<ul>
-<li><strong>输入端口处理</strong>（查找、最长前缀匹配、输入排队）</li>
-<li><strong>交换结构</strong>（内存、总线、互连网络三种类型）</li>
-<li><strong>输出端口处理</strong>（输出排队、调度）以及排队可能发生的位置及其影响（特别是 HoL 阻塞）。</li>
-</ul>
-<p>了解了常用的分组调度算法，如 FIFO、优先权排队、RR 和 WFQ。</p>
-<p>详细介绍了互联网的核心协议 IPv4，包括其数据报格式、32 位编址（子网划分、CIDR、特殊地址、DHCP），以及缓解地址枯竭的 NAT 技术及其优缺点。随后，介绍了下一代协议 IPv6，包括其 128 位地址格式、简化的数据报首部以及从 IPv4 到 IPv6 的过渡机制（双栈、隧道）。</p>
-<p>最后，引入了泛化转发的概念，它是 SDN 的基础，允许根据分组首部的多种字段进行匹配和执行多样的操作。通过 OpenFlow 的例子，我们了解了流表、流条目的组成以及分组在 OpenFlow 交换机中的处理流程。本章还讨论了位于数据路径上的中间盒（如防火墙、NAT、负载均衡器）及其功能和对网络的影响。</p>
-<p>理解数据平面的高效工作是构建高性能网络的基础。控制平面负责智能地指导数据平面的行为，而数据平面则负责快速可靠地执行转发任务。</p>
-<h2 id="课后部分"><a href="#课后部分" class="headerlink" title="课后部分"></a>课后部分</h2><h3 id="课后习题和问题"><a href="#课后习题和问题" class="headerlink" title="课后习题和问题"></a>课后习题和问题</h3><p>这些部分提供了巩固本章知识的机会。</p>
-<ul>
-<li><strong>复习题</strong>：用于回顾和检查对基本概念、定义和原理的掌握程度。</li>
-<li><strong>习题</strong>：需要运用本章知识解决具体的计算或分析问题，例如：<ul>
-<li>给定 IP 地址和子网掩码，计算网络地址和广播地址；</li>
-<li>分析路由器的转发过程；</li>
-<li>理解 NAT 的转换过程等。</li>
-</ul>
-</li>
-</ul>
-<h3 id="Wireshark实验"><a href="#Wireshark实验" class="headerlink" title="Wireshark实验"></a>Wireshark实验</h3><p><strong>IP</strong>：通过使用网络协议分析工具 Wireshark 捕获和分析实际的 IP 数据报，学习如何识别 IPv4&#x2F;IPv6 数据报的首部字段，观察它们的取值，理解分片、TTL 等概念在实际分组中的体现，从而加深对 IP 协议的实际运作的理解。</p>
-<h3 id="人物专访"><a href="#人物专访" class="headerlink" title="人物专访"></a>人物专访</h3><p>通常会介绍对互联网或计算机网络领域做出重要贡献的科学家或工程师，帮助读者了解该领域的历史发展和创新过程。</p>
-<hr>
-<p>以上是《计算机网络：自顶向下方法》第 8 版第四章“网络层：数据平面”的详细笔记。希望这些内容能够帮助你更好地理解网络层的工作原理和技术细节！如果有任何进一步的问题或者需要更深入的讨论，请随时告诉我！</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/06/05/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hexo">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/06/05/hello-world/" class="post-title-link" itemprop="url">Blog</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2025-06-05 18:53:19 / Modified: 20:32:11" itemprop="dateCreated datePublished" datetime="2025-06-05T18:53:19+08:00">2025-06-05</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-
-</div>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-
-  <div class="copyright">
-    &copy; 
-    <span itemprop="copyrightYear">2025</span>
-    <span class="with-love">
-      <i class="fa fa-heart"></i>
-    </span>
-    <span class="author" itemprop="copyrightHolder">John Doe</span>
-  </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
-  </div>
+</footer>
 
     </div>
-  </footer>
-
-  
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-  <div class="sidebar-dimmer"></div>
-  <div class="back-to-top" role="button" aria-label="Back to top">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
-  </div>
-
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
-
 </body>
+
 </html>
