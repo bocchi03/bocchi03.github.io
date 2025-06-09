@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="bocchi">
+
+
+
+
+
+<title>Persistence | Hexo</title>
+
+
+
+    <link rel="icon" href="/notebook.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Persistence</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">bocchi</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">June 9, 2025&nbsp;&nbsp;19:17:25</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/408/">408</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="操作系统：三个简单步骤-Operating-Systems-Three-Easy-Pieces-version-1-1-持久性笔记-详细版-💾"><a href="#操作系统：三个简单步骤-Operating-Systems-Three-Easy-Pieces-version-1-1-持久性笔记-详细版-💾" class="headerlink" title="操作系统：三个简单步骤 (Operating Systems: Three Easy Pieces version 1.1) - 持久性笔记 (详细版) 💾"></a>操作系统：三个简单步骤 (Operating Systems: Three Easy Pieces version 1.1) - 持久性笔记 (详细版) 💾</h1><h2 id="第三部分-持久性-Persistence"><a href="#第三部分-持久性-Persistence" class="headerlink" title="第三部分 持久性 (Persistence)"></a>第三部分 持久性 (Persistence)</h2><p>这部分深入探讨了计算机系统中确保数据长期保存的核心机制。它从硬件层面（如I&#x2F;O设备和磁盘驱动器）开始，逐步过渡到数据组织（RAID）、文件系统的抽象概念（文件与目录），再到文件系统的内部实现、性能优化策略（如FFS）、以及确保数据在系统崩溃后仍能恢复一致性的技术（FSCK、日志）。此外，还讨论了数据完整性和保护。最后，将持久性的概念扩展到分布式计算环境中，介绍了分布式系统的基本通信原理以及两种经典的网络文件系统NFS和AFS。</p>
+<h2 id="第35章-关于持久性的对话"><a href="#第35章-关于持久性的对话" class="headerlink" title="第35章 关于持久性的对话"></a>第35章 关于持久性的对话</h2><h3 id="核心概念："><a href="#核心概念：" class="headerlink" title="核心概念："></a>核心概念：</h3><ul>
+<li><strong>持久性的定义</strong>：指数据在创建它的程序终止后，甚至在计算机系统关闭并重启后，依然能够存在和被访问的特性。这是与易失性存储（如RAM）相对的关键区别。</li>
+<li><strong>重要性</strong>：几乎所有有用的计算机应用都需要持久化存储数据，例如用户文档、数据库、操作系统本身、应用程序状态等。</li>
+<li><strong>面临的挑战</strong>：<ul>
+<li><strong>性能</strong>：持久性存储（尤其是机械硬盘）通常比主存慢几个数量级。如何在不牺牲过多性能的前提下实现持久性是一个核心挑战。</li>
+<li><strong>可靠性</strong>：存储介质可能发生故障，数据可能损坏。</li>
+<li><strong>一致性</strong>：在并发访问或系统崩溃时，如何保证数据的正确性和一致性。</li>
+</ul>
+</li>
+<li><strong>目标</strong>：设计和实现高效、可靠、一致的持久化存储系统。</li>
+</ul>
+<h2 id="第36章-I-O设备"><a href="#第36章-I-O设备" class="headerlink" title="第36章 I&#x2F;O设备"></a>第36章 I&#x2F;O设备</h2><h3 id="36-1-系统架构："><a href="#36-1-系统架构：" class="headerlink" title="36.1 系统架构："></a>36.1 系统架构：</h3><ul>
+<li><strong>总线架构</strong>：I&#x2F;O设备通常通过系统总线（如PCIe、USB总线）连接到CPU和内存。总线提供数据传输、地址信号和控制信号的通路。</li>
+<li><strong>内存映射I&#x2F;O (MMIO)</strong>：设备的控制寄存器和数据缓冲区被映射到物理地址空间的一部分。CPU可以通过加载&#x2F;存储指令像访问内存一样访问这些设备寄存器。</li>
+<li><strong>端口映射I&#x2F;O</strong>：设备寄存器有独立的I&#x2F;O端口地址空间。CPU使用特殊的I&#x2F;O指令（如x86的in, out）来访问。</li>
+</ul>
+<h3 id="36-2-标准设备："><a href="#36-2-标准设备：" class="headerlink" title="36.2 标准设备："></a>36.2 标准设备：</h3><ul>
+<li><strong>存储设备</strong>：硬盘驱动器 (HDD)、固态驱动器 (SSD)、磁带。</li>
+<li><strong>网络接口</strong>：以太网卡、Wi-Fi适配器。</li>
+<li><strong>人机交互设备</strong>：键盘、鼠标、显示器、打印机。</li>
+<li><strong>其他</strong>：定时器、传感器等。</li>
+</ul>
+<h3 id="36-6-设备交互的方法："><a href="#36-6-设备交互的方法：" class="headerlink" title="36.6 设备交互的方法："></a>36.6 设备交互的方法：</h3><ul>
+<li><strong>轮询 (Polling)</strong>：CPU周期性地检查设备状态寄存器，看设备是否准备好数据传输或操作是否完成。<ul>
+<li><strong>优点</strong>：实现简单。</li>
+<li><strong>缺点</strong>：浪费CPU周期，尤其是在设备速度慢或不频繁活动时。</li>
+</ul>
+</li>
+<li><strong>中断 (Interrupts)</strong>：设备在完成操作或需要CPU服务时，主动向CPU发送一个中断信号。CPU暂停当前任务，执行预设的中断服务程序来处理设备请求。<ul>
+<li><strong>优点</strong>：CPU效率高，只在需要时才介入。</li>
+<li><strong>缺点</strong>：中断处理有开销（上下文切换、中断响应延迟）。高频率中断可能导致系统抖动。</li>
+</ul>
+</li>
+<li><strong>直接内存访问 (DMA)</strong>：允许设备在没有CPU直接参与的情况下，与主内存之间传输大块数据。CPU只需初始化DMA控制器（源地址、目标地址、传输大小），DMA控制器完成后通过中断通知CPU。<ul>
+<li><strong>优点</strong>：极大减轻CPU负担，提高数据传输效率，尤其适用于高速设备。</li>
+<li><strong>缺点</strong>：DMA控制器本身需要管理，可能引入总线竞争。</li>
+</ul>
+</li>
+</ul>
+<h3 id="36-7-输入操作系统、设备驱动程序："><a href="#36-7-输入操作系统、设备驱动程序：" class="headerlink" title="36.7 输入操作系统、设备驱动程序："></a>36.7 输入操作系统、设备驱动程序：</h3><ul>
+<li><strong>操作系统角色</strong>：提供统一的、抽象的I&#x2F;O接口给上层应用，隐藏底层硬件的复杂性和多样性。管理设备资源，调度I&#x2F;O请求。</li>
+<li><strong>设备驱动程序</strong>：特定于设备的软件模块，运行在内核空间。它理解特定设备的指令集和特性，充当操作系统内核与物理硬件之间的翻译层。<ul>
+<li><strong>功能</strong>：设备初始化、寄存器操作、处理中断、管理DMA、向上层提供标准接口（如块设备接口、字符设备接口）。</li>
+</ul>
+</li>
+</ul>
+<h3 id="36-8-架构单元、简单的IDE磁盘驱动程序："><a href="#36-8-架构单元、简单的IDE磁盘驱动程序：" class="headerlink" title="36.8 架构单元、简单的IDE磁盘驱动程序："></a>36.8 架构单元、简单的IDE磁盘驱动程序：</h3><ul>
+<li><strong>IDE (Integrated Drive Electronics)</strong>：一种较早的磁盘接口标准（后发展为ATA&#x2F;PATA）。</li>
+<li><strong>驱动程序工作流程示例（简化版）</strong>：<ol>
+<li>请求：文件系统发起读&#x2F;写请求（如读取某个逻辑块）。</li>
+<li>驱动程序介入：驱动程序接收请求，将其转换为IDE命令。</li>
+<li>设置命令寄存器：通过MMIO或端口I&#x2F;O，向IDE控制器的命令寄存器写入操作类型（读&#x2F;写）、扇区号、柱面号、磁头号等参数。</li>
+<li>发起命令：向控制寄存器写入启动命令。</li>
+<li>等待完成：可以通过轮询状态寄存器或等待中断。</li>
+<li>数据传输：对于读操作，数据从磁盘缓冲区传输到内存；对于写操作，数据从内存传输到磁盘缓冲区。这可能涉及PIO（Programmed I&#x2F;O，CPU辅助传输）或DMA。</li>
+<li>完成通知：通过中断通知CPU，驱动程序进行后续处理（如唤醒等待的进程）。</li>
+</ol>
+</li>
+</ul>
+<h3 id="36-9-历史记录："><a href="#36-9-历史记录：" class="headerlink" title="36.9 历史记录："></a>36.9 历史记录：</h3><p>I&#x2F;O设备和接口的演变，从简单的PIO到复杂的DMA和高速总线。</p>
+<h3 id="36-10-小结："><a href="#36-10-小结：" class="headerlink" title="36.10 小结："></a>36.10 小结：</h3><p>I&#x2F;O设备是计算机系统的关键组成部分，操作系统通过设备驱动程序对其进行高效管理，提供了多种交互机制以平衡性能和CPU利用率。</p>
+<h2 id="第37章-磁盘驱动器-💿"><a href="#第37章-磁盘驱动器-💿" class="headerlink" title="第37章 磁盘驱动器 💿"></a>第37章 磁盘驱动器 💿</h2><h3 id="37-1-接口："><a href="#37-1-接口：" class="headerlink" title="37.1 接口："></a>37.1 接口：</h3><ul>
+<li><strong>SATA (Serial ATA)</strong>：串行接口，取代PATA，用于消费级和企业级硬盘&#x2F;SSD，提供更高速度和更简便的连接。</li>
+<li><strong>SCSI (Small Computer System Interface)</strong>：传统上用于高性能企业级存储，支持更多设备连接和更复杂命令。</li>
+<li><strong>SAS (Serial Attached SCSI)</strong>：SCSI的串行版本，结合了SATA的物理接口优势和SCSI的强大协议。</li>
+<li><strong>NVMe (Non-Volatile Memory Express)</strong>：专为SSD设计的高性能接口，直接连接到PCIe总线，极大降低延迟，提高吞吐量。</li>
+</ul>
+<h3 id="37-2-基本几何形状-机械硬盘HDD-："><a href="#37-2-基本几何形状-机械硬盘HDD-：" class="headerlink" title="37.2 基本几何形状 (机械硬盘HDD)："></a>37.2 基本几何形状 (机械硬盘HDD)：</h3><ul>
+<li><strong>盘片 (Platter)</strong>：涂有磁性材料的圆形盘片，数据存储在其表面。一个磁盘可以有多个盘片。</li>
+<li><strong>磁头 (Head)</strong>：每个盘面（盘片的每一面）都有一个磁头，用于读写数据。磁头悬浮在盘片表面上，不直接接触。</li>
+<li><strong>磁道 (Track)</strong>：盘片上的同心圆，数据沿磁道存储。</li>
+<li><strong>扇区 (Sector)</strong>：磁道被划分为多个扇区，是磁盘读写的最小单位（通常为512字节或4KB）。</li>
+<li><strong>柱面 (Cylinder)</strong>：所有盘片上相同半径的磁道的集合。当磁头臂固定时，所有磁头下的磁道构成一个柱面。一次寻道后，可以访问同一柱面上的所有磁道而无需再次移动磁头臂。</li>
+</ul>
+<h3 id="37-3-简单磁盘驱动器："><a href="#37-3-简单磁盘驱动器：" class="headerlink" title="37.3 简单磁盘驱动器："></a>37.3 简单磁盘驱动器：</h3><ul>
+<li><strong>工作原理</strong>：盘片高速旋转（如5400&#x2F;7200&#x2F;10000 RPM），磁头臂在径向移动以定位到目标磁道。通过改变磁性材料的极性来写入数据，通过检测磁场变化来读取数据。</li>
+<li><strong>内部组件</strong>：主轴电机、磁头臂组件（Actuator）、磁头、盘片、控制电路板。</li>
+</ul>
+<h3 id="37-4-I-O时间："><a href="#37-4-I-O时间：" class="headerlink" title="37.4 I&#x2F;O时间："></a>37.4 I&#x2F;O时间：</h3><p>磁盘I&#x2F;O操作的总时间主要由以下几部分构成：</p>
+<ul>
+<li><strong>寻道时间 (Seek Time)</strong>：磁头臂从当前磁道移动到目标磁道所需的时间。这是机械硬盘I&#x2F;O中最耗时的部分之一。平均寻道时间通常为几毫秒到十几毫秒。</li>
+<li><strong>旋转延迟 (Rotational Latency)</strong>：磁头定位到目标磁道后，等待目标扇区旋转到磁头下方所需的时间。平均旋转延迟是盘片旋转一周时间的一半。例如，7200 RPM的磁盘旋转一周约8.33ms，平均旋转延迟约4.17ms。</li>
+<li><strong>传输时间 (Transfer Time)</strong>：数据在磁盘和内存之间实际传输所需的时间。取决于数据量和磁盘的传输速率（内部传输速率和接口速率）。</li>
+<li><strong>总时间 &#x3D; 寻道时间 + 旋转延迟 + 传输时间 + 其他开销（控制器时间、排队时间等）</strong></li>
+</ul>
+<h3 id="37-5-磁盘调度："><a href="#37-5-磁盘调度：" class="headerlink" title="37.5 磁盘调度："></a>37.5 磁盘调度：</h3><p>操作系统中的磁盘调度程序通过重新排列I&#x2F;O请求队列，以减少总寻道时间和提高磁盘吞吐量。</p>
+<ul>
+<li><strong>FIFO (First-In, First-Served) &#x2F; FCFS (First-Come, First-Served)</strong>：按请求到达顺序处理。公平，但可能导致磁头臂在盘面来回大幅度移动，效率低下。</li>
+<li><strong>SSTF (Shortest Seek Time First)</strong>：优先处理与当前磁头位置最近的请求。能显著减少平均寻道时间，但可能导致“饥饿”（某些远处的请求长时间得不到服务）。</li>
+<li><strong>SCAN (Elevator Algorithm)</strong>：磁头在一个方向上移动，服务所有沿途的请求，直到到达磁盘一端，然后反向移动。类似电梯。<ul>
+<li><strong>优点</strong>：平均寻道时间较好，避免饥饿。</li>
+<li><strong>缺点</strong>：对两端请求不利，刚经过的请求需要等磁头完整往返。</li>
+</ul>
+</li>
+<li><strong>C-SCAN (Circular SCAN)</strong>：磁头只在一个方向上服务请求。到达一端后，快速返回到另一端起始位置，然后重新开始扫描。<ul>
+<li><strong>优点</strong>：提供更均匀的等待时间。</li>
+</ul>
+</li>
+<li><strong>LOOK &#x2F; C-LOOK</strong>：SCAN&#x2F;C-SCAN的优化。磁头移动到最远的一个请求处即改变方向，而不是移动到磁盘的物理末端。</li>
+</ul>
+<h3 id="37-6-小结："><a href="#37-6-小结：" class="headerlink" title="37.6 小结："></a>37.6 小结：</h3><p>理解磁盘的物理特性和I&#x2F;O时间组成对于设计高效的存储系统至关重要。磁盘调度是操作系统层面优化磁盘性能的关键技术。</p>
+<h2 id="第38章-廉价冗余磁盘阵列（RAID）"><a href="#第38章-廉价冗余磁盘阵列（RAID）" class="headerlink" title="第38章 廉价冗余磁盘阵列（RAID）"></a>第38章 廉价冗余磁盘阵列（RAID）</h2><h3 id="38-1-接口和RAID内部："><a href="#38-1-接口和RAID内部：" class="headerlink" title="38.1 接口和RAID内部："></a>38.1 接口和RAID内部：</h3><ul>
+<li><strong>RAID控制器</strong>：可以是硬件（专用卡）或软件（操作系统内核模块）。负责实现RAID逻辑，将多个物理磁盘组合成一个或多个逻辑卷，对操作系统透明。</li>
+<li><strong>物理磁盘</strong>：构成RAID阵列的单个磁盘驱动器。</li>
+</ul>
+<h3 id="38-2-数据模型："><a href="#38-2-数据模型：" class="headerlink" title="38.2 数据模型："></a>38.2 数据模型：</h3><p>RAID如何将数据块映射到物理磁盘上。</p>
+<h3 id="38-3-如何评估RAID："><a href="#38-3-如何评估RAID：" class="headerlink" title="38.3 如何评估RAID："></a>38.3 如何评估RAID：</h3><ul>
+<li><strong>容量 (Capacity)</strong>：RAID阵列提供的可用存储空间。</li>
+<li><strong>可靠性 (Reliability)</strong>：系统在磁盘故障情况下的数据保护能力和持续运行能力。通常用MTTF（平均无故障时间）衡量。</li>
+<li><strong>性能 (Performance)</strong>：读写速度，IOPS（每秒I&#x2F;O操作数）。</li>
+<li><strong>成本 (Cost)</strong>：硬件成本（磁盘、控制器）和维护成本。</li>
+</ul>
+<h3 id="38-4-RAID-0级：条带化-Striping"><a href="#38-4-RAID-0级：条带化-Striping" class="headerlink" title="38.4 RAID 0级：条带化 (Striping)"></a>38.4 RAID 0级：条带化 (Striping)</h3><ul>
+<li><strong>原理</strong>：数据被分割成块（条带），轮流写入阵列中的各个磁盘。例如，块0到磁盘0，块1到磁盘1，块2到磁盘0…</li>
+<li><strong>优点</strong>：显著提高读写性能（多个磁盘并行工作）。容量是所有磁盘容量之和。</li>
+<li><strong>缺点</strong>：无冗余。任何一个磁盘故障都会导致整个阵列数据丢失。</li>
+<li><strong>适用场景</strong>：对性能要求高，但对数据可靠性要求不高的场景（如临时数据、视频编辑缓存）。</li>
+</ul>
+<h3 id="38-5-RAID-1级：镜像-Mirroring"><a href="#38-5-RAID-1级：镜像-Mirroring" class="headerlink" title="38.5 RAID 1级：镜像 (Mirroring)"></a>38.5 RAID 1级：镜像 (Mirroring)</h3><ul>
+<li><strong>原理</strong>：数据完全相同地写入两个或更多磁盘。</li>
+<li><strong>优点</strong>：高数据可靠性。一个磁盘故障，数据可以从镜像盘恢复。读性能可能提高（可以从任一磁盘读取）。</li>
+<li><strong>缺点</strong>：容量利用率低（只有总容量的一半，如果是两块盘做镜像）。写性能可能略有下降（需要写入多个磁盘）。成本较高。</li>
+<li><strong>适用场景</strong>：对数据可靠性要求极高的场景（如操作系统盘、数据库）。</li>
+</ul>
+<h3 id="38-6-RAID-4级：通过奇偶校验节省空间-Parity-based-RAID"><a href="#38-6-RAID-4级：通过奇偶校验节省空间-Parity-based-RAID" class="headerlink" title="38.6 RAID 4级：通过奇偶校验节省空间 (Parity-based RAID)"></a>38.6 RAID 4级：通过奇偶校验节省空间 (Parity-based RAID)</h3><ul>
+<li><strong>原理</strong>：N个数据盘 + 1个专用奇偶校验盘。数据按块条带化存储在数据盘上，对应的奇偶校验信息存储在奇偶校验盘上。奇偶校验块P &#x3D; D0 XOR D1 XOR D2 …</li>
+<li><strong>优点</strong>：比RAID 1有更高的容量利用率 ((N) &#x2F; (N+1))。提供单盘故障冗余。如果一个数据盘故障，可以通过其他数据盘和奇偶校验盘恢复数据。</li>
+<li><strong>缺点</strong>：写瓶颈。所有写操作都需要更新奇偶校验盘，导致奇偶校验盘成为性能瓶颈，特别是对于小量随机写。</li>
+</ul>
+<h3 id="38-7-RAID-5级：旋转奇偶校验-Rotating-Parity"><a href="#38-7-RAID-5级：旋转奇偶校验-Rotating-Parity" class="headerlink" title="38.7 RAID 5级：旋转奇偶校验 (Rotating Parity)"></a>38.7 RAID 5级：旋转奇偶校验 (Rotating Parity)</h3><ul>
+<li><strong>原理</strong>：与RAID 4类似，但奇偶校验块分布在阵列中的所有磁盘上，而不是集中在单个磁盘上。例如，第一条带的奇偶校验在磁盘N，第二条带在磁盘N-1，以此类推。</li>
+<li><strong>优点</strong>：解决了RAID 4的奇偶校验盘写瓶颈问题，写操作可以分布到多个磁盘。良好的读性能，不错的写性能。容量利用率与RAID 4相同 ((N-1)&#x2F;N，如果总共N块盘)。提供单盘故障冗余。</li>
+<li><strong>缺点</strong>：写操作仍比RAID 0或RAID 1复杂（读-修改-写：读取旧数据，读取旧奇偶校验，计算新奇偶校验，写入新数据，写入新奇偶校验）。重建时间较长。</li>
+<li><strong>适用场景</strong>：通用场景，平衡了性能、容量和可靠性。</li>
+</ul>
+<h3 id="38-8-RAID-6级：双重奇偶校验-Dual-Parity"><a href="#38-8-RAID-6级：双重奇偶校验-Dual-Parity" class="headerlink" title="38.8 RAID 6级：双重奇偶校验 (Dual Parity)"></a>38.8 RAID 6级：双重奇偶校验 (Dual Parity)</h3><ul>
+<li><strong>原理</strong>：使用两种独立的奇偶校验方案（如P+Q校验），将奇偶校验信息分布在所有磁盘上。</li>
+<li><strong>优点</strong>：可以容忍任意两个磁盘同时发生故障，提供比RAID 5更高的可靠性。</li>
+<li><strong>缺点</strong>：写性能比RAID 5差（需要计算和写入两个奇偶校验块）。容量利用率更低 ((N-2)&#x2F;N)。控制器设计更复杂。</li>
+<li><strong>适用场景</strong>：对数据可靠性要求非常高，且能接受一定性能和容量损失的场景。</li>
+</ul>
+<h3 id="38-9-其他存储的RAID问题："><a href="#38-9-其他存储的RAID问题：" class="headerlink" title="38.9 其他存储的RAID问题："></a>38.9 其他存储的RAID问题：</h3><ul>
+<li><strong>重建时间 (Rebuild Time)</strong>：当一个磁盘故障后，用新磁盘替换故障磁盘并恢复其数据的过程。对于大容量磁盘和繁忙的阵列，重建可能需要数小时甚至数天，期间阵列处于降级模式，性能下降且对再次故障更脆弱。</li>
+<li><strong>写洞 (Write Hole)</strong>：在更新数据和相应奇偶校验块的过程中发生电源故障，可能导致奇偶校验信息与数据不一致。需要电池备份单元(BBU)或NVRAM来缓解。</li>
+<li><strong>相关读取 (Correlated Reads)</strong>：某些RAID级别（如RAID 5）在降级模式下读取数据时，需要读取多个盘来重建丢失的数据，导致读性能下降。</li>
+</ul>
+<h3 id="38-10-小结："><a href="#38-10-小结：" class="headerlink" title="38.10 小结："></a>38.10 小结：</h3><p>RAID通过组合多个磁盘提供了不同级别的性能、容量和数据冗余。选择合适的RAID级别需要在这些因素之间进行权衡。</p>
+<h2 id="第39章-插叙：文件和目录-📁"><a href="#第39章-插叙：文件和目录-📁" class="headerlink" title="第39章 插叙：文件和目录 📁"></a>第39章 插叙：文件和目录 📁</h2><h3 id="39-1-文件和目录："><a href="#39-1-文件和目录：" class="headerlink" title="39.1 文件和目录："></a>39.1 文件和目录：</h3><ul>
+<li><strong>文件 (File)</strong>：操作系统对存储设备上数据的逻辑抽象。通常是一系列命名的、持久存储的字节序列。用户不关心数据在物理磁盘上的具体位置，只通过文件名和路径访问。</li>
+<li><strong>目录 (Directory)</strong>：一种特殊的文件，包含其他文件或目录的列表及其元信息（如名称到inode的映射）。目录构成了文件系统的层次结构（树状结构）。</li>
+</ul>
+<h3 id="39-2-文件系统接口："><a href="#39-2-文件系统接口：" class="headerlink" title="39.2 文件系统接口："></a>39.2 文件系统接口：</h3><p>操作系统提供给应用程序的一组标准函数调用（API），用于操作文件和目录，如创建、打开、读取、写入、删除等。</p>
+<h3 id="39-3-创建文件："><a href="#39-3-创建文件：" class="headerlink" title="39.3 创建文件："></a>39.3 创建文件：</h3><ul>
+<li><strong>open() 系统调用</strong>：可以用来创建新文件（如果指定O_CREAT标志）。如果文件已存在，根据标志可能打开现有文件或截断它。成功返回文件描述符。</li>
+<li><strong>creat() 系统调用</strong>：专门用于创建新文件（等价于open()带特定标志）。</li>
+</ul>
+<h3 id="39-4-读写文件："><a href="#39-4-读写文件：" class="headerlink" title="39.4 读写文件："></a>39.4 读写文件：</h3><ul>
+<li><strong>read() 系统调用</strong>：从文件描述符关联的文件中读取数据到缓冲区。返回实际读取的字节数，或0表示文件结束，或-1表示错误。</li>
+<li><strong>write() 系统调用</strong>：将缓冲区中的数据写入文件描述符关联的文件。返回实际写入的字节数，或-1表示错误。</li>
+<li><strong>文件偏移量 (File Offset&#x2F;Current File Position)</strong>：每个打开的文件都有一个关联的当前文件偏移量，指示下一次读写操作将在文件的哪个位置开始。读写操作会自动更新此偏移量。</li>
+</ul>
+<h3 id="39-5-读取和写入，但不按顺序："><a href="#39-5-读取和写入，但不按顺序：" class="headerlink" title="39.5 读取和写入，但不按顺序："></a>39.5 读取和写入，但不按顺序：</h3><ul>
+<li><strong>lseek() 系统调用</strong>：显式地改变打开文件的当前文件偏移量。允许随机访问文件内容，而不是只能顺序读写。</li>
+</ul>
+<h3 id="39-6-用fsync-持久化写入："><a href="#39-6-用fsync-持久化写入：" class="headerlink" title="39.6 用fsync()持久化写入："></a>39.6 用fsync()持久化写入：</h3><ul>
+<li><strong>背景</strong>：为提高性能，操作系统通常会将写操作缓存到内存中（页缓存&#x2F;缓冲区缓存），稍后才异步写入磁盘。如果此时系统崩溃，缓存中的数据会丢失。</li>
+<li><strong>fsync(int fd)</strong>：强制将与文件描述符fd关联的文件的所有已修改数据（包括元数据）刷新到永久存储设备。这是一个同步操作，调用会阻塞直到数据安全写入。</li>
+<li><strong>fdatasync(int fd)</strong>：类似fsync，但可能只刷新文件数据，而不一定刷新文件的元数据（如修改时间），开销可能更小。</li>
+</ul>
+<h3 id="39-7-文件重命名："><a href="#39-7-文件重命名：" class="headerlink" title="39.7 文件重命名："></a>39.7 文件重命名：</h3><ul>
+<li>**rename(const char *oldpath, const char *newpath)**：原子地更改文件名或将文件移动到同一文件系统内的不同目录。原子性意味着操作要么完全成功，要么完全失败，不会出现中间状态（如同时存在旧名和新名，或两者都不存在）。</li>
+</ul>
+<h3 id="39-8-获取文件信息："><a href="#39-8-获取文件信息：" class="headerlink" title="39.8 获取文件信息："></a>39.8 获取文件信息：</h3><ul>
+<li>**stat(const char *pathname, struct stat *statbuf)**：获取指定路径的文件信息。</li>
+<li>**fstat(int fd, struct stat *statbuf)**：获取与文件描述符fd关联的文件信息。</li>
+<li>**lstat(const char *pathname, struct stat *statbuf)**：如果是符号链接，返回链接本身的信息，而不是链接指向的文件。</li>
+<li><strong>struct stat 结构体</strong>：包含文件的元数据，如：<ul>
+<li>文件类型（普通文件、目录、符号链接等）</li>
+<li>inode号</li>
+<li>权限模式</li>
+<li>硬链接数</li>
+<li>用户ID (UID), 组ID (GID)</li>
+<li>文件大小（字节）</li>
+<li>时间戳（最后访问时间atime，最后修改时间mtime，最后状态改变时间ctime）</li>
+<li>设备ID</li>
+<li>块大小，块数量</li>
+</ul>
+</li>
+</ul>
+<h3 id="39-9-删除文件："><a href="#39-9-删除文件：" class="headerlink" title="39.9 删除文件："></a>39.9 删除文件：</h3><ul>
+<li>**unlink(const char *pathname)**：从目录中移除一个文件名条目。如果该文件的硬链接数减到0，并且没有进程打开该文件，则文件占用的磁盘空间会被回收。</li>
+</ul>
+<h3 id="39-10-创建目录："><a href="#39-10-创建目录：" class="headerlink" title="39.10 创建目录："></a>39.10 创建目录：</h3><ul>
+<li>**mkdir(const char *pathname, mode_t mode)**：创建一个新目录。</li>
+</ul>
+<h3 id="39-11-读取目录："><a href="#39-11-读取目录：" class="headerlink" title="39.11 读取目录："></a>39.11 读取目录：</h3><ul>
+<li>**opendir(const char *name)**：打开一个目录，返回一个DIR指针。</li>
+<li>**readdir(DIR *dirp)**：读取目录流中的下一个条目，返回一个指向struct dirent的指针（包含文件名d_name和inode号d_ino等）。重复调用可遍历目录内容。</li>
+<li>**closedir(DIR *dirp)**：关闭目录流。</li>
+</ul>
+<h3 id="39-12-删除目录："><a href="#39-12-删除目录：" class="headerlink" title="39.12 删除目录："></a>39.12 删除目录：</h3><ul>
+<li>**rmdir(const char *pathname)**：删除一个空目录。如果目录非空，操作通常会失败。</li>
+</ul>
+<h3 id="39-13-硬链接-link-🔗："><a href="#39-13-硬链接-link-🔗：" class="headerlink" title="39.13 硬链接 (link) 🔗："></a>39.13 硬链接 (link) 🔗：</h3><ul>
+<li>**link(const char *oldpath, const char *newpath)**：为oldpath指向的现有文件创建一个新的目录项newpath。</li>
+<li><strong>原理</strong>：多个目录项（文件名）指向文件系统中的同一个inode。inode中有一个链接计数器，记录有多少个硬链接指向它。</li>
+<li><strong>特性</strong>：<ul>
+<li>所有硬链接地位平等。删除任何一个硬链接（unlink）只是减少链接计数，不影响其他硬链接。只有当链接计数为0且没有进程打开文件时，文件数据才会被删除。</li>
+<li>不能跨文件系统创建硬链接（因为inode号只在单个文件系统内唯一）。</li>
+<li>通常不能对目录创建硬链接（为避免循环和混淆，只有超级用户可能被允许）。</li>
+</ul>
+</li>
+</ul>
+<h3 id="39-14-符号链接-软链接-symlink-🔗："><a href="#39-14-符号链接-软链接-symlink-🔗：" class="headerlink" title="39.14 符号链接 (软链接) (symlink) 🔗："></a>39.14 符号链接 (软链接) (symlink) 🔗：</h3><ul>
+<li>**symlink(const char *target, const char *linkpath)**：创建一个名为linkpath的特殊文件，其内容是另一个文件或目录target的路径名。</li>
+<li><strong>原理</strong>：符号链接是一个独立的文件，有自己的inode。它存储的是一个路径字符串。</li>
+<li><strong>特性</strong>：<ul>
+<li>可以跨文件系统创建符号链接。</li>
+<li>可以指向目录。</li>
+<li>如果目标文件被删除或移动，符号链接会失效（变成“悬空链接”）。</li>
+<li>删除符号链接本身不影响目标文件。</li>
+</ul>
+</li>
+</ul>
+<h3 id="39-15-创建并挂载文件系统："><a href="#39-15-创建并挂载文件系统：" class="headerlink" title="39.15 创建并挂载文件系统："></a>39.15 创建并挂载文件系统：</h3><ul>
+<li><strong>mkfs (make filesystem)</strong>：在一个磁盘分区上创建文件系统结构的命令（例如，mkfs.ext4 &#x2F;dev&#x2F;sda1）。它会初始化元数据结构，如超级块、inode表、空闲空间管理信息。</li>
+<li>**mount(const char *source, const char *target, …)**：将一个已存在的文件系统（source，通常是设备名）附加到目录树的某个挂载点（target，一个已存在的空目录）。之后，target目录下的内容就变成了source文件系统的根。</li>
+<li><strong>umount()</strong>：卸载文件系统。</li>
+</ul>
+<h3 id="39-16-小结："><a href="#39-16-小结：" class="headerlink" title="39.16 小结："></a>39.16 小结：</h3><p>文件和目录是用户与持久化存储交互的基本抽象。操作系统提供了一套丰富的API来管理它们，这些API隐藏了底层存储的复杂性。</p>
+<h2 id="第40章-文件系统实现"><a href="#第40章-文件系统实现" class="headerlink" title="第40章 文件系统实现"></a>第40章 文件系统实现</h2><h3 id="40-1-思考方式："><a href="#40-1-思考方式：" class="headerlink" title="40.1 思考方式："></a>40.1 思考方式：</h3><p>如何将磁盘这种线性块设备组织起来，以高效、可靠地存储和管理文件和目录。</p>
+<h3 id="40-2-整体组织："><a href="#40-2-整体组织：" class="headerlink" title="40.2 整体组织："></a>40.2 整体组织：</h3><p>一个典型的磁盘分区被文件系统格式化后，通常包含以下区域：</p>
+<ul>
+<li><strong>引导块 (Boot Block)</strong>：通常是分区的第一个块，包含引导加载程序代码，用于启动操作系统。</li>
+<li><strong>超级块 (Superblock)</strong>：包含整个文件系统的重要元数据，如文件系统类型、块大小、inode数量、空闲块数量、文件系统状态等。文件系统挂载时首先读取。</li>
+<li><strong>Inode表 (Inode Table &#x2F; Inode List)</strong>：一个连续的区域，存储了文件系统中所有文件的inode结构。每个inode有唯一的编号。</li>
+<li><strong>数据块 (Data Blocks)</strong>：存储文件实际内容和目录内容的区域。占据了文件系统的大部分空间。</li>
+<li><strong>空闲空间管理结构 (Free Space Management)</strong>：如位图或空闲块链表，用于跟踪哪些数据块和inode是空闲的。</li>
+</ul>
+<h3 id="40-3-文件组织：inode-索引节点-："><a href="#40-3-文件组织：inode-索引节点-：" class="headerlink" title="40.3 文件组织：inode (索引节点)："></a>40.3 文件组织：inode (索引节点)：</h3><ul>
+<li><strong>定义</strong>：一个数据结构，存储了除文件名以外的关于一个文件的所有元数据。文件名存储在目录中。</li>
+<li><strong>包含信息</strong>：<ul>
+<li>文件类型 (普通文件、目录、符号链接、设备文件等)</li>
+<li>权限 (读、写、执行权限，针对所有者、组、其他用户)</li>
+<li>所有者UID、组GID</li>
+<li>文件大小 (字节)</li>
+<li>时间戳 (atime, mtime, ctime)</li>
+<li>硬链接计数</li>
+<li>数据块指针：指向存储文件内容的数据块。这是inode的核心。<ul>
+<li><strong>直接指针 (Direct Pointers)</strong>：直接指向数据块。数量有限（如12个），适用于小文件。</li>
+<li><strong>间接指针 (Indirect Pointer)</strong>：指向一个包含数据块指针的块（一级间接）。</li>
+<li><strong>双重间接指针 (Double Indirect Pointer)</strong>：指向一个包含一级间接指针块地址的块。</li>
+<li><strong>三重间接指针 (Triple Indirect Pointer)</strong>：以此类推，用于支持非常大的文件。</li>
+<li>这种多级索引结构允许文件系统高效地表示小文件，并能扩展到支持大文件。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Inode号 (i-number)</strong>：每个inode在文件系统内都有一个唯一的标识号。目录通过文件名映射到inode号。</li>
+</ul>
+<h3 id="40-4-目录组织："><a href="#40-4-目录组织：" class="headerlink" title="40.4 目录组织："></a>40.4 目录组织：</h3><ul>
+<li><strong>本质</strong>：目录也是一种特殊的文件，其内容是文件名和对应inode号的映射列表。</li>
+<li><strong>简单列表 (Linear List)</strong>：将(文件名, inode号)对线性存储。查找、添加、删除可能较慢（需要线性扫描）。</li>
+<li><strong>哈希表&#x2F;树结构 (Hashed&#x2F;Tree-based)</strong>：如B树或哈希表，可以加速目录项的查找，尤其在目录包含大量文件时。例如，ext3&#x2F;4中的HTree索引。</li>
+<li><strong>特殊条目</strong>：<ul>
+<li><strong>. (点)</strong>：指向当前目录自身的inode。</li>
+<li><strong>.. (点点)</strong>：指向父目录的inode。</li>
+</ul>
+</li>
+</ul>
+<h3 id="40-5-空闲空间管理："><a href="#40-5-空闲空间管理：" class="headerlink" title="40.5 空闲空间管理："></a>40.5 空闲空间管理：</h3><p>跟踪哪些inode和数据块是可用的。</p>
+<ul>
+<li><strong>位图 (Bitmap)</strong>：用一个比特位表示一个inode或数据块的状态（0表示空闲，1表示已分配，或反之）。查找空闲块&#x2F;inode速度快，但可能占用一定空间。</li>
+<li><strong>空闲块链表 (Free List)</strong>：将所有空闲块链接起来。第一个空闲块包含指向下一个空闲块的指针，以此类推。分配和释放块可能涉及链表操作。</li>
+<li><strong>混合方法</strong>：结合位图和链表。</li>
+</ul>
+<h3 id="40-6-访问路径：读取和写入："><a href="#40-6-访问路径：读取和写入：" class="headerlink" title="40.6 访问路径：读取和写入："></a>40.6 访问路径：读取和写入：</h3><ul>
+<li><strong>读取文件 read(fd, buffer, count)</strong> 过程示例：<ol>
+<li>应用程序调用 read()。</li>
+<li>内核通过文件描述符 fd 找到对应的打开文件表项，进而找到inode。</li>
+<li>根据当前文件偏移量和要读取的 count，计算需要访问的逻辑块号。</li>
+<li>通过inode中的数据块指针（直接&#x2F;间接），将逻辑块号转换为物理磁盘块号。</li>
+<li>检查块是否已在缓冲区缓存中。如果在，直接从缓存读取。</li>
+<li>如果不在，向磁盘驱动程序发出读请求，从磁盘读取数据块到缓冲区缓存。</li>
+<li>将数据从缓冲区缓存拷贝到用户提供的 buffer。</li>
+<li>更新文件偏移量。</li>
+</ol>
+</li>
+<li><strong>写入文件 write(fd, buffer, count)</strong> 过程类似，但涉及分配新块（如果文件增长）、更新inode（大小、时间戳）和空闲空间管理结构，并将数据写入缓冲区缓存（最终刷新到磁盘）。</li>
+</ul>
+<h3 id="40-7-缓存和缓冲-Caching-and-Buffering-："><a href="#40-7-缓存和缓冲-Caching-and-Buffering-：" class="headerlink" title="40.7 缓存和缓冲 (Caching and Buffering)："></a>40.7 缓存和缓冲 (Caching and Buffering)：</h3><ul>
+<li><strong>目的</strong>：弥合CPU&#x2F;内存与磁盘之间的巨大速度差异，提高文件系统性能。</li>
+<li><strong>缓冲区缓存&#x2F;页缓存 (Buffer Cache &#x2F; Page Cache)</strong>：操作系统在内存中维护一块区域，用于缓存最近访问过的磁盘块（包括数据块、元数据块、inode块）。</li>
+<li><strong>读缓存</strong>：当请求读取磁盘块时，首先检查缓存。如果命中 (cache hit)，直接从内存读取，避免慢速磁盘访问。如果未命中 (cache miss)，则从磁盘读取，并存入缓存以备后续使用。</li>
+<li><strong>写缓存 (Write Buffering)</strong>：<ul>
+<li><strong>写回 (Write-back)</strong>：写操作首先写入缓存，标记为“脏”(dirty)，稍后由操作系统异步批量刷回磁盘。提高写性能，但系统崩溃时可能丢失未刷回的数据。</li>
+<li><strong>写通 (Write-through)</strong>：写操作同时写入缓存和磁盘。保证数据即时持久化，但牺牲性能。</li>
+</ul>
+</li>
+<li><strong>预读 (Prefetching &#x2F; Read-ahead)</strong>：当检测到顺序访问模式时，操作系统主动预先读取后续可能需要的磁盘块到缓存中。</li>
+<li>**LRU (Least Recently Used)**等替换算法：当缓存满时，选择哪些块被替换出去。</li>
+</ul>
+<h3 id="40-8-小结："><a href="#40-8-小结：" class="headerlink" title="40.8 小结："></a>40.8 小结：</h3><p>文件系统实现涉及复杂的数据结构（inode、目录结构、超级块）和算法（空闲空间管理、路径解析、缓存策略），目标是在磁盘上高效、可靠地组织和管理数据。</p>
+<h2 id="第41章-局部性和快速文件系统-FFS"><a href="#第41章-局部性和快速文件系统-FFS" class="headerlink" title="第41章 局部性和快速文件系统 (FFS)"></a>第41章 局部性和快速文件系统 (FFS)</h2><h3 id="41-1-问题："><a href="#41-1-问题：" class="headerlink" title="41.1 问题："></a>41.1 问题：</h3><p>性能不佳：早期的Unix文件系统（如System V FS）存在严重性能问题：</p>
+<ul>
+<li><strong>碎片化 (Fragmentation)</strong>：文件的数据块可能散布在磁盘各处，导致大量寻道操作。</li>
+<li><strong>元数据与数据分离</strong>：文件的inode可能远离其数据块，访问文件需要多次长距离寻道。</li>
+</ul>
+<h3 id="41-2-FFS：磁盘感知布局方案-Disk-aware-Layout-Scheme"><a href="#41-2-FFS：磁盘感知布局方案-Disk-aware-Layout-Scheme" class="headerlink" title="41.2 FFS：磁盘感知布局方案 (Disk-aware Layout Scheme)"></a>41.2 FFS：磁盘感知布局方案 (Disk-aware Layout Scheme)</h3><p>Berkeley Fast File System (FFS) 的核心思想是理解磁盘的物理特性（柱面、磁道），并据此优化文件和元数据在磁盘上的布局，以提高局部性。</p>
+<h3 id="41-3-组织结构：柱面组-Cylinder-Groups"><a href="#41-3-组织结构：柱面组-Cylinder-Groups" class="headerlink" title="41.3 组织结构：柱面组 (Cylinder Groups)"></a>41.3 组织结构：柱面组 (Cylinder Groups)</h3><p>FFS将磁盘划分为多个柱面组。每个柱面组可以看作一个微型的独立文件系统，包含：</p>
+<ul>
+<li>超级块的副本 (Superblock replica)</li>
+<li>柱面组描述符 (Cylinder group summary info: inode位图、数据块位图、空闲inode&#x2F;块数量等)</li>
+<li>Inode表的一部分</li>
+<li>数据块的一部分</li>
+<li>目的：通过将相关数据（如一个目录下的文件，一个文件的inode和其数据块）集中在同一个或邻近的柱面组内，减少长距离寻道。</li>
+</ul>
+<h3 id="41-4-策略：如何分配文件和目录："><a href="#41-4-策略：如何分配文件和目录：" class="headerlink" title="41.4 策略：如何分配文件和目录："></a>41.4 策略：如何分配文件和目录：</h3><ul>
+<li><strong>目录分配</strong>：FFS尝试将新目录分配到文件数量较少且空闲inode较多的柱面组。</li>
+<li><strong>文件分配</strong>：<ul>
+<li><strong>Inode分配</strong>：新文件的inode尽量与它所在的目录分配在同一个柱面组。</li>
+<li><strong>数据块分配</strong>：文件的前几个数据块（由直接指针指向）也尽量与文件的inode在同一个柱面组。</li>
+</ul>
+</li>
+</ul>
+<h3 id="41-5-提升文件的局部性："><a href="#41-5-提升文件的局部性：" class="headerlink" title="41.5 提升文件的局部性："></a>41.5 提升文件的局部性：</h3><ul>
+<li><strong>相关文件聚集</strong>：同一目录下的文件倾向于被分配到相同的柱面组。</li>
+<li><strong>Inode与数据块聚集</strong>：文件的inode和其初始数据块在物理上靠近。</li>
+<li><strong>数据块连续性</strong>：FFS会尝试为文件分配连续的数据块，以利用磁盘的顺序读写性能。</li>
+</ul>
+<h3 id="41-6-大文件例外："><a href="#41-6-大文件例外：" class="headerlink" title="41.6 大文件例外："></a>41.6 大文件例外：</h3><p>当文件增长到一定大小时（例如，填满直接指针指向的块后），FFS会将其后续的数据块（通过间接指针分配的）分散到其他柱面组。</p>
+<ul>
+<li><strong>原因</strong>：<ul>
+<li>避免单个大文件耗尽一个柱面组的所有数据块，影响该柱面组内其他小文件的创建。</li>
+<li>为非常大的文件利用整个磁盘的带宽。</li>
+</ul>
+</li>
+</ul>
+<h3 id="41-7-关于FFS的其他几件事："><a href="#41-7-关于FFS的其他几件事：" class="headerlink" title="41.7 关于FFS的其他几件事："></a>41.7 关于FFS的其他几件事：</h3><ul>
+<li><strong>块大小 (Block Size)</strong>：FFS引入了更大的块大小（如4KB或8KB，相对于旧系统的512B或1KB），以提高传输效率。</li>
+<li><strong>子块&#x2F;片段 (Fragments)</strong>：为了解决大块导致的内部碎片问题（小文件浪费空间），FFS允许将一个大块分割成多个小片段（如1KB），小文件或文件尾部可以占用片段。</li>
+<li><strong>参数化</strong>：FFS的设计考虑了不同磁盘的特性，允许管理员调整参数（如块大小、片段大小、每柱面组inode数等）。</li>
+</ul>
+<h3 id="41-8-小结："><a href="#41-8-小结：" class="headerlink" title="41.8 小结："></a>41.8 小结：</h3><p>FFS通过引入柱面组和智能的分配策略，显著改善了Unix文件系统的性能，其设计思想对后续文件系统产生了深远影响。</p>
+<h2 id="第42章-崩溃一致性：FSCK和日志-🛠️"><a href="#第42章-崩溃一致性：FSCK和日志-🛠️" class="headerlink" title="第42章 崩溃一致性：FSCK和日志 🛠️"></a>第42章 崩溃一致性：FSCK和日志 🛠️</h2><h3 id="42-1-一个详细的例子："><a href="#42-1-一个详细的例子：" class="headerlink" title="42.1 一个详细的例子："></a>42.1 一个详细的例子：</h3><p>说明在执行一个文件操作（如创建文件，涉及分配inode、分配数据块、更新目录、更新位图等多个步骤）的过程中，如果系统突然崩溃，可能导致文件系统元数据处于不一致状态。</p>
+<ul>
+<li><strong>例如</strong>：一个inode被标记为已分配并指向某个数据块，但该数据块在位图中仍标记为空闲（或反之）。或者目录项已创建，但对应的inode未初始化。</li>
+</ul>
+<h3 id="42-2-解决-42-2-解决方案：文件系统检查程序-FSCK-File-System-ChecKer"><a href="#42-2-解决-42-2-解决方案：文件系统检查程序-FSCK-File-System-ChecKer" class="headerlink" title="42.2 解决### 42.2 解决方案：文件系统检查程序 (FSCK - File System ChecKer)"></a>42.2 解决### 42.2 解决方案：文件系统检查程序 (FSCK - File System ChecKer)</h3><ul>
+<li><strong>工作原理</strong>：在系统启动时（特别是在非正常关机后），FSCK会扫描整个文件系统的元数据结构（超级块、inode表、数据块位图、目录等），检查是否存在不一致性。</li>
+<li><strong>检查内容</strong>：<ul>
+<li>超级块一致性。</li>
+<li>Inode状态和链接计数。</li>
+<li>数据块分配的正确性（没有块被多个文件共享，也没有块既被分配又在空闲列表）。</li>
+<li>目录结构的完整性。</li>
+</ul>
+</li>
+<li><strong>修复</strong>：FSCK尝试修复检测到的不一致问题。例如，清除悬空的inode，修复错误的链接计数，回收丢失的块。</li>
+<li><strong>缺点</strong>：<ul>
+<li><strong>慢</strong>：对于大容量文件系统，FSCK扫描可能非常耗时，导致系统启动时间过长。</li>
+<li><strong>数据丢失</strong>：FSCK的目标是恢复文件系统的一致性，不一定能恢复所有用户数据。有时为了保持一致性，它可能会丢弃可疑的数据块或文件。</li>
+</ul>
+</li>
+</ul>
+<h3 id="42-3-解决方案：日志-Journaling-写前日志-Write-Ahead-Logging-WAL"><a href="#42-3-解决方案：日志-Journaling-写前日志-Write-Ahead-Logging-WAL" class="headerlink" title="42.3 解决方案：日志 (Journaling) &#x2F; 写前日志 (Write-Ahead Logging - WAL)"></a>42.3 解决方案：日志 (Journaling) &#x2F; 写前日志 (Write-Ahead Logging - WAL)</h3><ul>
+<li><strong>核心思想</strong>：在对文件系统的元数据或数据进行实际修改之前，先将描述这些修改的操作记录到一个称为“日志(Journal)”的预留磁盘区域中。</li>
+<li><strong>过程 (以元数据日志为例)</strong>：<ul>
+<li><strong>日志写入 (Log Write)</strong>：当一个操作需要修改多个元数据结构时（如创建一个文件需要修改inode位图、inode本身、目录内容、数据块位图）：<ul>
+<li>将这些修改意图（如“分配inode X”，“将数据块Y分配给inode X”）作为一个事务写入日志。</li>
+<li>确保日志记录被完整写入磁盘（通常通过fsync类似的机制）。</li>
+</ul>
+</li>
+<li><strong>检查点 (Checkpointing)</strong>：实际将日志中记录的修改应用到文件系统的主结构上（如更新inode表、位图等）。</li>
+<li><strong>日志标记&#x2F;释放</strong>：一旦修改被安全地应用到主结构，日志中对应的事务就可以被标记为已完成或其空间可以被回收。</li>
+</ul>
+</li>
+</ul>
+<h3 id="崩溃恢复-Crash-Recovery"><a href="#崩溃恢复-Crash-Recovery" class="headerlink" title="崩溃恢复 (Crash Recovery)"></a>崩溃恢复 (Crash Recovery)</h3><ul>
+<li><strong>系统重启后</strong>，文件系统检查日志。</li>
+<li>如果日志中有未完成的事务（已写入日志但尚未检查点），则重新执行（redo）这些事务中的操作，将修改应用到文件系统结构上。这确保了之前意图的操作被完成。</li>
+<li>如果事务本身在写入日志时就不完整，则忽略它。</li>
+</ul>
+<h3 id="日志类型："><a href="#日志类型：" class="headerlink" title="日志类型："></a>日志类型：</h3><ul>
+<li><strong>元数据日志 (Metadata Journaling &#x2F; Ordered Journaling)</strong>：只记录对文件系统元数据的修改。数据块直接写入其最终位置。这是最常见的模式。它保证了文件系统结构的一致性，但不能保证文件内容的最新状态（可能写入旧数据到新分配的块）。通常会确保数据先于元数据写入磁盘来缓解此问题。</li>
+<li><strong>数据日志 (Data Journaling &#x2F; Full Journaling)</strong>：记录对元数据和文件数据的修改。提供最高级别的一致性（文件系统结构和内容都一致），但开销最大，因为所有数据都要写两次（一次到日志，一次到最终位置）。</li>
+</ul>
+<h3 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h3><ul>
+<li><strong>快速恢复</strong>：恢复过程只需要重放日志中少量未完成的事务，远快于FSCK的全盘扫描。</li>
+<li><strong>更高的一致性保证</strong>。</li>
+</ul>
+<h3 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h3><ul>
+<li><strong>性能开销</strong>：所有（或元数据）写操作需要先写入日志，引入额外I&#x2F;O。但通常可以通过批量提交和优化来减少。</li>
+</ul>
+<h3 id="42-4-解决方案：其他方法"><a href="#42-4-解决方案：其他方法" class="headerlink" title="42.4 解决方案：其他方法"></a>42.4 解决方案：其他方法</h3><ul>
+<li><p><strong>写时复制 (Copy-on-Write - CoW) &#x2F; 写时重定向 (Redirect-on-Write)</strong>：如ZFS、Btrfs采用。当修改数据或元数据时，不是在原地修改，而是将修改写入到新的空闲位置，然后原子地更新指向这些数据的指针。旧版本的数据在更新完成前保持不变。</p>
+<ul>
+<li><strong>优点</strong>：总能保持磁盘上的一致状态，无需传统日志。支持高效快照。</li>
+<li><strong>缺点</strong>：可能产生更多碎片。更新路径上的所有父指针都需要更新，可能导致写放大。</li>
+</ul>
+</li>
+<li><p><strong>软更新 (Soft Updates)</strong>：一种不使用传统日志但仍能保证元数据一致性的技术（在FFS的某些变体中使用）。它通过仔细排序元数据更新到磁盘的顺序来实现。比较复杂。</p>
+</li>
+</ul>
+<h3 id="42-5-小结："><a href="#42-5-小结：" class="headerlink" title="42.5 小结："></a>42.5 小结：</h3><p>崩溃一致性是持久化存储的关键特性。日志技术是现代文件系统保证快速恢复和一致性的主流方法，而CoW等技术提供了另一种思路。</p>
+<h2 id="第43章-日志结构文件系统-LFS-Log-structured-File-System"><a href="#第43章-日志结构文件系统-LFS-Log-structured-File-System" class="headerlink" title="第43章 日志结构文件系统 (LFS - Log-structured File System)"></a>第43章 日志结构文件系统 (LFS - Log-structured File System)</h2><h3 id="43-1-按顺序写入磁盘："><a href="#43-1-按顺序写入磁盘：" class="headerlink" title="43.1 按顺序写入磁盘："></a>43.1 按顺序写入磁盘：</h3><ul>
+<li><strong>核心思想</strong>：LFS将所有写入（包括文件数据、inode、目录更改、其他元数据）都缓冲在内存中的一个段 (Segment) 中。当段满或达到一定时间间隔，整个段作为单个、大的、连续的I&#x2F;O操作顺序写入到磁盘的空闲区域。磁盘被视为一个大的环形日志。</li>
+<li><strong>动机</strong>：<ul>
+<li>磁盘的顺序写入性能远高于随机写入性能。</li>
+<li>随着内存越来越大，大部分读操作可以通过缓存满足，写操作成为瓶颈。</li>
+</ul>
+</li>
+</ul>
+<h3 id="43-2-顺序回放磁盘写入："><a href="#43-2-顺序回放磁盘写入：" class="headerlink" title="43.2 顺序回放磁盘写入："></a>43.2 顺序回放磁盘写入：</h3><p>由于所有写入都是顺序的，崩溃恢复变得非常简单：只需从日志的最后一个一致点开始扫描，重放那些已写入但可能未完全提交的操作。</p>
+<h3 id="43-3-要缓存多少："><a href="#43-3-要缓存多少：" class="headerlink" title="43.3 要缓存多少："></a>43.3 要缓存多少：</h3><p>LFS依赖于大内存缓存来积累足够多的写操作，以便形成大的顺序写。</p>
+<h3 id="43-4-问题：查找inode："><a href="#43-4-问题：查找inode：" class="headerlink" title="43.4 问题：查找inode："></a>43.4 问题：查找inode：</h3><p>由于文件数据和inode总是在新的位置写入，文件的inode不再位于固定的磁盘位置。如何快速找到一个文件的最新版本的inode成为挑战。</p>
+<h3 id="43-5-间接解决方案：inode映射-inode-map-imap-："><a href="#43-5-间接解决方案：inode映射-inode-map-imap-：" class="headerlink" title="43.5 间接解决方案：inode映射 (inode map &#x2F; imap)："></a>43.5 间接解决方案：inode映射 (inode map &#x2F; imap)：</h3><ul>
+<li>LFS维护一个称为inode map的数据结构，它将inode号映射到该inode最新副本的磁盘地址。</li>
+<li>inode map本身也作为日志的一部分写入磁盘。</li>
+</ul>
+<h3 id="43-6-检查点区域-Checkpoint-Region-CR-："><a href="#43-6-检查点区域-Checkpoint-Region-CR-：" class="headerlink" title="43.6 检查点区域 (Checkpoint Region - CR)："></a>43.6 检查点区域 (Checkpoint Region - CR)：</h3><ul>
+<li>磁盘上有几个固定的检查点区域。</li>
+<li>LFS定期将inode map的当前状态和指向日志尾部（即下一个可写位置）的指针等关键信息写入这些检查点区域。</li>
+<li>系统启动时，通过读取检查点区域来定位最新的inode map和日志的末尾，从而开始恢复过程。</li>
+</ul>
+<h3 id="43-7-从磁盘读取文件，回顾："><a href="#43-7-从磁盘读取文件，回顾：" class="headerlink" title="43.7 从磁盘读取文件，回顾："></a>43.7 从磁盘读取文件，回顾：</h3><ol>
+<li>通过文件名在目录中找到inode号。</li>
+<li>使用inode号查询内存中的inode map，找到inode的最新磁盘地址。</li>
+<li>如果inode map不在内存，则从检查点区域加载。</li>
+<li>从磁盘读取inode。</li>
+<li>根据inode中的指针读取数据块（这些数据块本身也可能散布在日志中）。</li>
+</ol>
+<h3 id="43-8-目录操作："><a href="#43-8-目录操作：" class="headerlink" title="43.8 目录操作："></a>43.8 目录操作：</h3><p>目录的修改（添加&#x2F;删除文件）也作为日志条目写入新的段中。</p>
+<h3 id="43-9-垃圾收集-Cleaning-Segment-Cleaning-："><a href="#43-9-垃圾收集-Cleaning-Segment-Cleaning-：" class="headerlink" title="43.9 垃圾收集 (Cleaning &#x2F; Segment Cleaning)："></a>43.9 垃圾收集 (Cleaning &#x2F; Segment Cleaning)：</h3><ul>
+<li><strong>问题</strong>：随着时间的推移，日志会填满磁盘。日志中较早写入的段可能包含很多“死亡”的数据块（已被覆盖或删除的文件的旧版本）。</li>
+<li><strong>清理过程</strong>：LFS的清理器 (cleaner) 会选择一些包含较多死亡数据块的旧段，读取这些段中的活动数据块，然后将这些活动数据块重新写入日志的头部（即新的段中）。之后，这些被清理的旧段就可以被标记为空闲，重新用于写入。</li>
+<li><strong>开销</strong>：清理过程本身会产生读写I&#x2F;O，可能影响前台性能。</li>
+</ul>
+<h3 id="43-10-确定块死亡时间："><a href="#43-10-确定块死亡时间：" class="headerlink" title="43.10 确定块死亡时间："></a>43.10 确定块死亡时间：</h3><p>通过段摘要信息 (segment summary) 和inode map来判断一个块是否仍然是某个文件的活动部分。</p>
+<h3 id="43-11-策略问题：何时清理，清理哪些段："><a href="#43-11-策略问题：何时清理，清理哪些段：" class="headerlink" title="43.11 策略问题：何时清理，清理哪些段："></a>43.11 策略问题：何时清理，清理哪些段：</h3><ul>
+<li><strong>何时清理</strong>：当空闲空间低于某个阈值时触发。</li>
+<li><strong>清理哪些段</strong>：通常选择“冷”段（较少近期访问）且“死亡”数据比例高的段，以提高清理效率（即每单位清理I&#x2F;O能回收更多空闲空间）。</li>
+</ul>
+<h3 id="43-12-崩溃恢复和日志："><a href="#43-12-崩溃恢复和日志：" class="headerlink" title="43.12 崩溃恢复和日志："></a>43.12 崩溃恢复和日志：</h3><p>LFS的崩溃恢复非常快，因为只需要从最后一个检查点开始向前扫描日志尾部，应用所有已写入的操作。</p>
+<h3 id="43-13-小结："><a href="#43-13-小结：" class="headerlink" title="43.13 小结："></a>43.13 小结：</h3><p>LFS通过将所有写入转换为大的顺序写入，旨在最大化磁盘写入性能。其代价是读取可能更分散，并且需要一个复杂的垃圾收集机制来回收空间。LFS的设计对后来的许多存储系统（尤其是闪存存储）有启发意义。</p>
+<h2 id="第44章-数据完整性和保护-✅"><a href="#第44章-数据完整性和保护-✅" class="headerlink" title="第44章 数据完整性和保护 ✅"></a>第44章 数据完整性和保护 ✅</h2><h3 id="44-1-磁盘故障模式："><a href="#44-1-磁盘故障模式：" class="headerlink" title="44.1 磁盘故障模式："></a>44.1 磁盘故障模式：</h3><ul>
+<li><strong>潜在扇区错误 (Latent Sector Errors - LSEs)</strong>：磁盘扇区发生损坏（如磁介质退化），但只有在尝试读取或写入该扇区时才会被发现。</li>
+<li><strong>位翻转 (Bit Flips)</strong>：由于宇宙射线、电源波动或介质老化，存储位的值发生改变（0变1或1变0）。</li>
+<li><strong>块损坏 (Block Corruption)</strong>：整个数据块内容变得不可读或错误。</li>
+</ul>
+<h3 id="44-2-处理潜在的损坏情况："><a href="#44-2-处理潜在的损坏情况：" class="headerlink" title="44.2 处理潜在的损坏情况："></a>44.2 处理潜在的损坏情况：</h3><ul>
+<li><strong>磁盘内部纠错码 (ECC - Error Correcting Codes)</strong>：现代磁盘驱动器内部使用ECC（如里德-所罗门码）来检测和纠正小范围的位错误。对于每个扇区，磁盘会计算并存储ECC码。读取时，重新计算并比较，如果能纠正就纠正，如果错误过多无法纠正则报告读取错误。</li>
+<li><strong>备用扇区 (Spare Sectors)</strong>：磁盘通常预留一些备用扇区。当检测到某个扇区永久损坏时，磁盘固件可以将其逻辑地址重映射到一个备用扇区。</li>
+</ul>
+<h3 id="44-3-检测错误：校验和-Checksums-："><a href="#44-3-检测错误：校验和-Checksums-：" class="headerlink" title="44.3 检测错误：校验和 (Checksums)："></a>44.3 检测错误：校验和 (Checksums)：</h3><ul>
+<li><strong>原理</strong>：对一个数据块应用一个函数，生成一个固定大小的、代表该数据块内容的短值（校验和）。</li>
+<li><strong>简单校验和</strong>：如XOR校验和、加法校验和。容易计算，但可能无法检测某些类型的错误（如字节顺序颠倒）。</li>
+<li><strong>循环冗余校验 (CRC - Cyclic Redundancy Check)</strong>：更强大的校验和算法，基于多项式除法，能检测更广泛的错误模式，包括多位错误和突发错误。广泛用于网络和存储。</li>
+</ul>
+<h3 id="44-4-使用校验和："><a href="#44-4-使用校验和：" class="headerlink" title="44.4 使用校验和："></a>44.4 使用校验和：</h3><ul>
+<li><strong>写入时</strong>：计算数据块的校验和，并将数据块和其校验和一起存储（可以在同一扇区，或在独立的元数据区域）。</li>
+<li><strong>读取时</strong>：读取数据块及其存储的校验和。重新为读取的数据块计算校验和。比较新计算的校验和与存储的校验和。<ul>
+<li>如果一致，认为数据完整。</li>
+<li>如果不一致，检测到数据损坏。此时可以尝试从冗余副本恢复（如RAID），或向上层报告错误。</li>
+</ul>
+</li>
+</ul>
+<h3 id="44-5-错误写入-Misdirected-Writes-Off-track-Writes-："><a href="#44-5-错误写入-Misdirected-Writes-Off-track-Writes-：" class="headerlink" title="44.5 错误写入 (Misdirected Writes &#x2F; Off-track Writes)："></a>44.5 错误写入 (Misdirected Writes &#x2F; Off-track Writes)：</h3><ul>
+<li><strong>问题</strong>：由于磁头定位不准或其他硬件故障，数据被写入到错误的磁盘位置（例如，写入了邻近的磁道或扇区），可能覆盖了其他有效数据。</li>
+<li><strong>检测</strong>：如果被错误写入的块恰好是另一个文件的一部分，并且该文件也有校验和保护，那么下次读取那个被覆盖的文件时，校验和会不匹配。但原始写入操作本身可能无法立即察觉。</li>
+<li><strong>防范</strong>：更高级的磁盘固件和文件系统层面的一致性检查。</li>
+</ul>
+<h3 id="44-6-最后一个问题：丢失的写入-Lost-Writes-："><a href="#44-6-最后一个问题：丢失的写入-Lost-Writes-：" class="headerlink" title="44.6 最后一个问题：丢失的写入 (Lost Writes)："></a>44.6 最后一个问题：丢失的写入 (Lost Writes)：</h3><ul>
+<li><strong>问题</strong>：操作系统或磁盘控制器报告写入已成功完成，但数据实际上并未持久化到磁盘介质上（可能仍停留在易失性缓存中，然后发生电源故障）。</li>
+<li><strong>检测</strong>：难以直接检测。可能在后续读取时发现数据过时或不一致。</li>
+<li><strong>防范</strong>：<ul>
+<li>仔细使用fsync()等同步操作。</li>
+<li>磁盘驱动器支持写缓存刷新命令（如ATA FLUSH CACHE）。</li>
+<li><strong>端到端校验和 (End-to-end checksums)</strong>：校验和由应用程序生成，一直传递到存储介质，并在读取时由应用程序验证，可以检测到路径中任何环节的数据损坏或丢失。</li>
+</ul>
+</li>
+</ul>
+<h3 id="44-7-操作：文件系统如何集成校验和"><a href="#44-7-操作：文件系统如何集成校验和" class="headerlink" title="44.7 操作：文件系统如何集成校验和"></a>44.7 操作：文件系统如何集成校验和</h3><p>例如，ZFS和Btrfs等现代文件系统广泛使用校验和来保护元数据和用户数据。它们为每个分配的块计算校验和，并将校验和存储在其父指针中（形成一个自验证的默克尔树结构）。</p>
+<h3 id="44-8-校验和开销："><a href="#44-8-校验和开销：" class="headerlink" title="44.8 校验和开销："></a>44.8 校验和开销：</h3><ul>
+<li><strong>计算开销</strong>：CPU需要执行计算校验和的额外工作。现代CPU通常有针对CRC等算法的硬件加速指令。</li>
+<li><strong>存储开销</strong>：需要额外的空间来存储校验和值。</li>
+</ul>
+<h3 id="44-9-小结："><a href="#44-9-小结：" class="headerlink" title="44.9 小结："></a>44.9 小结：</h3><p>数据完整性是持久化存储的基石。通过ECC、校验和、冗余等多种机制，可以检测和在一定程度上纠正数据损坏，从而保护用户数据免受各种故障模式的影响。</p>
+<h2 id="第45章-关于持久性的对话"><a href="#第45章-关于持久性的对话" class="headerlink" title="第45章 关于持久性的对话"></a>第45章 关于持久性的对话</h2><h3 id="核心概念：-1"><a href="#核心概念：-1" class="headerlink" title="核心概念："></a>核心概念：</h3><ul>
+<li><strong>回顾</strong>：总结本部分讨论的持久性技术，从硬件到文件系统抽象，再到实现和可靠性。</li>
+<li><strong>权衡</strong>：再次强调在设计持久化系统时涉及的各种权衡，如性能 vs 可靠性，简单性 vs 功能丰富性，成本 vs 容量&#x2F;性能。</li>
+<li><strong>新兴技术</strong>：可能提及新的存储技术（如Persistent Memory&#x2F;Storage Class Memory - SCM）及其对传统存储层次结构和文件系统设计的影响。SCM提供了接近DRAM的速度和类似磁盘的持久性。</li>
+<li><strong>未来方向</strong>：对持久化存储领域未来可能的研究方向和挑战进行展望。</li>
+</ul>
+<h2 id="分布式系统中的持久性-🌐"><a href="#分布式系统中的持久性-🌐" class="headerlink" title="分布式系统中的持久性 🌐"></a>分布式系统中的持久性 🌐</h2><h3 id="第46章-关于分布式的对话"><a href="#第46章-关于分布式的对话" class="headerlink" title="第46章 关于分布式的对话"></a>第46章 关于分布式的对话</h3><h3 id="核心概念：-2"><a href="#核心概念：-2" class="headerlink" title="核心概念："></a>核心概念：</h3><ul>
+<li><strong>引入分布式系统</strong>：多个自治计算机（节点）通过网络互连，协作完成任务。</li>
+<li><strong>持久性的新挑战</strong>：<ul>
+<li><strong>数据分布</strong>：数据不再集中存储在一台机器上。</li>
+<li><strong>并发控制</strong>：多个客户端可能同时访问和修改分布式数据。</li>
+<li><strong>部分失败 (Partial Failures)</strong>：单个节点或网络连接可能故障，而系统其他部分仍在运行。如何在这种情况下保持数据可用和一致？</li>
+<li><strong>一致性模型</strong>：在分布式环境中，强一致性（所有副本立即看到最新写入）通常难以高效实现，因此出现了各种较弱的一致性模型。</li>
+</ul>
+</li>
+<li><strong>目标</strong>：构建能够容忍部分故障、可扩展、并提供合理一致性和性能的分布式持久化存储系统。</li>
+</ul>
+<h3 id="第47章-分布式系统"><a href="#第47章-分布式系统" class="headerlink" title="第47章 分布式系统"></a>第47章 分布式系统</h3><h3 id="47-1-通信基础："><a href="#47-1-通信基础：" class="headerlink" title="47.1 通信基础："></a>47.1 通信基础：</h3><ul>
+<li><strong>消息传递 (Message Passing)</strong>：分布式系统中节点间通信的基本模型。进程通过发送和接收消息来交换信息和同步。</li>
+<li><strong>网络协议栈 (Network Protocol Stack)</strong>：如TCP&#x2F;IP模型，分层处理通信（物理层、数据链路层、网络层、传输层、应用层）。</li>
+</ul>
+<h3 id="47-2-不可靠的通信："><a href="#47-2-不可靠的通信：" class="headerlink" title="47.2 不可靠的通信："></a>47.2 不可靠的通信：</h3><p>底层网络（如基于IP的）通常是不可靠的：</p>
+<ul>
+<li><strong>消息丢失 (Message Loss)</strong></li>
+<li><strong>消息重复 (Message Duplication)</strong></li>
+<li><strong>消息乱序 (Message Reordering)</strong></li>
+<li><strong>延迟变化 (Variable Latency)</strong></li>
+</ul>
+<h3 id="47-3-可靠的通信："><a href="#47-3-可靠的通信：" class="headerlink" title="47.3 可靠的通信："></a>47.3 可靠的通信：</h3><p>在不可靠的网络基础上构建可靠的通信协议。例如，TCP通过以下机制提供可靠的字节流服务：</p>
+<ul>
+<li><strong>确认 (Acknowledgements - ACKs)</strong>：接收方对收到的数据包发送确认。</li>
+<li><strong>超时和重传 (Timeouts and Retransmissions)</strong>：发送方如果在规定时间内未收到ACK，则重传数据包。</li>
+<li><strong>序号 (Sequence Numbers)</strong>：用于检测丢失、重复和乱序的数据包，并在接收端重新排序。</li>
+<li><strong>流量控制 (Flow Control)</strong>：防止发送方淹没接收方。</li>
+<li><strong>拥塞控制 (Congestion Control)</strong>：防止发送方淹没网络。</li>
+</ul>
+<h3 id="47-4-通信抽象："><a href="#47-4-通信抽象：" class="headerlink" title="47.4 通信抽象："></a>47.4 通信抽象：</h3><ul>
+<li><strong>套接字 (Sockets)</strong>：提供给应用程序的网络通信端点API（如Berkeley sockets API），隐藏了TCP&#x2F;IP协议栈的细节。</li>
+<li><strong>消息队列 (Message Queues)</strong>：一种异步通信模式，发送者将消息放入队列中，接收者从队列中取出消息。解耦了发送者和接收者。</li>
+</ul>
+<h3 id="47-5-远程过程调用-RPC"><a href="#47-5-远程过程调用-RPC" class="headerlink" title="47.5 远程过程调用 (RPC)"></a>47.5 远程过程调用 (RPC)</h3><ul>
+<li><strong>目标</strong>：使程序员能够像调用本地函数一样调用运行在远程机器上的服务函数，隐藏底层网络通信的复杂性。</li>
+<li><strong>工作流程</strong>：<ol>
+<li>客户端调用存根过程 (Client Stub)。</li>
+<li>客户端存根将参数打包（编组&#x2F;序列化 - Marshalling&#x2F;Serialization）成消息。</li>
+<li>客户端存根通过网络将消息发送到服务器。</li>
+<li>服务器端骨架 (Server Skeleton &#x2F; Stub) 接收消息。</li>
+<li>服务器骨架解包参数（解组&#x2F;反序列化 - Unmarshalling&#x2F;Deserialization）。</li>
+<li>服务器骨架调用实际的服务器函数。</li>
+<li>服务器函数执行并将结果返回给服务器骨架。</li>
+<li>服务器骨架将结果打包成消息。</li>
+<li>服务器骨架通过网络将消息发送回客户端。</li>
+<li>客户端存根接收消息，解包结果。</li>
+<li>客户端存根将结果返回给调用者。</li>
+</ol>
+</li>
+<li><strong>关键组件</strong>：接口定义语言 (IDL - Interface Definition Language) 用于描述远程接口，存根编译器根据IDL生成客户端存根和服务器骨架代码。</li>
+<li><strong>挑战</strong>：参数传递（值传递、引用传递的复杂性）、错误处理（网络错误、服务器故障）、性能、安全性。</li>
+</ul>
+<h3 id="47-6-小结"><a href="#47-6-小结" class="headerlink" title="47.6 小结"></a>47.6 小结</h3><p>分布式系统依赖于网络通信。RPC等抽象简化了分布式应用的开发，但需要处理固有的不可靠性和复杂性。</p>
+<h2 id="第48章-Sun的网络文件系统-NFS-☀️"><a href="#第48章-Sun的网络文件系统-NFS-☀️" class="headerlink" title="第48章 Sun的网络文件系统 (NFS) ☀️"></a>第48章 Sun的网络文件系统 (NFS) ☀️</h2><h3 id="48-1-基本分布式文件系统"><a href="#48-1-基本分布式文件系统" class="headerlink" title="48.1 基本分布式文件系统"></a>48.1 基本分布式文件系统</h3><ul>
+<li><strong>目标</strong>：允许多个客户端机器通过网络透明地访问和共享存储在远程服务器上的文件，就像访问本地文件一样。</li>
+<li><strong>架构</strong>：客户端-服务器模型。服务器导出（共享）其本地文件系统的一部分，客户端挂载这些导出的文件系统。</li>
+</ul>
+<h3 id="48-2-NFSv2协议"><a href="#48-2-NFSv2协议" class="headerlink" title="48.2 NFSv2协议"></a>48.2 NFSv2协议</h3><p>早期版本的NFS协议，基于UDP（通常）。定义了一组RPC操作，如LOOKUP (查找文件)、READ、WRITE、CREATE、REMOVE等。</p>
+<h3 id="48-3-关键点：简单快速的服务器崩溃恢复"><a href="#48-3-关键点：简单快速的服务器崩溃恢复" class="headerlink" title="48.3 关键点：简单快速的服务器崩溃恢复"></a>48.3 关键点：简单快速的服务器崩溃恢复</h3><h3 id="48-4-快速崩溃恢复的关键：无状态-Statelessness"><a href="#48-4-快速崩溃恢复的关键：无状态-Statelessness" class="headerlink" title="48.4 快速崩溃恢复的关键：无状态 (Statelessness)"></a>48.4 快速崩溃恢复的关键：无状态 (Statelessness)</h3><ul>
+<li><strong>无状态服务器</strong>：NFS服务器是无状态的，服务器不保留关于客户端已打开文件、当前文件偏移量等会话状态信息。每个客户端请求都必须包含完成该操作所需的所有信息（如完整路径名或文件句柄、偏移量、字节数）。<ul>
+<li><strong>优点</strong>：<ul>
+<li>服务器崩溃恢复简单：服务器崩溃重启后，无需恢复任何状态。客户端只需重试之前的请求。</li>
+<li>服务器实现相对简单。</li>
+</ul>
+</li>
+<li><strong>缺点</strong>：<ul>
+<li>客户端承担更多工作：客户端需要维护状态。</li>
+<li>性能开销：每个请求都携带完整信息，可能导致消息较大。</li>
+<li>一致性问题：由于无状态，服务器难以实现某些强一致性保证（如独占写锁）。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="48-5-NFSv2协议-操作细节"><a href="#48-5-NFSv2协议-操作细节" class="headerlink" title="48.5 NFSv2协议 (操作细节)"></a>48.5 NFSv2协议 (操作细节)</h3><ul>
+<li><strong>文件句柄 (File Handle)</strong>：服务器为每个导出的文件或目录生成一个不透明的标识符。客户端使用文件句柄来引用特定的文件&#x2F;目录，而不是路径名（在LOOKUP之后）。</li>
+<li><strong>基本操作</strong>：GETATTR (获取属性)、SETATTR (设置属性)、READ、WRITE、CREATE、REMOVE、RENAME、MKDIR、RMDIR、READDIR等。</li>
+</ul>
+<h3 id="48-6-从协议到分布式文件系统"><a href="#48-6-从协议到分布式文件系统" class="headerlink" title="48.6 从协议到分布式文件系统"></a>48.6 从协议到分布式文件系统</h3><p>操作系统内核中的NFS客户端模块拦截本地文件系统调用，如果判断是针对NFS挂载点的，则将其转换为NFS协议的RPC请求发送给服务器。服务器上的NFS守护进程处理请求，并调用其本地文件系统。</p>
+<h3 id="48-7-利用幂等性处理服务器请求"><a href="#48-7-利用幂等性处理服务器请求" class="headerlink" title="48.7 利用幂等性处理服务器请求"></a>48.7 利用幂等性处理服务器请求</h3><ul>
+<li><strong>幂等操作 (Idempotent Operation)</strong>：执行一次或多次产生相同结果的操作。</li>
+<li><strong>NFS设计</strong>：许多NFS操作被设计为幂等的（如READ、WRITE在特定偏移量处）。如果客户端因网络超时而重传请求，服务器多次执行同一幂等操作不会导致问题。</li>
+<li><strong>非幂等操作</strong>：如CREATE（如果文件已存在则失败）或REMOVE。处理这些需要更小心，例如服务器可能维护一个最近已完成的非幂等操作的缓存，以检测和丢弃重复请求。</li>
+</ul>
+<h3 id="48-8-客户端缓存-Client-Caching"><a href="#48-8-客户端缓存-Client-Caching" class="headerlink" title="48.8 客户端缓存 (Client Caching)"></a>48.8 客户端缓存 (Client Caching)</h3><ul>
+<li>为提高性能和减少网络流量，NFS客户端会在本地内存中缓存文件数据块和元数据（属性）。</li>
+<li>当应用程序请求数据时，客户端首先检查本地缓存。</li>
+</ul>
+<h3 id="48-9-缓存一致性-Cache-Coherency"><a href="#48-9-缓存一致性-Cache-Coherency" class="headerlink" title="48.9 缓存一致性 (Cache Coherency)"></a>48.9 缓存一致性 (Cache Coherency)</h3><ul>
+<li><strong>问题</strong>：当多个客户端缓存同一文件，并且至少一个客户端修改了文件时，如何确保其他客户端能看到最新的数据，避免读到过时 (stale) 的缓存内容。</li>
+</ul>
+<h3 id="48-10-评估NFS的缓存一致性"><a href="#48-10-评估NFS的缓存一致性" class="headerlink" title="48.10 评估NFS的缓存一致性"></a>48.10 评估NFS的缓存一致性</h3><ul>
+<li>NFSv2&#x2F;v3采用较弱的一致性模型（也称为“关闭再打开一致性” close-to-open consistency 或“定期检查”）：<ul>
+<li>客户端缓存的块有一个超时时间（如几秒到几十秒）。超时后，客户端会向服务器验证块的有效性（通常通过比较时间戳）。</li>
+<li>当一个客户端关闭文件时，任何修改都会被刷新到服务器。当另一个客户端打开同一文件时，它会从服务器获取最新的属性，可能会使其本地缓存失效。</li>
+</ul>
+</li>
+<li><strong>优点</strong>：实现简单，性能较好（减少了与服务器的同步开销）。</li>
+<li><strong>缺点</strong>：不能保证所有客户端在任何时刻都看到完全一致的数据。一个客户端的修改可能不会立即对其他客户端可见。</li>
+</ul>
+<h3 id="48-11-服务器端写缓冲的隐含问题"><a href="#48-11-服务器端写缓冲的隐含问题" class="headerlink" title="48.11 服务器端写缓冲的隐含问题"></a>48.11 服务器端写缓冲的隐含问题</h3><ul>
+<li>如果NFS服务器在其本地文件系统使用了写回缓存（write-back cache），当服务器向客户端确认写操作已完成时，数据可能仍在服务器的内存缓存中，尚未写入服务器的磁盘。</li>
+<li>如果此时服务器崩溃，这些已确认但未持久化的写入会丢失，违反了持久性。</li>
+<li>NFS通常要求服务器同步写入 (synchronous writes) 或使用其他机制（如服务器日志）来保证已确认给客户端的写入是持久的。这会影响服务器性能。NFSv3引入了异步写操作和COMMIT操作来缓解此问题。</li>
+</ul>
+<h3 id="48-12-小结"><a href="#48-12-小结" class="headerlink" title="48.12 小结"></a>48.12 小结</h3><p>NFS是一个广泛使用的分布式文件系统，其无状态设计简化了服务器故障恢复，但带来了缓存一致性和性能方面的一些挑战。它在简单性和实用性之间取得了平衡。</p>
+<h2 id="第49章-Andrew文件系统-AFS-🎓"><a href="#第49章-Andrew文件系统-AFS-🎓" class="headerlink" title="第49章 Andrew文件系统 (AFS) 🎓"></a>第49章 Andrew文件系统 (AFS) 🎓</h2><h3 id="49-1-AFS版本1"><a href="#49-1-AFS版本1" class="headerlink" title="49.1 AFS版本1"></a>49.1 AFS版本1</h3><p>由卡内基梅隆大学开发，旨在解决NFS的一些局限性，特别是在大规模（校园范围）部署和一致性方面。</p>
+<h3 id="49-2-版本1的问题"><a href="#49-2-版本1的问题" class="headerlink" title="49.2 版本1的问题"></a>49.2 版本1的问题</h3><p>可能包括扩展性、性能、管理复杂性等。</p>
+<h3 id="49-3-改进协议"><a href="#49-3-改进协议" class="headerlink" title="49.3 改进协议"></a>49.3 改进协议</h3><p>AFS的设计目标是更好的可伸缩性、性能和更强的一致性保证。</p>
+<h3 id="49-4-AFS版本2："><a href="#49-4-AFS版本2：" class="headerlink" title="49.4 AFS版本2："></a>49.4 AFS版本2：</h3><ul>
+<li><strong>全文件缓存 (Whole-file caching)</strong>：AFS客户端在本地磁盘上缓存整个文件（或大的文件块）。当客户端首次访问文件时，会将整个文件从服务器下载到本地磁盘缓存。后续访问直接从本地缓存读取。</li>
+<li><strong>回调机制 (Callbacks)</strong>：<ul>
+<li>当客户端缓存一个文件时，它会向服务器注册一个“回调”。</li>
+<li>如果服务器上的文件被其他客户端修改，服务器会向所有已注册回调的客户端发送一个“回调中断 (callback break)”通知。</li>
+<li>收到回调中断的客户端会将其本地缓存的该文件副本标记为无效。下次访问该文件时，需要从服务器重新获取最新版本。</li>
+</ul>
+</li>
+<li><strong>有状态服务器 (Stateful Server)</strong>：与NFS不同，AFS服务器是有状态的，它需要跟踪哪些客户端缓存了哪些文件，以便在文件被修改时发送回调。</li>
+</ul>
+<h3 id="49-5-缓存一致性"><a href="#49-5-缓存一致性" class="headerlink" title="49.5 缓存一致性"></a>49.5 缓存一致性</h3><p>AFS通过回调机制提供了比NFS更强的一致性保证。一旦文件被修改，服务器会主动通知其他缓存该文件的客户端，使它们的缓存失效。</p>
+<ul>
+<li>这接近于“写后立即读一致性”（一个客户端写入后，其他客户端能立即读到新数据），但仍有小的窗口期（通知传播延迟）。</li>
+</ul>
+<h3 id="49-6-崩溃恢复"><a href="#49-6-崩溃恢复" class="headerlink" title="49.6 崩溃恢复"></a>49.6 崩溃恢复</h3><ul>
+<li><strong>客户端崩溃</strong>：客户端重启后，其本地磁盘缓存可能仍然有效（如果服务器在此期间没有修改文件）。它可以向服务器查询回调状态。</li>
+<li><strong>服务器崩溃</strong>：由于服务器是有状态的，其崩溃恢复比无状态的NFS服务器复杂。服务器需要重建回调状态。AFS通常有机制来处理此问题，例如，服务器重启后，客户端可能需要重新与服务器建立会话并确认其缓存文件的回调状态。</li>
+</ul>
+<h3 id="49-7-AFSv2中的一致性和性能"><a href="#49-7-AFSv2中的一致性和性能" class="headerlink" title="49.7 AFSv2中的一致性和性能"></a>49.7 AFSv2中的一致性和性能</h3><ul>
+<li><strong>一致性</strong>：回调提供了较好的一致性，大大减少了读到过时数据的可能性。</li>
+<li><strong>性能</strong>：<ul>
+<li><strong>读操作</strong>：一旦文件被缓存到本地磁盘，读操作非常快（本地磁盘速度）。</li>
+<li><strong>写操作</strong>：当客户端修改文件并关闭时，修改后的整个文件会被写回服务器。这可能比NFS基于块的写操作延迟更高，但减少了网络交互次数。</li>
+<li><strong>可伸缩性</strong>：全文件缓存和回调减少了对服务器的频繁请求，使得AFS在大量客户端环境下具有良好的可伸缩性。</li>
+</ul>
+</li>
+</ul>
+<h3 id="49-8-AFS：其他改进"><a href="#49-8-AFS：其他改进" class="headerlink" title="49.8 AFS：其他改进"></a>49.8 AFS：其他改进</h3><ul>
+<li><strong>全局命名空间</strong>：AFS提供统一的全局文件命名空间，用户在任何客户端看到的路径都是一致的。</li>
+<li><strong>位置透明性</strong>：文件可以从一个服务器迁移到另一个服务器，而客户端访问路径不变（通过卷位置数据库实现）。</li>
+<li><strong>安全性</strong>：集成了Kerberos等认证机制。</li>
+<li><strong>卷管理 (Volume Management)</strong>：文件存储在“卷”中，卷是管理的单位，可以移动、备份。</li>
+</ul>
+<h3 id="49-9-小结"><a href="#49-9-小结" class="headerlink" title="49.9 小结"></a>49.9 小结</h3><p>AFS通过全文件缓存和回调机制，提供了比NFS更强的一致性和更好的可伸缩性，特别适用于大规模分布式环境。其设计权衡了本地缓存的性能优势和维护一致性的复杂性。</p>
+<h2 id="第50章-关于分布式的对话"><a href="#第50章-关于分布式的对话" class="headerlink" title="第50章 关于分布式的对话"></a>第50章 关于分布式的对话</h2><h3 id="核心概念：-3"><a href="#核心概念：-3" class="headerlink" title="核心概念："></a>核心概念：</h3><ul>
+<li><strong>总结</strong>：回顾NFS和AFS的设计理念、优缺点以及它们在分布式持久化存储方面所做的贡献和权衡。</li>
+<li><strong>CAP理论</strong>：可能会引出或间接触及CAP理论（一致性Consistency, 可用性Availability, 分区容错性Partition tolerance），即一个分布式系统最多只能同时满足这三项中的两项。NFS和AFS在这些方面有不同的取舍。</li>
+<li><strong>现代分布式文件系统</strong>：可能简要提及后续的分布式文件系统（如HDFS, Ceph, GlusterFS）如何借鉴或改进了早期系统的思想，以应对更大规模的数据和更复杂的应用场景。</li>
+<li><strong>持久性在云环境中的演变</strong>：讨论云存储服务（如Amazon S3, Google Cloud Storage）如何提供高度可扩展和持久的存储，它们通常采用与传统文件系统不同的接口和一致性模型。</li>
+</ul>
+<hr>
+<p>这份详细的笔记应该能更全面地覆盖《Operating Systems: Three Easy Pieces version 1.1》中“持久性”部分的核心内容和相关解释。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>bocchi</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://example.com/2025/06/09/Persistence/">http://example.com/2025/06/09/Persistence/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Operate-System/"># Operate System</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2025/06/09/Memery%20Virtualization/">Memery Virtualization</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© bocchi | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

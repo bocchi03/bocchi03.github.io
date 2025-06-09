@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="bocchi">
+
+
+
+
+
+<title>CPU Virtualization | Hexo</title>
+
+
+
+    <link rel="icon" href="/notebook.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">CPU Virtualization</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">bocchi</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">June 9, 2025&nbsp;&nbsp;19:17:25</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/408/">408</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="Operating-Systems-Three-Easy-Pieces-CPU-虚拟化笔记（第-4-10-章）"><a href="#Operating-Systems-Three-Easy-Pieces-CPU-虚拟化笔记（第-4-10-章）" class="headerlink" title="Operating Systems: Three Easy Pieces - CPU 虚拟化笔记（第 4-10 章）"></a><strong>Operating Systems: Three Easy Pieces - CPU 虚拟化笔记（第 4-10 章）</strong></h1><h2 id="第-4-章-抽象：进程"><a href="#第-4-章-抽象：进程" class="headerlink" title="第 4 章 抽象：进程"></a><strong>第 4 章 抽象：进程</strong></h2><h3 id="4-1-抽象：进程"><a href="#4-1-抽象：进程" class="headerlink" title="4.1 抽象：进程"></a><strong>4.1 抽象：进程</strong></h3><p><strong>定义</strong>：进程是操作系统提供的核心抽象，表示一个正在运行的程序实例。它包含程序代码、数据、堆栈以及执行状态（如寄存器值）。通过进程抽象，操作系统让程序员感觉程序独占 CPU 和内存资源，而实际上支持多个进程并发运行。</p>
+<p><strong>关键特性</strong>：</p>
+<ul>
+<li><strong>独立的虚拟地址空间</strong>：<ul>
+<li><strong>代码段</strong>：存储可执行指令。</li>
+<li><strong>数据段</strong>：包含全局变量和静态变量。</li>
+<li><strong>堆</strong>：动态内存分配区域。</li>
+<li><strong>栈</strong>：存储函数调用信息和局部变量。</li>
+</ul>
+</li>
+<li><strong>寄存器集合</strong>：包括程序计数器（PC）、栈指针（SP）、通用寄存器等，在进程切换时保存和恢复。</li>
+<li><strong>隔离性</strong>：进程之间通过虚拟内存隔离，防止相互干扰。</li>
+</ul>
+<p><strong>目的</strong>：进程抽象隐藏了底层硬件复杂性（如 CPU 调度和内存管理），提供了一个简洁的程序执行环境。</p>
+<p><strong>示例</strong>：在运行一个文本编辑器（如 Vim）时，操作系统为其创建一个进程，分配独立的内存空间和 CPU 时间片。</p>
+<p><img src="/../image/image-20250504180019647.png" alt="image-20250504180019647"></p>
+<hr>
+<h3 id="4-2-进程-API"><a href="#4-2-进程-API" class="headerlink" title="4.2 进程 API"></a><strong>4.2 进程 API</strong></h3><p>操作系统通过系统调用（API）支持进程管理。主要 API 包括：</p>
+<ul>
+<li><strong><code>fork()</code></strong>：创建子进程，子进程是父进程的副本，拥有独立的地址空间。</li>
+<li><strong><code>exit()</code></strong>：终止当前进程，释放其资源（如内存、文件描述符）。</li>
+<li><strong><code>wait()</code></strong>：父进程等待子进程结束，回收资源。</li>
+<li><strong><code>exec()</code></strong>：加载并运行新程序，替换当前进程的代码和数据。</li>
+<li><strong>其他</strong>：如 <code>kill()</code>（发送信号）、<code>pipe()</code>（进程间通信）。</li>
+</ul>
+<p><strong>功能</strong>：这些 API 提供了进程创建、管理和通信的工具，是用户程序与操作系统交互的基础。</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">pid_t</span> pid = fork();</span><br><span class="line">    <span class="keyword">if</span> (pid == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;子进程\n&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;父进程\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="4-3-进程创建：更多细节"><a href="#4-3-进程创建：更多细节" class="headerlink" title="4.3 进程创建：更多细节"></a><strong>4.3 进程创建：更多细节</strong></h3><p><strong>创建过程</strong>：</p>
+<ol>
+<li><strong>分配进程控制块（PCB）</strong>：PCB 是操作系统管理进程的元数据结构，包含：<ul>
+<li>进程 ID（PID）、父进程 ID（PPID）。</li>
+<li>寄存器状态（PC、SP 等）。</li>
+<li>内存信息（页表指针）。</li>
+</ul>
+</li>
+<li><strong>初始化地址空间</strong>：<ul>
+<li>加载程序代码到代码段。</li>
+<li>分配堆和栈区域。</li>
+<li>在 Unix 中，<code>fork()</code> 复制父进程的页表，但通过**写时复制（Copy-On-Write, COW）**优化，只有在修改内存时才复制页面。</li>
+</ul>
+</li>
+<li><strong>设置初始状态</strong>：将进程置于“新建”状态，准备调度。</li>
+</ol>
+<p><strong>开销</strong>：</p>
+<ul>
+<li>进程创建涉及内存分配、页表复制和 PCB 初始化，成本较高。</li>
+<li>写时复制减少了初始内存复制的开销，但仍需考虑调度和资源分配。</li>
+</ul>
+<p><strong>示例</strong>：在 Linux 中，<code>fork()</code> 调用会触发内核的 <code>do_fork()</code> 函数，复制父进程的内存结构并分配新 PID。</p>
+<p><strong>挑战</strong>：频繁创建进程可能导致性能瓶颈，现代系统通过线程或轻量级进程优化。</p>
+<hr>
+<h3 id="4-4-进程状态"><a href="#4-4-进程状态" class="headerlink" title="4.4 进程状态"></a><strong>4.4 进程状态</strong></h3><p>进程在其生命周期中经历以下状态：</p>
+<ul>
+<li><strong>新建（New）</strong>：进程正在创建，分配资源。</li>
+<li><strong>就绪（Ready）</strong>：进程准备运行，等待 CPU。</li>
+<li><strong>运行（Running）</strong>：进程在 CPU 上执行。</li>
+<li><strong>阻塞（Blocked）</strong>：进程等待外部事件（如 I&#x2F;O 完成）。</li>
+<li><strong>终止（Terminated）</strong>：进程结束，等待资源回收。</li>
+</ul>
+<p><strong>状态转换</strong>：</p>
+<ul>
+<li>由调度器或事件触发，例如：<ul>
+<li>运行 → 就绪：时间片用尽或被抢占。</li>
+<li>运行 → 阻塞：等待 I&#x2F;O。</li>
+<li>阻塞 → 就绪：I&#x2F;O 完成。</li>
+</ul>
+</li>
+</ul>
+<p><strong>图示</strong>：<img src="/../image/image-20250504180150600.png" alt="image-20250504180150600"></p>
+<p><strong>实际应用</strong>：Linux 内核使用 <code>task_struct</code> 结构跟踪进程状态，通过 <code>state</code> 字段表示（TASK_RUNNING、TASK_INTERRUPTIBLE 等）。</p>
+<hr>
+<h3 id="4-5-数据结构"><a href="#4-5-数据结构" class="headerlink" title="4.5 数据结构"></a><strong>4.5 数据结构</strong></h3><p><strong>进程表</strong>：</p>
+<ul>
+<li>操作系统维护一个全局进程表，存储所有活动进程的 PCB。</li>
+<li>进程表支持快速查找和调度。</li>
+</ul>
+<p><strong>PCB 内容</strong>：</p>
+<ul>
+<li><strong>标识</strong>：PID、PPID。</li>
+<li><strong>状态</strong>：当前状态（运行、就绪等）。</li>
+<li><strong>寄存器快照</strong>：PC、SP、通用寄存器。</li>
+<li><strong>内存信息</strong>：页表指针、内存限制。</li>
+<li><strong>资源信息</strong>：打开的文件描述符、信号处理程序。</li>
+</ul>
+<p><strong>作用</strong>：</p>
+<ul>
+<li>PCB 是进程管理的核心，支持调度、上下文切换和资源回收。</li>
+<li>进程表通常以链表或数组实现，需高效访问。</li>
+</ul>
+<p><strong>示例</strong>：Linux 的 <code>task_struct</code> 是 PCB 的具体实现，包含数百个字段，涵盖进程的所有信息。</p>
+<hr>
+<h3 id="4-6-小结"><a href="#4-6-小结" class="headerlink" title="4.6 小结"></a><strong>4.6 小结</strong></h3><ul>
+<li>进程抽象是 CPU 虚拟化的基础，通过隔离和资源分配支持多程序并发。</li>
+<li>进程 API 和 PCB 数据结构共同实现这一抽象。</li>
+<li><strong>思考问题</strong>：进程创建的开销如何影响系统性能？现代系统如何优化？</li>
+</ul>
+<p><strong>参考资料</strong>：</p>
+<ul>
+<li>Unix 系统编程相关书籍。</li>
+<li>Linux 内核文档（<code>task_struct</code> 和进程管理）。</li>
+</ul>
+<hr>
+<h2 id="第-5-章-插叙：进程-API"><a href="#第-5-章-插叙：进程-API" class="headerlink" title="第 5 章 插叙：进程 API"></a><strong>第 5 章 插叙：进程 API</strong></h2><h3 id="5-1-fork-系统调用"><a href="#5-1-fork-系统调用" class="headerlink" title="5.1 fork() 系统调用"></a><strong>5.1 <code>fork()</code> 系统调用</strong></h3><p><strong>功能</strong>：</p>
+<ul>
+<li>创建一个新进程（子进程），复制父进程的地址空间和状态。</li>
+<li>子进程从 <code>fork()</code> 返回处继续执行。</li>
+</ul>
+<p><strong>返回值</strong>：</p>
+<ul>
+<li>子进程：返回 0。</li>
+<li>父进程：返回子进程的 PID。</li>
+<li>错误：返回 -1。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">pid_t</span> pid = fork();</span><br><span class="line">    <span class="keyword">if</span> (pid == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;子进程，PID=%d\n&quot;</span>, getpid());</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (pid &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;父进程，子进程 PID=%d\n&quot;</span>, pid);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;fork 失败\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>细节</strong>：</p>
+<ul>
+<li>复制包括页表、文件描述符和信号处理程序。</li>
+<li>写时复制优化内存复制，子进程和父进程共享只读页面。</li>
+</ul>
+<p><strong>挑战</strong>：复制大量内存可能导致性能问题，需依赖 COW。</p>
+<hr>
+<h3 id="5-2-wait-系统调用"><a href="#5-2-wait-系统调用" class="headerlink" title="5.2 wait() 系统调用"></a><strong>5.2 <code>wait()</code> 系统调用</strong></h3><p><strong>功能</strong>：</p>
+<ul>
+<li>父进程等待子进程终止，回收资源，防止子进程成为僵尸进程。</li>
+</ul>
+<p><strong>变体</strong>：</p>
+<ul>
+<li><code>wait(NULL)</code>：阻塞直到任一子进程结束。</li>
+<li><code>waitpid(pid, &amp;status, options)</code>：等待指定子进程，支持非阻塞选项。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/wait.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">pid_t</span> pid = fork();</span><br><span class="line">    <span class="keyword">if</span> (pid == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;子进程退出\n&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        wait(<span class="literal">NULL</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;父进程：子进程已结束\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>作用</strong>：确保资源正确回收，维护系统稳定性。</p>
+<hr>
+<h3 id="5-3-exec-系统调用"><a href="#5-3-exec-系统调用" class="headerlink" title="5.3 exec() 系统调用"></a><strong>5.3 <code>exec()</code> 系统调用</strong></h3><p><strong>功能</strong>：</p>
+<ul>
+<li>在当前进程中加载并运行新程序，替换原有代码、数据和堆栈，但保留 PID 和某些资源（如文件描述符）。</li>
+</ul>
+<p><strong>变体</strong>：</p>
+<ul>
+<li><code>execl()</code>, <code>execv()</code>, <code>execvp()</code> 等，支持不同参数传递方式。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    execl(<span class="string">&quot;/bin/ls&quot;</span>, <span class="string">&quot;ls&quot;</span>, <span class="string">&quot;-l&quot;</span>, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;此行不会执行\n&quot;</span>); <span class="comment">// 被替换</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>特点</strong>：</p>
+<ul>
+<li>不创建新进程，适合与 <code>fork()</code> 结合实现新程序运行。</li>
+<li>常用于 shell 实现命令执行。</li>
+</ul>
+<hr>
+<h3 id="5-4-为什么这样设计-API"><a href="#5-4-为什么这样设计-API" class="headerlink" title="5.4 为什么这样设计 API"></a><strong>5.4 为什么这样设计 API</strong></h3><p><strong>原因</strong>：</p>
+<ul>
+<li><strong>灵活性</strong>：<code>fork()</code> 和 <code>exec()</code> 分离允许在创建子进程后自定义行为（如重定向、管道）。<ul>
+<li>例如，shell 使用 <code>fork()</code> 创建子进程，重定向 I&#x2F;O 后调用 <code>exec()</code> 运行命令。</li>
+</ul>
+</li>
+<li><strong>历史因素</strong>：Unix 设计哲学强调简单和模块化。</li>
+<li><strong>优势</strong>：子进程继承父进程资源，便于通信和协作。</li>
+</ul>
+<p><strong>挑战</strong>：API 设计复杂，可能导致初学者误用（如未处理 <code>fork()</code> 失败）。</p>
+<hr>
+<h3 id="5-5-其他-API"><a href="#5-5-其他-API" class="headerlink" title="5.5 其他 API"></a><strong>5.5 其他 API</strong></h3><ul>
+<li><strong><code>kill(pid, sig)</code></strong>：向进程发送信号（如 SIGTERM 终止）。</li>
+<li><strong><code>pipe(fd)</code></strong>：创建进程间通信管道。</li>
+<li><strong><code>dup()</code>, <code>dup2()</code></strong>：复制或重定向文件描述符。</li>
+<li><strong>信号处理</strong>：<code>signal()</code>, <code>sigaction()</code> 设置信号处理程序。</li>
+</ul>
+<p><strong>作用</strong>：扩展进程控制和通信能力，支持复杂应用程序（如 shell 管道）。</p>
+<hr>
+<h3 id="5-6-小结"><a href="#5-6-小结" class="headerlink" title="5.6 小结"></a><strong>5.6 小结</strong></h3><ul>
+<li>进程 API 是操作系统与用户交互的关键接口，支持进程生命周期管理和通信。</li>
+<li>Unix 的 <code>fork()</code>-<code>exec()</code> 模型灵活但复杂，需理解其设计意图。</li>
+<li><strong>思考问题</strong>：如何优化 <code>fork()</code> 的性能？现代系统是否需要替代方案？</li>
+</ul>
+<p><strong>参考资料</strong>：</p>
+<ul>
+<li>《UNIX Programming Environment》。</li>
+</ul>
+<hr>
+<h2 id="第-6-章-机制：受限直接执行"><a href="#第-6-章-机制：受限直接执行" class="headerlink" title="第 6 章 机制：受限直接执行"></a><strong>第 6 章 机制：受限直接执行</strong></h2><h3 id="6-1-基本技巧"><a href="#6-1-基本技巧" class="headerlink" title="6.1 基本技巧"></a><strong>6.1 基本技巧</strong></h3><p><strong>定义</strong>：</p>
+<ul>
+<li>受限直接执行（Limited Direct Execution, LDE）允许用户进程直接在 CPU 上运行，但通过硬件和软件限制其权限，确保安全性和隔离性。</li>
+</ul>
+<p><strong>实现</strong>：</p>
+<ul>
+<li><strong>用户模式 vs 内核模式</strong>：<ul>
+<li>用户模式：运行受限指令集，防止直接访问硬件。</li>
+<li>内核模式：执行特权操作（如 I&#x2F;O、内存管理）。</li>
+</ul>
+</li>
+<li><strong>硬件支持</strong>：<ul>
+<li>模式位：区分用户和内核模式。</li>
+<li>陷阱指令（trap）：用户模式调用系统调用时切换到内核模式。</li>
+</ul>
+</li>
+</ul>
+<p><strong>目标</strong>：</p>
+<ul>
+<li><strong>性能</strong>：直接执行减少开销。</li>
+<li><strong>安全性</strong>：限制用户进程权限。</li>
+</ul>
+<p><strong>示例</strong>：运行一个用户程序时，CPU 在用户模式执行，调用 <code>write()</code> 系统调用时通过陷阱进入内核模式。</p>
+<hr>
+<h3 id="6-2-问题-1：受限制的操作"><a href="#6-2-问题-1：受限制的操作" class="headerlink" title="6.2 问题 1：受限制的操作"></a><strong>6.2 问题 1：受限制的操作</strong></h3><p><strong>挑战</strong>：</p>
+<ul>
+<li>用户进程可能尝试特权操作（如访问硬件或修改页表），需限制。</li>
+</ul>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li><strong>系统调用</strong>：用户进程通过 <code>syscall</code> 指令请求内核执行特权操作。</li>
+<li><strong>硬件支持</strong>：<ul>
+<li>陷阱表：映射系统调用号到内核处理函数。</li>
+<li>保护机制：硬件阻止用户模式直接访问关键资源。</li>
+</ul>
+</li>
+</ul>
+<p><strong>示例</strong>：Linux 的 <code>int 0x80</code> 或 <code>syscall</code> 指令触发系统调用，内核检查权限后执行。</p>
+<hr>
+<h3 id="6-3-问题-2：在进程之间切换"><a href="#6-3-问题-2：在进程之间切换" class="headerlink" title="6.3 问题 2：在进程之间切换"></a><strong>6.3 问题 2：在进程之间切换</strong></h3><p><strong>上下文切换</strong>：</p>
+<ul>
+<li><strong>定义</strong>：暂停当前进程，保存其状态，加载新进程状态。</li>
+<li><strong>步骤</strong>：<ol>
+<li>保存当前进程的寄存器（PC、SP 等）到 PCB。</li>
+<li>更新进程状态（运行 → 就绪）。</li>
+<li>选择新进程，加载其 PCB 中的寄存器和页表。</li>
+<li>切换到新进程的地址空间（更新 TLB）。</li>
+</ol>
+</li>
+</ul>
+<p><strong>触发</strong>：</p>
+<ul>
+<li>时钟中断：时间片用尽。</li>
+<li>进程阻塞：等待 I&#x2F;O。</li>
+<li>优先级调度：更高优先级进程就绪。</li>
+</ul>
+<p><strong>开销</strong>：</p>
+<ul>
+<li>涉及 TLB 刷新、缓存失效，需优化。</li>
+<li>现代 CPU 提供硬件支持（如快速上下文切换指令）。</li>
+</ul>
+<p><strong>示例</strong>：Linux 的 <code>schedule()</code> 函数处理上下文切换，调用 <code>context_switch()</code> 更新寄存器和内存状态。</p>
+<p><img src="/../image/image-20250504180650710.png" alt="image-20250504180650710"></p>
+<hr>
+<h3 id="6-4-担心并发吗"><a href="#6-4-担心并发吗" class="headerlink" title="6.4 担心并发吗"></a><strong>6.4 担心并发吗</strong></h3><p><strong>单核系统</strong>：</p>
+<ul>
+<li>上下文切换和中断可能引入并发问题，需保护共享数据（如进程表）。</li>
+</ul>
+<p><strong>多核系统</strong>：</p>
+<ul>
+<li>多个进程同时运行，需同步机制（如锁、信号量）保护共享资源。</li>
+<li>调度器可能面临竞争条件。</li>
+</ul>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li>使用原子指令或锁保护关键代码段。</li>
+<li>设计无锁数据结构优化性能。</li>
+</ul>
+<p><strong>示例</strong>：Linux 调度器使用自旋锁保护进程表。</p>
+<hr>
+<h3 id="6-5-小结"><a href="#6-5-小结" class="headerlink" title="6.5 小结"></a><strong>6.5 小结</strong></h3><ul>
+<li>LDE 通过用户&#x2F;内核模式切换和上下文切换实现高效、安全的 CPU 虚拟化。</li>
+<li>硬件支持（如陷阱和保护机制）是关键。</li>
+<li><strong>思考问题</strong>：上下文切换的开销如何影响实时系统？如何优化？</li>
+</ul>
+<p><strong>参考资料</strong>：</p>
+<ul>
+<li>Intel&#x2F;AMD 体系结构手册（系统调用和中断）。</li>
+<li>Linux 内核调度器代码。</li>
+</ul>
+<hr>
+<h2 id="第-7-章-进程调度：介绍"><a href="#第-7-章-进程调度：介绍" class="headerlink" title="第 7 章 进程调度：介绍"></a><strong>第 7 章 进程调度：介绍</strong></h2><h3 id="7-1-工作负载假设"><a href="#7-1-工作负载假设" class="headerlink" title="7.1 工作负载假设"></a><strong>7.1 工作负载假设</strong></h3><p><strong>假设</strong>：</p>
+<ul>
+<li>进程运行时间长短不一（短任务 vs 长任务）。</li>
+<li>进程可能涉及 I&#x2F;O 操作，频繁阻塞。</li>
+<li>到达时间可能不同（非同时到达）。</li>
+</ul>
+<p><strong>影响</strong>：</p>
+<ul>
+<li>调度算法需根据负载特性优化性能指标（如周转时间、响应时间）。</li>
+</ul>
+<hr>
+<h3 id="7-2-调度指标"><a href="#7-2-调度指标" class="headerlink" title="7.2 调度指标"></a><strong>7.2 调度指标</strong></h3><ul>
+<li><strong>周转时间</strong>：从进程到达至完成的时间（完成时间 - 到达时间）。</li>
+</ul>
+<p>​	$$T_{周转时间}&#x3D; T_{完成时间}-T_{到达时间}$$</p>
+<ul>
+<li><strong>响应时间</strong>：从进程就绪至首次运行的时间。</li>
+</ul>
+<p>​	$$T_{响应时间}&#x3D;T_{首次运行}-T_{到达时间}$$</p>
+<ul>
+<li><strong>公平性</strong>：确保资源分配均衡，避免某些进程长期等待。</li>
+<li><strong>吞吐量</strong>：单位时间内完成的进程数。</li>
+</ul>
+<p><strong>权衡</strong>：</p>
+<ul>
+<li>优化周转时间可能牺牲响应时间（如长任务优先）。</li>
+<li>需根据应用场景选择指标（如批处理 vs 交互系统）。</li>
+</ul>
+<hr>
+<h3 id="7-3-先进先出（FIFO）"><a href="#7-3-先进先出（FIFO）" class="headerlink" title="7.3 先进先出（FIFO）"></a><strong>7.3 先进先出（FIFO）</strong></h3><p><strong>原理</strong>：</p>
+<ul>
+<li>按到达顺序执行，简单且非抢占式。</li>
+</ul>
+<p><strong>优点</strong>：</p>
+<ul>
+<li>实现简单，适合简单批处理系统。</li>
+</ul>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li><strong>护航效应</strong>：短任务可能等待长任务，导致高周转时间。</li>
+<li>不适合交互系统。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<ul>
+<li>任务 A（10ms）、B（20ms）、C（5ms）按顺序到达，FIFO 执行顺序为 A→B→C，周转时间较高。</li>
+</ul>
+<p><img src="/../image/image-20250504181151028.png" alt="image-20250504181151028"></p>
+<hr>
+<h3 id="7-4-最短任务优先（SJF）"><a href="#7-4-最短任务优先（SJF）" class="headerlink" title="7.4 最短任务优先（SJF）"></a><strong>7.4 最短任务优先（SJF）</strong></h3><p><strong>原理</strong>：</p>
+<ul>
+<li>优先运行运行时间最短的进程，非抢占式。</li>
+</ul>
+<p><strong>优点</strong>：</p>
+<ul>
+<li>最小化平均周转时间（理论上最优）。</li>
+<li>适合批处理系统。</li>
+</ul>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li>需预知运行时间（实际难以实现）。</li>
+<li>长任务可能饥饿。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<ul>
+<li>任务 A（10ms）、B（5ms）、C（20ms）同时到达，SJF 顺序为 B→A→C，优化周转时间。</li>
+</ul>
+<p><img src="/../image/image-20250504181224073.png" alt="image-20250504181224073"></p>
+<hr>
+<h3 id="7-5-最短完成时间优先（STCF）"><a href="#7-5-最短完成时间优先（STCF）" class="headerlink" title="7.5 最短完成时间优先（STCF）"></a><strong>7.5 最短完成时间优先（STCF）</strong></h3><p><strong>原理</strong>：</p>
+<ul>
+<li>SJF 的抢占式版本，新到达的短任务可中断当前进程。</li>
+</ul>
+<p><strong>优点</strong>：</p>
+<ul>
+<li>动态优化周转时间，适应非同时到达的负载。</li>
+</ul>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li>仍需预知运行时间。</li>
+<li>抢占增加上下文切换开销。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<ul>
+<li>A（10ms）运行中，B（5ms）到达，STCF 暂停 A，运行 B。</li>
+</ul>
+<p><img src="/../image/image-20250504181305238.png" alt="image-20250504181305238"></p>
+<hr>
+<h3 id="7-6-新度量指标：响应时间"><a href="#7-6-新度量指标：响应时间" class="headerlink" title="7.6 新度量指标：响应时间"></a><strong>7.6 新度量指标：响应时间</strong></h3><p><strong>问题</strong>：</p>
+<ul>
+<li>SJF 和 STCF 优化周转时间，但响应时间可能较差（长任务等待时间长）。</li>
+</ul>
+<p><strong>改进方向</strong>：</p>
+<ul>
+<li>引入时间共享（分时间片运行）。</li>
+<li>交互系统更关注响应时间。</li>
+</ul>
+<hr>
+<h3 id="7-7-轮转（Round-Robin-RR）"><a href="#7-7-轮转（Round-Robin-RR）" class="headerlink" title="7.7 轮转（Round-Robin, RR）"></a><strong>7.7 轮转（Round-Robin, RR）</strong></h3><p><strong>原理</strong>：</p>
+<ul>
+<li>每个进程分配固定时间片，轮流运行，抢占式。</li>
+</ul>
+<p><strong>优点</strong>：</p>
+<ul>
+<li>改善响应时间，适合交互系统。</li>
+<li>公平性高。</li>
+</ul>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li>周转时间可能较差（频繁切换）。</li>
+<li>时间片长度需调优：<ul>
+<li>太短：上下文切换开销大。</li>
+<li>太长：接近 FIFO。</li>
+</ul>
+</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<ul>
+<li>时间片 5ms，任务 A（10ms）、B（10ms），RR 顺序为 A(5)→B(5)→A(5)→B(5)。</li>
+</ul>
+<p><img src="/../image/image-20250504181612853.png" alt="image-20250504181612853"></p>
+<hr>
+<h3 id="7-8-结合-I-O"><a href="#7-8-结合-I-O" class="headerlink" title="7.8 结合 I&#x2F;O"></a><strong>7.8 结合 I&#x2F;O</strong></h3><p><strong>策略</strong>：</p>
+<ul>
+<li>I&#x2F;O 阻塞的进程让出 CPU，调度器运行其他就绪进程。</li>
+<li>提高 CPU 利用率，优化吞吐量。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<ul>
+<li>任务 A 执行 I&#x2F;O，调度器切换到任务 B，避免 CPU 空闲。</li>
+</ul>
+<p><img src="/../image/image-20250504181727908.png" alt="image-20250504181727908"></p>
+<hr>
+<h3 id="7-9-无法预知"><a href="#7-9-无法预知" class="headerlink" title="7.9 无法预知"></a><strong>7.9 无法预知</strong></h3><p><strong>挑战</strong>：</p>
+<ul>
+<li>实际系统中运行时间未知，SJF&#x2F;STCF 难以直接应用。</li>
+</ul>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li><strong>历史估计</strong>：根据进程过去行为预测（如指数平均）。</li>
+<li><strong>反馈机制</strong>：动态调整优先级（如 MLFQ）。</li>
+</ul>
+<hr>
+<h3 id="7-10-小结"><a href="#7-10-小结" class="headerlink" title="7.10 小结"></a><strong>7.10 小结</strong></h3><ul>
+<li>调度算法的选择取决于负载和目标：<ul>
+<li>FIFO：简单但效率低。</li>
+<li>SJF&#x2F;STCF：优化周转时间。</li>
+<li>RR：优化响应时间。</li>
+</ul>
+</li>
+<li>实际系统需结合多种策略。</li>
+<li><strong>思考问题</strong>：如何在交互系统中平衡响应时间和吞吐量？</li>
+</ul>
+<p><strong>参考资料</strong>：</p>
+<ul>
+<li>调度算法理论研究。</li>
+<li>Linux CFS（Completely Fair Scheduler）文档。</li>
+</ul>
+<hr>
+<h2 id="第-8-章-调度：多级反馈队列（MLFQ）"><a href="#第-8-章-调度：多级反馈队列（MLFQ）" class="headerlink" title="第 8 章 调度：多级反馈队列（MLFQ）"></a><strong>第 8 章 调度：多级反馈队列（MLFQ）</strong></h2><h3 id="8-1-MLFQ：基本规则"><a href="#8-1-MLFQ：基本规则" class="headerlink" title="8.1 MLFQ：基本规则"></a><strong>8.1 MLFQ：基本规则</strong></h3><p><strong>结构</strong>：</p>
+<ul>
+<li>多个优先级队列，高优先级进程优先运行。</li>
+<li>每个队列采用轮转调度。</li>
+</ul>
+<p><strong>基本规则</strong>：</p>
+<ol>
+<li>若队列 A 的优先级高于 B，则运行 A 中的进程。</li>
+<li>若 A 和 B 优先级相同，采用 RR 调度。</li>
+<li>新进程进入最高优先级队列。</li>
+<li>进程用完时间片后，降低一级优先级。</li>
+<li>定期提升所有进程优先级，防止饥饿。</li>
+</ol>
+<p><strong>目标</strong>：</p>
+<ul>
+<li>自适应调度，优化短任务的响应时间，同时保证长任务公平性。</li>
+</ul>
+<p><img src="/../image/image-20250504181935249.png" alt="image-20250504181935249"></p>
+<hr>
+<h3 id="8-2-尝试-1：如何改变优先级"><a href="#8-2-尝试-1：如何改变优先级" class="headerlink" title="8.2 尝试 1：如何改变优先级"></a><strong>8.2 尝试 1：如何改变优先级</strong></h3><p><strong>策略</strong>：</p>
+<ul>
+<li><strong>CPU 密集型进程</strong>：频繁使用 CPU，降低优先级。</li>
+<li><strong>I&#x2F;O 密集型进程</strong>：频繁阻塞，保持高优先级。</li>
+</ul>
+<p><strong>问题</strong>：</p>
+<ul>
+<li>长任务可能长期占据低优先级，导致饥饿。</li>
+</ul>
+<hr>
+<h3 id="8-3-尝试-2：提升优先级"><a href="#8-3-尝试-2：提升优先级" class="headerlink" title="8.3 尝试 2：提升优先级"></a><strong>8.3 尝试 2：提升优先级</strong></h3><p><strong>改进</strong>：</p>
+<ul>
+<li>定期（每隔固定时间）将所有进程提升到最高优先级。</li>
+<li>防止低优先级进程长期等待。</li>
+</ul>
+<p><strong>挑战</strong>：</p>
+<ul>
+<li>频繁提升可能导致 CPU 密集型进程重新抢占资源。</li>
+</ul>
+<hr>
+<h3 id="8-4-尝试-3：更好的计时方式"><a href="#8-4-尝试-3：更好的计时方式" class="headerlink" title="8.4 尝试 3：更好的计时方式"></a><strong>8.4 尝试 3：更好的计时方式</strong></h3><p><strong>改进</strong>：</p>
+<ul>
+<li>跟踪进程的累计 CPU 使用时间（而非单一时间片）。</li>
+<li>根据使用情况动态调整优先级。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<ul>
+<li>进程 A 使用 100ms CPU 后降级，B 因 I&#x2F;O 保持高优先级。</li>
+</ul>
+<hr>
+<h3 id="8-5-MLFQ-调优及其他问题"><a href="#8-5-MLFQ-调优及其他问题" class="headerlink" title="8.5 MLFQ 调优及其他问题"></a><strong>8.5 MLFQ 调优及其他问题</strong></h3><p><strong>参数</strong>：</p>
+<ul>
+<li>队列数量：过多增加复杂性，过少降低灵活性。</li>
+<li>时间片长度：高优先级短时间片，低优先级长时间片。</li>
+<li>提升频率：需平衡公平性和性能。</li>
+</ul>
+<p><strong>挑战</strong>：</p>
+<ul>
+<li>复杂性高，调优困难。</li>
+<li>可能被恶意进程利用（如频繁 I&#x2F;O 保持高优先级）。</li>
+</ul>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li>限制进程行为（如 CPU 使用上限）。</li>
+<li>动态调整参数。</li>
+</ul>
+<hr>
+<h3 id="8-6-MLFQ：小结"><a href="#8-6-MLFQ：小结" class="headerlink" title="8.6 MLFQ：小结"></a><strong>8.6 MLFQ：小结</strong></h3><ul>
+<li>MLFQ 是一种自适应调度算法，广泛应用于 Unix 系统（如 Solaris、BSD）。</li>
+<li>优点：平衡响应时间和周转时间。</li>
+<li>缺点：复杂性高，需仔细调优。</li>
+<li><strong>思考问题</strong>：MLFQ 如何应对恶意进程？现代系统如何改进？</li>
+</ul>
+<p><strong>参考资料</strong>：</p>
+<ul>
+<li>Unix 调度器实现。</li>
+<li>Linux CFS 与 MLFQ 的对比。</li>
+</ul>
+<hr>
+<h2 id="第-9-章-调度：比例份额"><a href="#第-9-章-调度：比例份额" class="headerlink" title="第 9 章 调度：比例份额"></a><strong>第 9 章 调度：比例份额</strong></h2><h3 id="9-1-基本概念：彩票数表示份额"><a href="#9-1-基本概念：彩票数表示份额" class="headerlink" title="9.1 基本概念：彩票数表示份额"></a><strong>9.1 基本概念：彩票数表示份额</strong></h3><p><strong>定义</strong>：</p>
+<ul>
+<li>比例份额调度按进程的“份额”分配 CPU 时间。</li>
+<li><strong>彩票调度</strong>：用彩票数表示份额，随机抽取决定运行进程。</li>
+</ul>
+<p><strong>目标</strong>：</p>
+<ul>
+<li>确保长期公平的资源分配。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<ul>
+<li>进程 A 有 70 张彩票，B 有 30 张，A 的 CPU 分配概率为 70%。</li>
+</ul>
+<hr>
+<h3 id="9-2-彩票机制"><a href="#9-2-彩票机制" class="headerlink" title="9.2 彩票机制"></a><strong>9.2 彩票机制</strong></h3><p><strong>原理</strong>：</p>
+<ul>
+<li>每个进程分配一定数量的彩票。</li>
+<li>调度器随机抽取彩票，持有彩票的进程运行一个时间片。</li>
+</ul>
+<p><strong>优点</strong>：</p>
+<ul>
+<li>简单易实现。</li>
+<li>概率上公平。</li>
+</ul>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li>短期可能不公平（随机性）。</li>
+<li>需调优彩票分配。</li>
+</ul>
+<hr>
+<h3 id="9-3-实现"><a href="#9-3-实现" class="headerlink" title="9.3 实现"></a><strong>9.3 实现</strong></h3><p><strong>方法</strong>：</p>
+<ul>
+<li>使用随机数生成器抽取彩票。</li>
+<li>维护彩票表，记录每个进程的彩票数。</li>
+</ul>
+<p><strong>优化</strong>：</p>
+<ul>
+<li>快速随机数生成。</li>
+<li>动态调整彩票数。</li>
+</ul>
+<p><strong>示例代码</strong>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> lottery = rand() % total_tickets;</span><br><span class="line"><span class="keyword">for</span> (process in process_list) &#123;</span><br><span class="line">    <span class="keyword">if</span> (lottery &lt; process.tickets) &#123;</span><br><span class="line">        run(process);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    lottery -= process.tickets;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="9-4-一个例子"><a href="#9-4-一个例子" class="headerlink" title="9.4 一个例子"></a><strong>9.4 一个例子</strong></h3><ul>
+<li>进程 A（70 票）、B（30 票），总计 100 票。</li>
+<li>随机数 0-99：<ul>
+<li>0-69：运行 A。</li>
+<li>70-99：运行 B。</li>
+</ul>
+</li>
+<li>长期运行，A 占 70% CPU 时间。</li>
+</ul>
+<hr>
+<h3 id="9-5-如何分配彩票"><a href="#9-5-如何分配彩票" class="headerlink" title="9.5 如何分配彩票"></a><strong>9.5 如何分配彩票</strong></h3><p><strong>依据</strong>：</p>
+<ul>
+<li>用户指定的优先级。</li>
+<li>进程的资源需求（如 CPU 密集型 vs I&#x2F;O 密集型）。</li>
+<li>系统策略（如公平性 vs 性能）。</li>
+</ul>
+<p><strong>挑战</strong>：</p>
+<ul>
+<li>动态负载下彩票分配复杂。</li>
+<li>需防止滥用（如请求过多彩票）。</li>
+</ul>
+<hr>
+<h3 id="9-6-为什么不是确定的"><a href="#9-6-为什么不是确定的" class="headerlink" title="9.6 为什么不是确定的"></a><strong>9.6 为什么不是确定的</strong></h3><p><strong>特性</strong>：</p>
+<ul>
+<li>随机性导致短期分配不均，但长期趋于公平。</li>
+<li>避免复杂确定性算法，降低实现成本。</li>
+</ul>
+<p><strong>对比</strong>：</p>
+<ul>
+<li>确定性调度（如 RR）短期公平，但开销高。</li>
+<li>彩票调度简单，但需权衡随机性。</li>
+</ul>
+<hr>
+<h3 id="9-7-小结"><a href="#9-7-小结" class="headerlink" title="9.7 小结"></a><strong>9.7 小结</strong></h3><ul>
+<li>彩票调度适合需要资源公平分配的场景（如云计算）。</li>
+<li>优点：简单、灵活。</li>
+<li>缺点：短期不公平，需调优。</li>
+<li><strong>思考问题</strong>：彩票调度如何应用于多核系统？</li>
+</ul>
+<p><strong>参考资料</strong>：</p>
+<ul>
+<li>《Lottery Scheduling: Flexible Proportional-Share Resource Management》。</li>
+</ul>
+<hr>
+<h2 id="第-10-章-多处理器调度（高级）"><a href="#第-10-章-多处理器调度（高级）" class="headerlink" title="第 10 章 多处理器调度（高级）"></a><strong>第 10 章 多处理器调度（高级）</strong></h2><h3 id="10-1-背景：多处理器架构"><a href="#10-1-背景：多处理器架构" class="headerlink" title="10.1 背景：多处理器架构"></a><strong>10.1 背景：多处理器架构</strong></h3><p><strong>特点</strong>：</p>
+<ul>
+<li>多核 CPU 并行运行多个进程。</li>
+<li>共享内存或缓存一致性协议。</li>
+</ul>
+<p><strong>挑战</strong>：</p>
+<ul>
+<li><strong>负载均衡</strong>：确保各核负载均匀。</li>
+<li><strong>同步</strong>：保护共享数据结构。</li>
+<li><strong>缓存亲和度</strong>：减少进程迁移的缓存失效。</li>
+</ul>
+<p><img src="/../image/image-20250504182146500.png" alt="image-20250504182146500"></p>
+<hr>
+<h3 id="10-2-别忘了同步"><a href="#10-2-别忘了同步" class="headerlink" title="10.2 别忘了同步"></a><strong>10.2 别忘了同步</strong></h3><p><strong>问题</strong>：</p>
+<ul>
+<li>多核访问共享调度队列（如进程表）可能导致竞争。</li>
+</ul>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li><strong>锁</strong>：保护队列访问（如自旋锁、互斥锁）。</li>
+<li><strong>无锁数据结构</strong>：减少锁竞争。</li>
+</ul>
+<p><strong>开销</strong>：</p>
+<ul>
+<li>锁可能导致性能瓶颈，尤其在高并发下。</li>
+</ul>
+<p><strong>示例</strong>：Linux 使用 percpu 变量减少全局锁。</p>
+<hr>
+<h3 id="10-3-最后一个问题：缓存亲和度"><a href="#10-3-最后一个问题：缓存亲和度" class="headerlink" title="10.3 最后一个问题：缓存亲和度"></a><strong>10.3 最后一个问题：缓存亲和度</strong></h3><p><strong>定义</strong>：</p>
+<ul>
+<li>进程倾向在同一 CPU 运行，利用缓存中的数据。</li>
+</ul>
+<p><strong>影响</strong>：</p>
+<ul>
+<li>频繁迁移导致缓存失效，降低性能。</li>
+</ul>
+<p><strong>策略</strong>：</p>
+<ul>
+<li>尽量将进程绑定到特定 CPU。</li>
+<li>迁移时考虑亲和度。</li>
+</ul>
+<p><strong>示例</strong>：Linux 的 <code>sched_setaffinity()</code> 允许绑定进程到特定核。</p>
+<hr>
+<h3 id="10-4-单队列调度（SQMS）"><a href="#10-4-单队列调度（SQMS）" class="headerlink" title="10.4 单队列调度（SQMS）"></a><strong>10.4 单队列调度（SQMS）</strong></h3><p><strong>原理</strong>：</p>
+<ul>
+<li>所有 CPU 共享一个调度队列。</li>
+</ul>
+<p><strong>优点</strong>：</p>
+<ul>
+<li>负载均衡好，自动分配任务。</li>
+</ul>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li>同步开销大（需锁保护队列）。</li>
+<li>缓存亲和度差。</li>
+</ul>
+<p><strong>示例</strong>：早期 Linux 调度器使用单一队列。</p>
+<p><img src="/../image/image-20250504182417811.png" alt="image-20250504182417811"></p>
+<p><img src="/../image/image-20250504182245845.png" alt="image-20250504182245845"></p>
+<hr>
+<h3 id="10-5-多队列调度（MQMS）"><a href="#10-5-多队列调度（MQMS）" class="headerlink" title="10.5 多队列调度（MQMS）"></a><strong>10.5 多队列调度（MQMS）</strong></h3><p><strong>原理</strong>：</p>
+<ul>
+<li>每个 CPU 维护独立队列。</li>
+</ul>
+<p><strong>优点</strong>：</p>
+<ul>
+<li>缓存亲和度高。</li>
+<li>同步开销低。</li>
+</ul>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li>负载可能不均，需迁移进程。</li>
+</ul>
+<p><strong>改进</strong>：</p>
+<ul>
+<li><strong>负载平衡</strong>：定期迁移进程。</li>
+<li><strong>工作窃取</strong>：空闲 CPU 从其他队列“偷”任务。</li>
+</ul>
+<p><strong>示例</strong>：Linux CFS 使用多队列并结合负载平衡。</p>
+<p><img src="/../image/image-20250504182434412.png" alt="image-20250504182434412"></p>
+<p><img src="/../image/image-20250504182501101.png" alt="image-20250504182501101"></p>
+<hr>
+<h3 id="10-6-Linux-多处理器调度"><a href="#10-6-Linux-多处理器调度" class="headerlink" title="10.6 Linux 多处理器调度"></a><strong>10.6 Linux 多处理器调度</strong></h3><p><strong>实现</strong>：</p>
+<ul>
+<li><strong>CFS（Completely Fair Scheduler）</strong>：基于红黑树的多队列调度。</li>
+<li><strong>负载平衡</strong>：动态迁移任务。</li>
+<li><strong>亲和度优化</strong>：尽量保持进程在同一核。</li>
+</ul>
+<p><strong>特点</strong>：</p>
+<ul>
+<li>结合 SQMS 和 MQMS 优点，适应复杂负载。</li>
+</ul>
+<hr>
+<h3 id="10-7-小结"><a href="#10-7-小结" class="headerlink" title="10.7 小结"></a><strong>10.7 小结</strong></h3><ul>
+<li>多处理器调度需权衡负载均衡、亲和度和同步。</li>
+<li>现代系统（如 Linux）采用混合策略，动态优化。</li>
+<li><strong>思考问题</strong>：多核调度如何支持实时任务？</li>
+</ul>
+<p><strong>参考资料</strong>：</p>
+<ul>
+<li>Linux 内核调度器文档。</li>
+<li>多核调度研究论文。</li>
+</ul>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h2><p>第 4-10 章全面介绍了 CPU 虚拟化的核心概念，从进程抽象到多处理器调度：</p>
+<ul>
+<li><strong>进程抽象</strong>：通过隔离和 API 提供简洁的执行环境。</li>
+<li><strong>受限直接执行</strong>：兼顾性能和安全。</li>
+<li><strong>调度算法</strong>：从简单 FIFO 到复杂 MLFQ 和彩票调度，适应不同负载。</li>
+<li><strong>多核调度</strong>：解决负载均衡和亲和度挑战。</li>
+</ul>
+<p>这些机制是现代操作系统的基石，广泛应用于 Linux、Windows 等系统。理解这些内容有助于深入掌握操作系统设计和优化。</p>
+<p><strong>思考问题</strong>：</p>
+<ul>
+<li>如何设计一个适应云计算的调度器？</li>
+<li>虚拟化技术（如容器）如何影响进程调度？</li>
+</ul>
+<p><strong>参考资料</strong>：</p>
+<ul>
+<li>《Operating Systems: Three Easy Pieces》完整版。</li>
+<li>Linux 内核源代码（sched&#x2F; 目录）。</li>
+<li>Unix 系统编程和调度相关书籍。</li>
+</ul>
+<hr>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>bocchi</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://example.com/2025/06/09/CPU%20Virtualization/">http://example.com/2025/06/09/CPU%20Virtualization/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Operate-System/"># Operate System</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2025/06/09/Memery%20Virtualization/">Memery Virtualization</a>
+            
+            
+            <a class="next" rel="next" href="/2025/06/09/Concurrency/">Concurrency</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© bocchi | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="bocchi">
+
+
+
+
+
+<title>Link Layer | Hexo</title>
+
+
+
+    <link rel="icon" href="/notebook.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Link Layer</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">bocchi</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">June 9, 2025&nbsp;&nbsp;19:12:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/408/">408</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="第六章：链路层与局域网"><a href="#第六章：链路层与局域网" class="headerlink" title="第六章：链路层与局域网"></a>第六章：链路层与局域网</h2><h3 id="6-1-链路层概述"><a href="#6-1-链路层概述" class="headerlink" title="6.1 链路层概述"></a>6.1 链路层概述</h3><ul>
+<li><p><strong>链路层定义与背景</strong>：</p>
+<ul>
+<li>链路层（Data Link Layer）是OSI模型的第二层，负责在<strong>相邻节点</strong>（如主机到路由器、路由器到路由器）之间传输数据。</li>
+<li>核心任务：将网络层的数据包封装为<strong>帧（frame）</strong>，通过物理层传输，并在接收端解封装。</li>
+<li>背景：链路层弥补物理层不可靠的比特传输，提供错误检测、流量控制和介质访问控制（MAC），为网络层提供可靠的“链路”抽象。</li>
+</ul>
+</li>
+<li><p><strong>链路层提供的服务</strong>：</p>
+<ol>
+<li><strong>成帧（Framing）</strong>：<ul>
+<li>将网络层数据包（如IP数据报）封装为帧，添加头部（包含地址、控制信息）和尾部（错误检测码）。</li>
+<li>帧边界通过特定标志（如PPP的0x7E）或前导码（如以太网的10101010）标识。</li>
+</ul>
+</li>
+<li><strong>链路访问</strong>：<ul>
+<li>在共享介质（如WiFi、以太网总线）上，通过MAC协议协调多个节点，避免冲突。</li>
+<li>点对点链路（如PPP）无需复杂访问控制。</li>
+</ul>
+</li>
+<li><strong>可靠传递</strong>：<ul>
+<li>确保帧无差错传输，类似传输层的TCP，但在链路层仅限于相邻节点。</li>
+<li>使用确认（ACK）和重传机制（如WiFi的ARQ）。</li>
+</ul>
+</li>
+<li><strong>错误检测与纠正</strong>：<ul>
+<li>检测比特错误（如翻转的0&#x2F;1），常见于噪声干扰的无线链路。</li>
+<li>某些协议（如FEC）可直接纠正错误。</li>
+</ul>
+</li>
+<li><strong>流量控制</strong>：<ul>
+<li>防止发送方发送速率超出接收方处理能力。</li>
+<li>方法：滑动窗口、暂停帧（如以太网的IEEE 802.3x）。</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p><strong>链路层实现</strong>：</p>
+<ul>
+<li>运行在**网卡（NIC，Network Interface Card）**中，结合硬件（MAC控制器）、固件和驱动软件。</li>
+<li>链路层协议（如以太网、WiFi、PPP）是节点间协议，与网络层的端到端协议（如IP）不同。</li>
+<li>实际案例：以太网网卡（如Intel I219）处理帧封装&#x2F;解封装，WiFi芯片（如Qualcomm QCA）实现CSMA&#x2F;CA。</li>
+</ul>
+</li>
+<li><p><strong>链路类型与场景</strong>：</p>
+<ul>
+<li><strong>点对点链路</strong>：如串行连接（PPP）、光纤链路（SONET）。</li>
+<li><strong>广播链路</strong>：如以太网（早期总线型）、WiFi、DOCSIS（电缆网络）。</li>
+<li>场景举例：<ul>
+<li>家庭WiFi：多个设备通过AP共享无线介质。</li>
+<li>数据中心：高速以太网连接服务器，交换机转发帧。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>图示（文字描述）</strong>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">网络层: IP数据报</span><br><span class="line">↓</span><br><span class="line">链路层: [帧头 | IP数据报 | 帧尾]</span><br><span class="line">↓</span><br><span class="line">物理层: 比特流 (<span class="number">0101.</span>..)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h3 id="6-2-错误检测与纠正技术"><a href="#6-2-错误检测与纠正技术" class="headerlink" title="6.2 错误检测与纠正技术"></a>6.2 错误检测与纠正技术</h3><ul>
+<li><p><strong>背景与重要性</strong>：</p>
+<ul>
+<li>物理层传输可能因噪声、干扰或衰减导致比特错误（如0变1）。</li>
+<li>链路层通过错误检测（发现错误）和纠正（修复错误）提高可靠性。</li>
+<li>应用场景：无线网络（高误码率）、长距离光纤（信号衰减）。</li>
+</ul>
+</li>
+<li><p><strong>错误检测技术</strong>：</p>
+<ol>
+<li><p><strong>奇偶校验（Parity Check）</strong>：</p>
+<ul>
+<li><p><strong>单比特奇偶校验</strong>：</p>
+<ul>
+<li>添加1位校验位，使帧中1的总数为奇数（奇校验）或偶数（偶校验）。</li>
+<li>例：数据10110，奇校验添加0（总数1为3，奇数）；偶校验添加1（总数1为4，偶数）。</li>
+<li>局限：只能检测奇数个比特错误。</li>
+</ul>
+<p><img src="/../image/image-20250416193328938.png" alt="image-20250416193328938"></p>
+</li>
+<li><p><strong>二维奇偶校验</strong>：</p>
+<ul>
+<li>数据按矩阵排列，计算每行和每列的奇偶校验位。</li>
+<li>例：<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">数据: <span class="number">1011</span>  奇校验</span><br><span class="line">      <span class="number">1100</span>  行: <span class="number">1</span></span><br><span class="line">      <span class="number">0110</span>      <span class="number">0</span></span><br><span class="line">列校验:  <span class="number">0101</span></span><br></pre></td></tr></table></figure></li>
+<li>可检测1-3比特错误，定位单比特错误。</li>
+<li>应用：早期存储器、简单链路协议。</li>
+</ul>
+<p><img src="/../image/image-20250416193233345.png" alt="image-20250416193233345"></p>
+</li>
+</ul>
+</li>
+<li><p><strong>校验和（Checksum）</strong>：</p>
+<ul>
+<li>将数据按16位分组，求和（进位加到低位），取反得到校验和。</li>
+<li>发送方：数据+校验和。</li>
+<li>接收方：数据+校验和求和，若结果全1（0xFFFF），则无错误。</li>
+<li>例：<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">数据: <span class="number">0x1234</span>, <span class="number">0x5678</span></span><br><span class="line">求和: <span class="number">0x1234</span> + <span class="number">0x5678</span> = <span class="number">0x68AC</span></span><br><span class="line">进位加低位: <span class="number">0x68</span> + <span class="number">0xAC</span> = <span class="number">0x0114</span></span><br><span class="line">校验和: ~<span class="number">0x0114</span> = <span class="number">0xFEEB</span></span><br></pre></td></tr></table></figure></li>
+<li>应用：IP、TCP、UDP（网络层和传输层），链路层较少使用。</li>
+<li>局限：无法检测某些错误模式（如位移错误）。</li>
+</ul>
+</li>
+<li><p><strong>循环冗余校验（CRC，Cyclic Redundancy Check）</strong>：</p>
+<ul>
+<li><p>基于多项式除法，生成固定长度的校验码（FCS，Frame Check Sequence）。</p>
+</li>
+<li><p><strong>数学原理</strong>：</p>
+<ul>
+<li>数据D视为多项式，生成多项式G为k+1位（k为CRC长度）。</li>
+<li>发送方：D左移k位（追加k个0），除以G，取余数R（k位）作为FCS。</li>
+<li>接收方：收到D+R，除以G，若余数为0，则无错误。</li>
+<li>例（CRC-4，G&#x3D;10011，k&#x3D;4）：<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">数据D: <span class="number">110100</span></span><br><span class="line">D左移<span class="number">4</span>位: <span class="number">1101000000</span></span><br><span class="line">除以G=<span class="number">10011</span>，余数R=<span class="number">1011</span></span><br><span class="line">发送: <span class="number">1101001011</span></span><br><span class="line">接收: <span class="number">1101001011</span> ÷ <span class="number">10011</span> = <span class="number">0</span>（无错误）</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p><strong>性能</strong>：</p>
+<ul>
+<li>可检测所有少于k+1位的突发错误、奇数个比特错误。</li>
+<li>硬件实现高效（移位寄存器）。</li>
+</ul>
+</li>
+<li><p>应用：以太网（CRC-32）、WiFi、SATA、USB。</p>
+</li>
+</ul>
+<p><img src="/../image/image-20250416193529592.png" alt="image-20250416193529592"></p>
+</li>
+</ol>
+</li>
+<li><p><strong>错误纠正技术</strong>：</p>
+<ul>
+<li><strong>前向纠错（FEC，Forward Error Correction）</strong>：<ul>
+<li>添加冗余信息，接收方可直接纠正错误，无需重传。</li>
+<li>常见编码：汉明码、里德-所罗门码（Reed-Solomon）。</li>
+<li>例（汉明码）：<ul>
+<li>数据4位（D1-D4），添加3位校验位（P1-P3）。</li>
+<li>P1校验D1,D2,D4；P2校验D1,D3,D4；P3校验D2,D3,D4。</li>
+<li>可纠正1位错误，检测2位错误。</li>
+</ul>
+</li>
+<li>应用：无线网络（WiFi 6）、卫星通信、存储（如RAID）。</li>
+</ul>
+</li>
+<li><strong>自动重传请求（ARQ，Automatic Repeat reQuest）</strong>：<ul>
+<li>检测到错误后，请求重传。</li>
+<li>结合ACK&#x2F;NACK机制，常见于WiFi、PPP。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>实际案例</strong>：</p>
+<ul>
+<li>以太网：使用CRC-32检测错误，误帧丢弃，依赖上层协议重传。</li>
+<li>WiFi：结合FEC（LDPC码）和ARQ，适应高误码率。</li>
+</ul>
+</li>
+<li><p><strong>图示（CRC过程）</strong>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">发送方: 数据D → D*<span class="number">2</span>^k → 除以G → 余数R → 发送D+R</span><br><span class="line">接收方: 收到D+R → 除以G → 余数=<span class="number">0</span>（无错误）或非<span class="number">0</span>（有错误）</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h3 id="6-3-多路访问控制协议（MAC协议）"><a href="#6-3-多路访问控制协议（MAC协议）" class="headerlink" title="6.3 多路访问控制协议（MAC协议）"></a>6.3 多路访问控制协议（MAC协议）</h3><ul>
+<li><p><strong>问题背景</strong>：</p>
+<ul>
+<li>广播链路（如WiFi、以太网总线）中，多个节点共享介质，可能同时发送导致<strong>冲突（collision）</strong>。</li>
+<li>MAC协议协调访问，目标是高效、公平、无冲突。</li>
+</ul>
+</li>
+<li><p><strong>MAC协议分类</strong>：</p>
+<ol>
+<li><p><strong>信道划分协议（Channel Partitioning）</strong>：</p>
+<ul>
+<li><strong>时分多路复用（TDM，Time Division Multiplexing）</strong>：<ul>
+<li>时间分为固定时隙，每个节点轮流使用。</li>
+<li>例：4节点，每节点每4个时隙发送一次。</li>
+<li>优点：无冲突，延迟可预测。</li>
+<li>缺点：低效（无数据的节点浪费时隙）。</li>
+<li>应用：GSM蜂窝网络、SONET。</li>
+</ul>
+</li>
+<li><strong>频分多路复用（FDM，Frequency Division Multiplexing）</strong>：<ul>
+<li>频谱分为频段，每个节点分配专用频段。</li>
+<li>例：WiFi的2.4GHz分为13个信道，AP选择不同信道。</li>
+<li>优点：无冲突，适合稳定流量。</li>
+<li>缺点：频谱利用率低，动态调整复杂。</li>
+<li>应用：广播电视、WiFi信道分配。</li>
+</ul>
+</li>
+<li><strong>码分多路复用（CDMA，Code Division Multiple Access）</strong>：<ul>
+<li>节点用唯一编码调制数据，同时发送不冲突。</li>
+<li>例：3G网络中，手机用正交码区分信号。</li>
+<li>优点：高容量，抗干扰。</li>
+<li>缺点：实现复杂，需精确同步。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>随机访问协议（Random Access）</strong>：</p>
+<ul>
+<li><p>节点随时发送，冲突后通过特定机制解决。</p>
+</li>
+<li><p><strong>ALOHA</strong>：</p>
+<ul>
+<li><strong>纯ALOHA</strong>：<ul>
+<li>节点直接发送帧，冲突后随机等待时间t（均匀分布[0,T]）重传。</li>
+<li>效率：最大吞吐量约18.4%（因冲突频繁）。</li>
+</ul>
+</li>
+<li><strong>时隙ALOHA</strong>：<ul>
+<li>时间分槽，节点在时隙开始发送。</li>
+<li>冲突后随机选择下一时隙重传。</li>
+<li>效率：最大吞吐量约36.8%（冲突概率降低）。</li>
+</ul>
+</li>
+<li>应用：早期卫星网络、无线传感器网络。</li>
+</ul>
+<p><img src="/../image/image-20250416193738434.png" alt="image-20250416193738434"></p>
+</li>
+<li><p><strong>CSMA（Carrier Sense Multiple Access）</strong>：</p>
+<ul>
+<li><p><strong>原理</strong>：发送前监听信道（载波侦听），空闲时发送。</p>
+</li>
+<li><p><strong>CSMA&#x2F;CD（Collision Detection）</strong>：</p>
+<ul>
+<li>检测到冲突后立即停止发送，发送干扰信号（Jam Signal），随机等待后重传。</li>
+<li>等待时间：二进制指数退避（Binary Exponential Backoff）。<ul>
+<li>第n次冲突后，随机选择[0, 2^n-1]个时隙等待。</li>
+<li>例：第3次冲突，等待[0,7]个时隙。</li>
+</ul>
+</li>
+<li>应用：早期以太网（10BASE5、10BASE2）。</li>
+<li>现代以太网（全双工交换机）无需CSMA&#x2F;CD。</li>
+</ul>
+<p><img src="/../image/image-20250416194008488.png" alt="image-20250416194008488"></p>
+</li>
+<li><p><strong>CSMA&#x2F;CA（Collision Avoidance）</strong>：</p>
+<ul>
+<li>无法实时检测冲突（如无线电信号延迟），通过避免冲突提高效率。</li>
+<li>机制：<ul>
+<li>空闲时等待DIFS（Distributed Inter-Frame Space）。</li>
+<li>随机退避（Backoff Window），倒计时后发送。</li>
+<li>可选RTS&#x2F;CTS（Request to Send&#x2F;Clear to Send）握手，解决隐藏终端问题。</li>
+</ul>
+</li>
+<li>确认：接收方发送ACK确认。</li>
+<li>应用：WiFi（IEEE 802.11）。</li>
+</ul>
+</li>
+<li><p><strong>隐藏终端问题</strong>：</p>
+<ul>
+<li>节点A和C看不到彼此，同时向B发送导致冲突。</li>
+<li>解决：RTS&#x2F;CTS广播保留信道。</li>
+</ul>
+</li>
+<li><p><strong>暴露终端问题</strong>：</p>
+<ul>
+<li>节点B发送给A，C误以为不能发送给D。</li>
+<li>解决：RTS&#x2F;CTS区分目标接收方。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>效率分析：</p>
+<ul>
+<li>CSMA&#x2F;CD：高吞吐量，冲突检测减少浪费。</li>
+<li>CSMA&#x2F;CA：吞吐量较低（因退避和ACK开销），但适合无线环境。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>轮流协议（Taking Turns）</strong>：</p>
+<ul>
+<li><strong>轮询（Polling）</strong>：<ul>
+<li>主节点轮询从节点，询问是否需要发送。</li>
+<li>例：蓝牙主设备控制从设备发送。</li>
+<li>优点：无冲突，适合低速网络。</li>
+<li>缺点：主节点故障导致网络瘫痪，轮询延迟高。</li>
+</ul>
+</li>
+<li><strong>令牌传递（Token Passing）</strong>：<ul>
+<li>令牌在节点间循环，持有令牌的节点可发送。</li>
+<li>例：令牌环（IEEE 802.5）、FDDI。</li>
+<li>优点：公平，无冲突，适合高负载。</li>
+<li>缺点：令牌丢失或节点故障需复杂恢复机制。</li>
+<li>应用：工业控制网络、早期LAN。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p><strong>实际应用与案例</strong>：</p>
+<ul>
+<li><strong>以太网</strong>：早期使用CSMA&#x2F;CD（同轴电缆），现代交换式以太网无需冲突检测。</li>
+<li><strong>WiFi</strong>：CSMA&#x2F;CA，结合RTS&#x2F;CTS和ACK，适应高误码率和隐藏终端。</li>
+<li><strong>DOCSIS</strong>：电缆网络使用轮询，上行由CMTS（电缆调制解调器终端系统）调度。</li>
+<li><strong>5G NR</strong>：结合TDM和CDMA，基站动态分配时隙和编码。</li>
+</ul>
+</li>
+<li><p><strong>图示（CSMA&#x2F;CA过程）</strong>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">节点A: 监听 → DIFS → 随机退避 → 发送RTS → 等待CTS → 发送数据 → 接收ACK</span><br><span class="line">节点B:           接收RTS → 发送CTS → 接收数据 → 发送ACK</span><br><span class="line">其他节点:         NAV（网络分配向量）暂停发送</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h3 id="6-4-链路层寻址"><a href="#6-4-链路层寻址" class="headerlink" title="6.4 链路层寻址"></a>6.4 链路层寻址</h3><ul>
+<li><strong>MAC地址</strong>：<ul>
+<li><strong>定义</strong>：链路层的物理地址，48位（6字节），用冒号分隔的12个十六进制数表示（如00:14:22:DD:EE:FF）。</li>
+<li><strong>结构</strong>：<ul>
+<li>前24位：OUI（组织唯一标识），由IEEE分配给厂商。</li>
+<li>后24位：厂商分配的设备序列号。</li>
+<li>例：00:14:22为D-Link厂商。</li>
+</ul>
+</li>
+<li><strong>特性</strong>：<ul>
+<li>全局唯一，烧录在网卡ROM中。</li>
+<li>广播地址：FF:FF:FF:FF:FF:FF。</li>
+<li>多播地址：最低位为1（如01:00:5E:xx:xx:xx用于IP多播）。</li>
+</ul>
+</li>
+<li><strong>与IP地址的区别</strong>：<ul>
+<li>MAC：链路层，固定，局域网内有效。</li>
+<li>IP：网络层，逻辑地址，可变，跨网络有效。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>地址解析协议（ARP，Address Resolution Protocol）</strong>：<ul>
+<li><strong>功能</strong>：在同一子网内，将IP地址映射到MAC地址。</li>
+<li><strong>工作过程</strong>：<ol>
+<li>发送方广播ARP请求帧：<ul>
+<li>包含源IP、源MAC、目标IP，目标MAC为FF:FF:FF:FF:FF:FF。</li>
+<li>例：主机A（192.168.1.1）询问192.168.1.2的MAC。</li>
+</ul>
+</li>
+<li>目标主机（或代理）单播ARP响应：<ul>
+<li>包含目标IP和目标MAC。</li>
+<li>例：主机B（192.168.1.2）回复其MAC（如00:14:22:DD:EE:FF）。</li>
+</ul>
+</li>
+<li>发送方更新ARP表，缓存映射（IP→MAC）。</li>
+</ol>
+</li>
+<li><strong>ARP表</strong>：<ul>
+<li>动态表，存储IP-MAC映射，定期刷新（典型TTL为20分钟）。</li>
+<li>例：<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">IP地址         MAC地址          TTL</span><br><span class="line"><span class="number">192.168</span>.<span class="number">1.2</span>    <span class="number">00</span>:<span class="number">14</span>:<span class="number">22</span>:DD:EE:FF  <span class="number">1200</span>秒</span><br></pre></td></tr></table></figure></li>
+<li>查看命令：Linux（<code>arp -a</code>）、Windows（<code>arp -a</code>）。</li>
+</ul>
+</li>
+<li><strong>ARP欺骗（ARP Spoofing）</strong>：<ul>
+<li>攻击者发送虚假ARP响应，冒充目标MAC，导致流量被劫持。</li>
+<li>防御：静态ARP表、ARP检测工具（如arpwatch）。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>帧的发送与接收</strong>：<ul>
+<li><strong>发送</strong>：<ul>
+<li>帧头部包含源MAC、目标MAC、类型字段。</li>
+<li>通过ARP获取目标MAC，封装帧后交给物理层。</li>
+</ul>
+</li>
+<li><strong>接收</strong>：<ul>
+<li>网卡检查目标MAC：<ul>
+<li>匹配本机MAC：处理帧。</li>
+<li>广播&#x2F;多播：根据协议处理。</li>
+<li>不匹配：丢弃。</li>
+</ul>
+</li>
+<li>混杂模式（Promiscuous Mode）：网卡接收所有帧，用于抓包（如Wireshark）。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>跨子网通信</strong>：<ul>
+<li>数据包通过路由器转发，每跳重新解析MAC地址：<ol>
+<li>源主机ARP解析网关MAC，发送帧。</li>
+<li>路由器解封装，查找路由表，转发到下一跳，重新ARP解析。</li>
+</ol>
+</li>
+<li>例：<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">主机A → 路由器R1（MAC1） → 路由器R2（MAC2） → 主机B</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><strong>实际案例</strong>：<ul>
+<li>家庭网络：PC通过ARP获取路由器MAC，发送数据到互联网。</li>
+<li>数据中心：VXLAN封装以太网帧，MAC地址在虚拟网络中映射。</li>
+</ul>
+</li>
+<li><strong>图示（ARP过程）</strong>：<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">主机A: 广播ARP请求 [谁有<span class="number">192.168</span>.<span class="number">1.2</span>？]</span><br><span class="line">主机B: 单播ARP响应 [<span class="number">192.168</span>.<span class="number">1.2</span>是<span class="number">00</span>:<span class="number">14</span>:<span class="number">22</span>:DD:EE:FF]</span><br><span class="line">主机A: 更新ARP表 → 封装帧 [目标MAC=<span class="number">00</span>:<span class="number">14</span>:<span class="number">22</span>:DD:EE:FF]</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h3 id="6-5-以太网"><a href="#6-5-以太网" class="headerlink" title="6.5 以太网"></a>6.5 以太网</h3><ul>
+<li><p><strong>概述</strong>：</p>
+<ul>
+<li>以太网（IEEE 802.3）是最广泛使用的有线局域网技术，从1970年代的Xerox PARC发展而来。</li>
+<li>演变：从共享介质（10Mbps同轴电缆）到现代交换式以太网（100Gbps光纤）。</li>
+<li>优势：简单、可靠、成本低，适配多种物理介质（双绞线、光纤）。</li>
+</ul>
+</li>
+<li><p><strong>以太网帧结构</strong>：</p>
+<ul>
+<li><p><strong>字段</strong>：</p>
+<ul>
+<li><strong>前导码（Preamble）</strong>：7字节（10101010），用于同步。</li>
+<li><strong>帧开始分隔符（SFD）</strong>：1字节（10101011），标记帧开始。</li>
+<li><strong>目标MAC地址</strong>：6字节。</li>
+<li><strong>源MAC地址</strong>：6字节。</li>
+<li><strong>类型字段</strong>：2字节，指示上层协议（如0x0800为IPv4，0x86DD为IPv6）。</li>
+<li><strong>数据</strong>：46-1500字节，包含网络层数据，不足46字节填充（Padding）。</li>
+<li><strong>CRC</strong>：4字节，错误检测（CRC-32）。</li>
+</ul>
+<p><img src="/../image/image-20250416194513233.png" alt="image-20250416194513233"></p>
+</li>
+<li><p><strong>图示</strong>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[前导码 <span class="number">7B</span> | SFD <span class="number">1B</span> | 目标MAC <span class="number">6B</span> | 源MAC <span class="number">6B</span> | 类型 <span class="number">2B</span> | 数据 <span class="number">46</span><span class="number">-1500B</span> | CRC <span class="number">4B</span>]</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>最小帧长</strong>：64字节（不含前导码），确保CSMA&#x2F;CD检测冲突。</p>
+</li>
+<li><p><strong>最大帧长</strong>：1518字节（含VLAN标签1522字节），支持MTU 1500字节。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>以太网演进</strong>：</p>
+<ul>
+<li><strong>早期以太网</strong>：<ul>
+<li>10BASE5（粗同轴电缆）、10BASE2（细同轴电缆），使用CSMA&#x2F;CD。</li>
+<li>集线器（Hub）连接，共享介质，冲突频繁。</li>
+</ul>
+</li>
+<li><strong>快速以太网</strong>：100Mbps（100BASE-TX），双绞线。</li>
+<li><strong>千兆以太网</strong>：1Gbps（1000BASE-T），全双工，无CSMA&#x2F;CD。</li>
+<li><strong>现代以太网</strong>：10Gbps（10GBASE-T）、40Gbps、100Gbps，光纤为主。</li>
+</ul>
+</li>
+<li><p><strong>交换式以太网</strong>：</p>
+<ul>
+<li><strong>以太网交换机</strong>：<ul>
+<li>基于MAC地址表（CAM表，Content Addressable Memory）转发帧。</li>
+<li>存储转发（Store-and-Forward）：接收完整帧，检查CRC后转发。</li>
+<li>直通交换（Cut-Through）：接收头部后立即转发，低延迟。</li>
+</ul>
+</li>
+<li><strong>学习过程</strong>：<ul>
+<li>交换机从源MAC学习端口映射，存储到CAM表。</li>
+<li>例：<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MAC地址           端口    TTL</span><br><span class="line"><span class="number">00</span>:<span class="number">14</span>:<span class="number">22</span>:DD:EE:FF  <span class="number">1</span>      <span class="number">300</span>秒</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><strong>转发规则</strong>：<ul>
+<li>目标MAC匹配：转发到对应端口。</li>
+<li>未知MAC：广播（Flooding）到所有端口（除源端口）。</li>
+<li>广播&#x2F;多播：泛洪。</li>
+</ul>
+</li>
+<li><strong>优点</strong>：<ul>
+<li>隔离冲突域（每个端口一个冲突域）。</li>
+<li>提高带宽利用率，支持全双工。</li>
+</ul>
+</li>
+<li><strong>实际案例</strong>：<ul>
+<li>企业网络：交换机连接PC、服务器，VLAN划分部门网络。</li>
+<li>数据中心：叶脊架构（Leaf-Spine），多层交换机支持高吞吐。</li>
+</ul>
+</li>
+</ul>
+<h3 id="VLAN定义与背景"><a href="#VLAN定义与背景" class="headerlink" title="VLAN定义与背景"></a>VLAN定义与背景</h3><ul>
+<li><strong>定义</strong>：<ul>
+<li>虚拟局域网（Virtual Local Area Network，VLAN）是一种基于IEEE 802.1Q标准的链路层技术，通过逻辑划分将物理网络分割为多个独立的<strong>广播域</strong>。</li>
+<li>VLAN允许在同一物理交换机或跨多个交换机上创建逻辑分离的网络，设备无需物理隔离即可属于不同网络。</li>
+</ul>
+</li>
+<li><strong>背景</strong>：<ul>
+<li>在传统局域网中，所有设备共享同一广播域，广播帧（如ARP请求）会泛洪到所有端口，导致网络拥塞和安全风险。</li>
+<li>VLAN通过逻辑分组隔离广播域，减少不必要流量，提高网络效率和安全性。</li>
+<li>书中强调：VLAN是现代以太网交换网络的核心技术，广泛应用于企业、校园和数据中心网络。</li>
+</ul>
+</li>
+<li><strong>目的</strong>：<ul>
+<li><strong>网络隔离</strong>：将不同部门、用户或应用（如员工、访客、服务器）分配到独立VLAN，增强安全性。</li>
+<li><strong>广播控制</strong>：限制广播域，减少网络拥塞。</li>
+<li><strong>灵活性</strong>：支持动态网络配置，无需重新布线。</li>
+<li><strong>资源优化</strong>：同一物理交换机支持多个逻辑网络。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="VLAN核心概念"><a href="#VLAN核心概念" class="headerlink" title="VLAN核心概念"></a>VLAN核心概念</h3><ul>
+<li><strong>广播域隔离</strong>：<ul>
+<li>同一VLAN内的设备共享一个广播域，广播帧仅在该VLAN内泛洪。</li>
+<li>不同VLAN之间默认隔离，广播和单播流量无法直接互通。</li>
+<li>例：VLAN 10（员工）和VLAN 20（访客）分别处理各自的ARP请求，互不干扰。</li>
+</ul>
+</li>
+<li><strong>逻辑分组</strong>：<ul>
+<li>VLAN基于逻辑而非物理位置，同一VLAN的设备可分布在不同交换机或地理位置。</li>
+<li>例：跨楼层的财务部门设备可分配到同一VLAN 30，通过交换机互联。</li>
+</ul>
+</li>
+<li><strong>VLAN ID</strong>：<ul>
+<li>每个VLAN由12位标识符（VLAN ID，VID）唯一标识，范围为1-4094（0和4095保留）。</li>
+<li>支持最多4096个VLAN，满足大多数企业需求。</li>
+<li>例：VLAN 100表示研发网络，VLAN 200表示市场网络。</li>
+</ul>
+</li>
+</ul>
+<h3 id="VLAN配置方式"><a href="#VLAN配置方式" class="headerlink" title="VLAN配置方式"></a>VLAN配置方式</h3><ul>
+<li>VLAN的分配方式决定了设备如何关联到特定VLAN。书中介绍了以下常见方式：<ol>
+<li><strong>基于端口（Port-based VLAN）</strong>：<ul>
+<li>交换机端口静态绑定到特定VLAN。</li>
+<li>例：端口1-4分配VLAN 10（员工），端口5-8分配VLAN 20（访客）。</li>
+<li><strong>优点</strong>：配置简单，适合固定设备（如PC、打印机）。</li>
+<li><strong>缺点</strong>：设备移动需重新配置端口。</li>
+<li><strong>应用</strong>：小型办公室、校园网络。</li>
+</ul>
+</li>
+<li><strong>基于MAC地址（MAC-based VLAN）</strong>：<ul>
+<li>根据设备MAC地址动态分配VLAN。</li>
+<li>例：MAC 00:14:22:DD:EE:FF绑定VLAN 30（财务）。</li>
+<li><strong>优点</strong>：支持移动设备，端口无关。</li>
+<li><strong>缺点</strong>：MAC表维护复杂，适合小型网络。</li>
+<li><strong>应用</strong>：无线网络，用户设备动态接入。</li>
+</ul>
+</li>
+<li><strong>基于协议（Protocol-based VLAN）</strong>：<ul>
+<li>根据上层协议类型（如IPv4、IPv6）分配VLAN。</li>
+<li>例：IPv4流量到VLAN 40，IPv6到VLAN 50。</li>
+<li><strong>优点</strong>：支持混合协议环境。</li>
+<li><strong>缺点</strong>：配置复杂，较少使用。</li>
+<li><strong>应用</strong>：过渡期网络（IPv4到IPv6）。</li>
+</ul>
+</li>
+<li><strong>基于子网（Subnet-based VLAN）</strong>：<ul>
+<li>根据IP子网分配VLAN，需结合三层交换机或路由器。</li>
+<li>例：192.168.10.0&#x2F;24到VLAN 10，192.168.20.0&#x2F;24到VLAN 20。</li>
+<li><strong>优点</strong>：与IP地址规划一致，易于管理。</li>
+<li><strong>缺点</strong>：依赖三层设备，配置复杂。</li>
+<li><strong>应用</strong>：企业网络，结合DHCP分配。</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<h3 id="VLAN端口类型"><a href="#VLAN端口类型" class="headerlink" title="VLAN端口类型"></a>VLAN端口类型</h3><ul>
+<li>交换机端口根据处理VLAN标签的方式分为以下类型，书中详细描述了其作用：<ol>
+<li><strong>Access端口</strong>：<ul>
+<li><strong>功能</strong>：连接终端设备（如PC、打印机），只属于一个VLAN。</li>
+<li><strong>帧处理</strong>：<ul>
+<li>接收：Untagged帧，交换机关联到端口的VLAN。</li>
+<li>发送：去除VLAN标签，发送Untagged帧。</li>
+</ul>
+</li>
+<li><strong>例</strong>：PC连接交换机端口（VLAN 10），发送标准以太网帧，交换机添加VID 10转发。</li>
+<li><strong>应用</strong>：终端设备连接，简单网络。</li>
+</ul>
+</li>
+<li><strong>Trunk端口</strong>：<ul>
+<li><strong>功能</strong>：连接交换机或路由器，承载多个VLAN的流量。</li>
+<li><strong>帧处理</strong>：<ul>
+<li>接收：Tagged帧，基于VID转发。</li>
+<li>发送：Tagged帧，保留VLAN标签。</li>
+<li><strong>Native VLAN</strong>：未标记帧默认关联的VLAN（通常VLAN 1）。</li>
+</ul>
+</li>
+<li><strong>例</strong>：交换机A到B的Trunk端口，承载VLAN 10、20、30的Tagged帧。</li>
+<li><strong>应用</strong>：交换机互联、路由器连接。</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<p><img src="/../image/image-20250416201444064.png" alt="image-20250416201444064"></p>
+</li>
+<li><p><strong>实际案例</strong>：</p>
+<ul>
+<li>家庭网络：千兆交换机连接路由器、智能电视、PC。</li>
+<li>云服务：AWS Direct Connect使用100Gbps以太网连接客户数据中心。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="6-6-链路层交换机"><a href="#6-6-链路层交换机" class="headerlink" title="6.6 链路层交换机"></a>6.6 链路层交换机</h3><ul>
+<li><strong>功能与角色</strong>：<ul>
+<li>连接主机和网络设备，隔离冲突域，基于MAC地址转发帧。</li>
+<li>运行链路层协议，无需IP地址（管理型交换机可能有IP用于配置）。</li>
+</ul>
+</li>
+<li><strong>工作原理</strong>：<ul>
+<li><strong>存储转发</strong>：<ul>
+<li>接收完整帧，检查CRC，查询CAM表，转发到目标端口。</li>
+<li>延迟较高，但可靠性强。</li>
+</ul>
+</li>
+<li><strong>直通交换</strong>：<ul>
+<li>接收帧头部（目标MAC）后立即转发。</li>
+<li>延迟低，适合低误码率场景。</li>
+</ul>
+</li>
+<li><strong>自适应交换</strong>：根据网络条件动态选择存储转发或直通。</li>
+</ul>
+</li>
+<li><strong>MAC地址表（CAM表）</strong>：<ul>
+<li><strong>学习</strong>：从接收帧的源MAC和端口更新表。</li>
+<li><strong>老化</strong>：表项长时间未更新（默认300秒）删除。</li>
+<li><strong>容量</strong>：现代交换机支持数千到数十万条表项。</li>
+<li>例：<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MAC地址           端口    TTL</span><br><span class="line"><span class="number">00</span>:<span class="number">14</span>:<span class="number">22</span>:DD:EE:FF  <span class="number">1</span>      <span class="number">300</span>秒</span><br><span class="line"><span class="number">00</span>:<span class="number">16</span>:<span class="number">33</span>:AA:BB:CC  <span class="number">2</span>      <span class="number">280</span>秒</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><strong>与路由器的区别</strong>：<ul>
+<li><strong>交换机</strong>：<ul>
+<li>链路层，基于MAC地址，同一子网。</li>
+<li>转发速度快，硬件实现（ASIC）。</li>
+</ul>
+</li>
+<li><strong>路由器</strong>：<ul>
+<li>网络层，基于IP地址，跨子网。</li>
+<li>转发复杂，需路由表查找。</li>
+</ul>
+</li>
+<li>例：<ul>
+<li>交换机：办公室PC间通信。</li>
+<li>路由器：办公室网络到互联网。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>环路问题与生成树协议（STP，IEEE 802.1D）</strong>：<ul>
+<li><strong>广播风暴</strong>：<ul>
+<li>交换机环路导致广播帧无限循环，耗尽带宽。</li>
+<li>例：交换机A→B→C→A循环转发ARP请求。</li>
+</ul>
+</li>
+<li><strong>STP工作原理</strong>：<ol>
+<li>选举根交换机（最低桥ID，基于优先级+MAC）。</li>
+<li>每个非根交换机选择到根的最短路径（根端口）。</li>
+<li>每段链路选择指定端口（Designated Port），其他端口阻塞（Blocking）。</li>
+<li>阻塞端口可动态激活（拓扑变化时）。</li>
+</ol>
+</li>
+<li><strong>改进</strong>：<ul>
+<li>RSTP（快速生成树，IEEE 802.1w）：收敛时间从50秒降到几秒。</li>
+<li>MSTP（多生成树，IEEE 802.1s）：支持VLAN分组，优化带宽。</li>
+</ul>
+</li>
+<li><strong>实际案例</strong>：<ul>
+<li>企业网络：STP防止冗余链路形成环路。</li>
+<li>数据中心：TRILL（透明互连）或SPB（最短路径桥接）替代STP。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>实际案例</strong>：<ul>
+<li>小型办公室：8口千兆交换机连接PC、打印机，自动学习MAC表。</li>
+<li>大型网络：核心交换机（Cisco Catalyst）支持VLAN、STP、QoS。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="6-7-点对点协议（PPP）"><a href="#6-7-点对点协议（PPP）" class="headerlink" title="6.7 点对点协议（PPP）"></a>6.7 点对点协议（PPP）</h3><ul>
+<li><strong>用途与背景</strong>：<ul>
+<li>PPP（Point-to-Point Protocol）用于点对点链路（如拨号、DSL、串行线路）。</li>
+<li>常见于ISP与用户之间的最后一公里连接。</li>
+<li>设计目标：简单、可靠，支持多种网络层协议（IP、IPX）。</li>
+</ul>
+</li>
+<li><strong>特性</strong>：<ul>
+<li><strong>成帧</strong>：封装网络层数据，添加标志字段（0x7E）标识帧边界。</li>
+<li><strong>错误检测</strong>：使用CRC（通常16位或32位）。</li>
+<li><strong>连接管理</strong>：<ul>
+<li>LCP（Link Control Protocol）：建立、配置、测试和终止链路。</li>
+<li>状态机：Dead → Establish → Authenticate → Network → Terminate。</li>
+</ul>
+</li>
+<li><strong>认证</strong>：<ul>
+<li>PAP（Password Authentication Protocol）：明文用户名&#x2F;密码。</li>
+<li>CHAP（Challenge Handshake Authentication Protocol）：加密挑战&#x2F;响应，安全性更高。</li>
+</ul>
+</li>
+<li><strong>网络层协议协商</strong>：<ul>
+<li>NCP（Network Control Protocol）：为IP、IPX等配置参数（如IP地址）。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>PPP帧结构</strong>：<ul>
+<li><strong>字段</strong>：<ul>
+<li>标志（Flag）：1字节，0x7E。</li>
+<li>地址：1字节，通常0xFF（广播，点对点无需）。</li>
+<li>控制：1字节，通常0x03（无编号帧）。</li>
+<li>协议：2字节，指示上层协议（如0x0021为IP）。</li>
+<li>数据：可变长度，包含网络层数据。</li>
+<li>CRC：2或4字节，错误检测。</li>
+<li>标志：1字节，0x7E。</li>
+</ul>
+</li>
+<li><strong>图示</strong>：<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[Flag <span class="number">0x7E</span> | Address <span class="number">0xFF</span> | Control <span class="number">0x03</span> | Protocol <span class="number">2B</span> | Data | CRC | Flag <span class="number">0x7E</span>]</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><strong>局限</strong>：<ul>
+<li>不支持多点广播，仅限点对点。</li>
+<li>无复杂流量控制或优先级机制。</li>
+<li>现代网络中被以太网、MPLS或VPN取代。</li>
+</ul>
+</li>
+<li><strong>实际案例</strong>：<ul>
+<li>拨号上网：用户调制解调器通过PPP连接ISP，CHAP认证。</li>
+<li>MPLS网络：PPP在串行链路上承载IP流量。</li>
+</ul>
+</li>
+<li><strong>与HDLC的对比</strong>：<ul>
+<li>PPP基于HDLC（高级数据链路控制），但更灵活，支持多协议。</li>
+<li>HDLC：面向比特，复杂帧格式，应用较少（如ISDN）。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="6-8-链路虚拟化：网络即链路层"><a href="#6-8-链路虚拟化：网络即链路层" class="headerlink" title="6.8 链路虚拟化：网络即链路层"></a>6.8 链路虚拟化：网络即链路层</h3><ul>
+<li><strong>背景</strong>：<ul>
+<li>现代网络通过虚拟化技术将网络层或更高层协议视为“链路层”，构建逻辑链路。</li>
+<li>驱动因素：云计算、数据中心、SDN（软件定义网络）需求。</li>
+</ul>
+</li>
+<li><strong>MPLS（多协议标签交换，Multiprotocol Label Switching）</strong>：<ul>
+<li><strong>原理</strong>：<ul>
+<li>在IP层和链路层之间插入固定长度标签（4字节）。</li>
+<li>标签包含20位标签值、3位优先级、1位栈指示。</li>
+<li>路由器（LSR，Label Switching Router）基于标签转发，无需查IP路由表。</li>
+</ul>
+</li>
+<li><strong>工作过程</strong>：<ol>
+<li>入口LSR添加标签（Label Push）。</li>
+<li>中间LSR交换标签（Label Swap）。</li>
+<li>出口LSR移除标签（Label Pop）。</li>
+</ol>
+</li>
+<li><strong>优点</strong>：<ul>
+<li>快速转发（标签查找比IP路由快）。</li>
+<li>支持流量工程（指定路径）。</li>
+<li>构建VPN（隔离客户网络）。</li>
+</ul>
+</li>
+<li><strong>实际案例</strong>：<ul>
+<li>ISP骨干网：MPLS优化流量，降低延迟。</li>
+<li>企业VPN：MPLS连接分支办公室。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>VXLAN（虚拟扩展LAN）</strong>：<ul>
+<li><strong>原理</strong>：<ul>
+<li>封装以太网帧到UDP数据包，跨IP网络传输。</li>
+<li>VXLAN ID（24位）：支持16M个虚拟网络（比VLAN的4096多）。</li>
+</ul>
+</li>
+<li><strong>应用</strong>：<ul>
+<li>数据中心：跨地域连接虚拟机，构建Overlay网络。</li>
+<li>云服务：AWS VPC使用VXLAN隔离租户。</li>
+</ul>
+</li>
+<li><strong>图示</strong>：<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[外层IP头 | UDP头 | VXLAN头 | 内层以太网帧]</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><strong>SDN（软件定义网络）</strong>：<ul>
+<li><strong>原理</strong>：<ul>
+<li>控制平面与数据平面分离，集中控制器（如OpenFlow）管理交换机。</li>
+<li>交换机基于流表（Flow Table）转发，匹配MAC、IP、端口等。</li>
+</ul>
+</li>
+<li><strong>优点</strong>：<ul>
+<li>动态配置链路层策略（如VLAN、QoS）。</li>
+<li>支持网络虚拟化，适应云计算。</li>
+</ul>
+</li>
+<li><strong>实际案例</strong>：<ul>
+<li>Google B4：SDN优化全球数据中心网络。</li>
+<li>企业网络：VMware NSX使用SDN管理虚拟交换机。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>实际案例</strong>：<ul>
+<li>云服务：Azure使用VXLAN和SDN构建虚拟网络。</li>
+<li>电信网络：5G核心网通过MPLS和SDN实现低延迟切片。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="6-9-无线链路与网络"><a href="#6-9-无线链路与网络" class="headerlink" title="6.9 无线链路与网络"></a>6.9 无线链路与网络</h3><ul>
+<li><strong>特点与挑战</strong>：<ul>
+<li><strong>共享介质</strong>：多个设备竞争无线电频谱，易冲突。</li>
+<li><strong>高误码率</strong>：信号衰减、干扰（其他WiFi、微波炉）、多径效应。</li>
+<li><strong>移动性</strong>：节点动态加入&#x2F;离开，需切换AP或基站。</li>
+<li><strong>能耗</strong>：移动设备需低功耗协议（如蓝牙低功耗）。</li>
+</ul>
+</li>
+<li><strong>无线链路类型</strong>：<ul>
+<li><strong>单跳基础设施网络</strong>：<ul>
+<li>WiFi（IEEE 802.11）：通过AP连接。</li>
+<li>蜂窝网络（4G&#x2F;5G）：通过基站连接。</li>
+</ul>
+</li>
+<li><strong>单跳无基础设施</strong>：<ul>
+<li>蓝牙：点对点连接（如耳机到手机）。</li>
+<li>WiFi Direct：设备间直接通信。</li>
+</ul>
+</li>
+<li><strong>多跳网络</strong>：<ul>
+<li>移动自组织网络（MANET）：节点动态路由（如战场通信）。</li>
+<li>无线传感器网络：低功耗设备协作（如环境监测）。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>WiFi（IEEE 802.11）</strong>：<ul>
+<li><strong>MAC协议</strong>：CSMA&#x2F;CA。<ul>
+<li>过程：<ol>
+<li>监听信道，空闲时等待DIFS。</li>
+<li>随机退避（竞争窗口，Contention Window，如[0,31]）。</li>
+<li>发送数据，接收ACK。</li>
+<li>可选RTS&#x2F;CTS解决隐藏终端。</li>
+</ol>
+</li>
+<li>确认机制：接收方发送ACK，未收到ACK则重传。</li>
+</ul>
+</li>
+<li><strong>帧结构</strong>：<ul>
+<li>类似以太网，但包含4个MAC地址字段（支持AP中继）。</li>
+<li>控制字段：指示帧类型（数据、RTS、CTS、ACK）。</li>
+</ul>
+</li>
+<li><strong>物理层</strong>：<ul>
+<li>调制：BPSK、QPSK、QAM（WiFi 6支持1024-QAM）。</li>
+<li>频段：2.4GHz（长距离，干扰多）、5GHz（高速，衰减快）、6GHz（WiFi 6E）。</li>
+<li>多用户：OFDMA（WiFi 6），支持多设备并发。</li>
+</ul>
+</li>
+<li><strong>速率适配</strong>：<ul>
+<li>根据信噪比（SNR）动态调整调制和编码（如64-QAM到BPSK）。</li>
+<li>例：近距离高SNR用256-QAM，远距离低SNR用QPSK。</li>
+</ul>
+</li>
+<li><strong>版本演进</strong>：<ul>
+<li>802.11n：300Mbps，MIMO（多输入多输出）。</li>
+<li>802.11ac：1Gbps，5GHz，MU-MIMO。</li>
+<li>802.11ax（WiFi 6）：10Gbps，OFDMA，6GHz。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>移动性管理</strong>：<ul>
+<li><strong>AP切换</strong>：<ul>
+<li>移动设备检测信号强度，关联新AP（Reassociation）。</li>
+<li>IEEE 802.11r（快速漫游）：减少切换延迟。</li>
+</ul>
+</li>
+<li><strong>IP地址更新</strong>：<ul>
+<li>跨子网切换需DHCP分配新IP。</li>
+<li>移动IP或SDN优化无缝连接。</li>
+</ul>
+</li>
+<li><strong>实际案例</strong>：<ul>
+<li>机场WiFi：用户从一个AP切换到另一个，保持视频流畅。</li>
+<li>5G网络：基站切换（Handover）支持高速移动（如高铁）。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>蓝牙与Zigbee</strong>：<ul>
+<li><strong>蓝牙</strong>：<ul>
+<li>低功耗，短距离（10-100m），主从轮询。</li>
+<li>应用：耳机、键盘、IoT设备。</li>
+</ul>
+</li>
+<li><strong>Zigbee</strong>：<ul>
+<li>低功耗，网状网络，支持数千节点。</li>
+<li>应用：智能家居（如Philips Hue灯）。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>实际案例</strong>：<ul>
+<li>家庭WiFi：路由器支持WiFi 6，多个设备并发流媒体。</li>
+<li>工业IoT：Zigbee网络监控工厂传感器。</li>
+<li>城市网络：5G小基站覆盖密集区域。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="总结与关键点"><a href="#总结与关键点" class="headerlink" title="总结与关键点"></a>总结与关键点</h3><ul>
+<li><strong>链路层核心任务</strong>：<ul>
+<li>封装帧、可靠传输、错误检测、介质访问、寻址。</li>
+<li>区分点对点（PPP）和广播链路（以太网、WiFi）。</li>
+</ul>
+</li>
+<li><strong>关键技术深入理解</strong>：<ul>
+<li><strong>错误检测</strong>：<ul>
+<li>CRC：多项式除法，硬件高效，检测突发错误。</li>
+<li>FEC：汉明码、LDPC，适合无线高误码率。</li>
+</ul>
+</li>
+<li><strong>MAC协议</strong>：<ul>
+<li>CSMA&#x2F;CD（以太网）：冲突检测，指数退避。</li>
+<li>CSMA&#x2F;CA（WiFi）：冲突避免，RTS&#x2F;CTS，ACK。</li>
+<li>信道划分（TDM&#x2F;FDM）：公平但低效。</li>
+</ul>
+</li>
+<li><strong>寻址</strong>：<ul>
+<li>MAC地址：48位，唯一标识。</li>
+<li>ARP：IP到MAC映射，广播请求&#x2F;单播响应。</li>
+</ul>
+</li>
+<li><strong>以太网</strong>：<ul>
+<li>帧结构：前导码、MAC地址、类型、CRC。</li>
+<li>交换机：CAM表学习，隔离冲突域。</li>
+<li>VLAN：逻辑隔离，802.1Q标签。</li>
+</ul>
+</li>
+<li><strong>无线网络</strong>：<ul>
+<li>WiFi：CSMA&#x2F;CA，OFDMA（WiFi 6），移动性管理。</li>
+<li>挑战：隐藏终端、高误码率、能耗。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>现代趋势</strong>：<ul>
+<li><strong>链路虚拟化</strong>：MPLS（标签转发）、VXLAN（Overlay网络）、SDN（集中控制）。</li>
+<li><strong>高速网络</strong>：100Gbps以太网、WiFi 6&#x2F;7、5G NR。</li>
+<li><strong>智能化</strong>：AI优化WiFi信道选择、SDN动态调度。</li>
+</ul>
+</li>
+<li><strong>实际应用场景</strong>：<ul>
+<li>数据中心：VXLAN和SDN构建虚拟网络，100Gbps以太网支持高吞吐。</li>
+<li>家庭网络：WiFi 6路由器支持多设备，PPP用于DSL认证。</li>
+<li>电信：5G和MPLS优化低延迟和高可靠性。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="复习与实践建议"><a href="#复习与实践建议" class="headerlink" title="复习与实践建议"></a>复习与实践建议</h3><ol>
+<li><strong>理论掌握</strong>：<ul>
+<li>熟悉链路层服务，比较链路层与网络层&#x2F;传输层的职责。</li>
+<li>理解CRC计算（手动推导简单示例）、CSMA&#x2F;CD和CSMA&#x2F;CA的流程。</li>
+<li>记忆以太网帧结构、ARP过程、VLAN标签格式。</li>
+</ul>
+</li>
+<li><strong>实践练习</strong>：<ul>
+<li><strong>抓包分析</strong>：用Wireshark捕获以太网帧、ARP请求、WiFi控制帧（RTS&#x2F;CTS）。</li>
+<li><strong>配置交换机</strong>：模拟器（如Packet Tracer）配置VLAN、STP。</li>
+<li><strong>无线网络</strong>：分析家庭WiFi信道干扰，调整2.4GHz&#x2F;5GHz设置。</li>
+</ul>
+</li>
+<li><strong>数学与代码</strong>：<ul>
+<li>CRC计算：编写Python代码实现CRC-8（生成多项式x^8+x^2+x+1）。<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">crc8</span>(<span class="params">data, poly=<span class="number">0x107</span></span>):  <span class="comment"># x^8+x^2+x+1</span></span><br><span class="line">    crc = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> byte <span class="keyword">in</span> data:</span><br><span class="line">        crc ^= byte &lt;&lt; <span class="number">8</span></span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">8</span>):</span><br><span class="line">            <span class="keyword">if</span> crc &amp; <span class="number">0x8000</span>:</span><br><span class="line">                crc = (crc &lt;&lt; <span class="number">1</span>) ^ poly</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                crc &lt;&lt;= <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> crc &amp; <span class="number">0xFF</span></span><br></pre></td></tr></table></figure></li>
+<li>模拟CSMA&#x2F;CA：编写简单仿真，计算冲突概率和吞吐量。</li>
+</ul>
+</li>
+<li><strong>案例分析</strong>：<ul>
+<li>企业网络：设计VLAN和STP拓扑，防止环路。</li>
+<li>数据中心：比较VXLAN和MPLS在虚拟网络中的优劣。</li>
+<li>家庭WiFi：解决隐藏终端问题（如启用RTS&#x2F;CTS）。</li>
+</ul>
+</li>
+</ol>
+<p>如需更详细的某部分内容（如CRC推导、Wireshark抓包示例、SDN配置）、特定协议的代码实现或图表生成，请进一步说明！</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>bocchi</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://example.com/2025/06/09/Link%20Layer/">http://example.com/2025/06/09/Link%20Layer/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Network/"># Network</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2025/06/09/Network/">Network</a>
+            
+            
+            <a class="next" rel="next" href="/2025/06/09/Application%20Layer/">Application Layer</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© bocchi | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
