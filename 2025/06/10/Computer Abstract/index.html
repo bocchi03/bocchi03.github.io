@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="bocchi">
+
+
+
+
+
+<title>Computer Abstract | my-Blog</title>
+
+
+
+    <link rel="icon" href="/notebook.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Computer Abstract</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">bocchi</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">June 10, 2025&nbsp;&nbsp;18:48:50</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/408/">408</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="1-计算机革命与应用类别-Introduction-Classes-of-Computers"><a href="#1-计算机革命与应用类别-Introduction-Classes-of-Computers" class="headerlink" title="1. 计算机革命与应用类别 (Introduction &amp; Classes of Computers)"></a>1. 计算机革命与应用类别 (Introduction &amp; Classes of Computers)</h3><h4 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h4><p>本节介绍了计算机技术的快速发展和其对社会的深远影响。计算机已经从早期的庞大机器演变为无处不在的设备，涵盖了从智能手机到超级计算机的多种形态。不同类型的计算机因其应用场景而有不同的设计目标和约束。</p>
+<h4 id="详细说明"><a href="#详细说明" class="headerlink" title="详细说明"></a>详细说明</h4><ul>
+<li><p><strong>计算机技术的影响</strong>：</p>
+<ul>
+<li>计算机技术推动了社会的数字化转型，例如移动通信、电子商务、社交媒体和人工智能的普及。</li>
+<li><strong>个人移动设备 (PMDs)</strong>：如智能手机和平板电脑，彻底改变了人们获取信息和交互的方式。</li>
+<li><strong>云计算</strong>：通过服务器和仓库级计算机提供按需计算资源，支持了大规模数据处理和存储。</li>
+<li>技术进步使得计算设备更小巧、便宜且高效，应用范围从个人娱乐到工业自动化。</li>
+</ul>
+</li>
+<li><p><strong>不同类型的计算机及其设计目标</strong>：</p>
+<ol>
+<li><strong>个人移动设备 (PMDs)</strong>：<ul>
+<li><strong>特点</strong>：便携、电池供电、触摸屏界面。</li>
+<li><strong>设计约束</strong>：<ul>
+<li><strong>功耗</strong>：电池寿命是关键，需尽量降低能耗。</li>
+<li><strong>成本</strong>：需保持价格竞争力。</li>
+<li><strong>性能</strong>：需要足够的计算能力支持多媒体、游戏和通信。</li>
+</ul>
+</li>
+<li><strong>示例</strong>：iPhone、Android 智能手机、iPad。</li>
+</ul>
+</li>
+<li><strong>桌面计算机 (Desktop Computing)</strong>：<ul>
+<li><strong>特点</strong>：面向个人用户，提供通用计算能力。</li>
+<li><strong>设计约束</strong>：<ul>
+<li><strong>性能</strong>：强调高性能以支持复杂任务（如视频编辑、游戏）。</li>
+<li><strong>成本</strong>：需在性能和价格之间平衡。</li>
+<li><strong>功耗</strong>：相对次要，但仍需考虑能源效率。</li>
+</ul>
+</li>
+<li><strong>示例</strong>：家用 PC、办公电脑。</li>
+</ul>
+</li>
+<li><strong>服务器 (Servers)</strong>：<ul>
+<li><strong>特点</strong>：为网络提供计算和存储服务，支持多用户访问。</li>
+<li><strong>设计约束</strong>：<ul>
+<li><strong>高可用性</strong>：需保证 24&#x2F;7 运行，尽量减少宕机时间。</li>
+<li><strong>可扩展性</strong>：能够通过添加硬件来提升性能。</li>
+<li><strong>吞吐量</strong>：处理大量并发请求的能力。</li>
+<li><strong>成本和功耗</strong>：需优化长期运营成本。</li>
+</ul>
+</li>
+<li><strong>示例</strong>：企业级服务器、云服务中的虚拟机。</li>
+</ul>
+</li>
+<li><strong>仓库级计算机 (Warehouse-Scale Computers - WSCs)</strong>：<ul>
+<li><strong>特点</strong>：为云计算和大数据处理设计的大型数据中心。</li>
+<li><strong>设计约束</strong>：<ul>
+<li><strong>总拥有成本 (TCO)</strong>：包括硬件、电力、冷却和维护的综合成本。</li>
+<li><strong>能效</strong>：数据中心耗电量巨大，需优化每瓦特的计算性能。</li>
+<li><strong>规模</strong>：支持数千到数十万台服务器协同工作。</li>
+</ul>
+</li>
+<li><strong>示例</strong>：Google、Amazon AWS、Microsoft Azure 的数据中心。</li>
+</ul>
+</li>
+<li><strong>嵌入式计算机 (Embedded Computers)</strong>：<ul>
+<li><strong>特点</strong>：集成在其他设备中，执行特定功能。</li>
+<li><strong>设计约束</strong>：<ul>
+<li><strong>成本</strong>：需极低的制造成本以适应大规模生产。</li>
+<li><strong>功耗</strong>：通常由电池或有限电源供电。</li>
+<li><strong>实时性</strong>：需在严格的时间约束内完成任务（如汽车刹车系统）。</li>
+</ul>
+</li>
+<li><strong>示例</strong>：汽车中的电子控制单元 (ECU)、智能家电、医疗设备。</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h3 id="2-计算机设计的七大思想-Seven-Great-Ideas-in-Computer-Architecture"><a href="#2-计算机设计的七大思想-Seven-Great-Ideas-in-Computer-Architecture" class="headerlink" title="2. 计算机设计的七大思想 (Seven Great Ideas in Computer Architecture)"></a>2. 计算机设计的七大思想 (Seven Great Ideas in Computer Architecture)</h3><h4 id="核心概念-1"><a href="#核心概念-1" class="headerlink" title="核心概念"></a>核心概念</h4><p>这七个思想是计算机体系结构设计的核心原则，贯穿于硬件和软件的开发。它们帮助设计者应对复杂性、提高性能并适应技术进步。</p>
+<h4 id="详细说明-1"><a href="#详细说明-1" class="headerlink" title="详细说明"></a>详细说明</h4><ol>
+<li><p><strong>设计的抽象层次化</strong></p>
+<ul>
+<li>计算机系统通过多层抽象降低复杂性：<ul>
+<li><strong>底层</strong>：晶体管、逻辑门等硬件电路。</li>
+<li><strong>中层</strong>：处理器、存储器等模块。</li>
+<li><strong>高层</strong>：操作系统、编程语言等软件。</li>
+</ul>
+</li>
+<li>每一层隐藏了下层的实现细节，程序员只需关注当前层的接口。例如，高级语言程序员无需了解晶体管的工作原理。</li>
+</ul>
+</li>
+<li><p><strong>加速比极靠事件（Amdahl定律）</strong></p>
+<ul>
+<li>性能优化的关键是针对系统瓶颈（即“最耗时部分”）进行改进。</li>
+<li>Amdahl定律指出：系统加速比受限于不可并行化的部分。例如，若程序只有50%可并行化，即使并行部分加速无穷大，总体加速比也不会超过2倍。</li>
+<li>优化时需识别关键路径（如CPU密集型任务或I&#x2F;O瓶颈）。</li>
+</ul>
+</li>
+<li><p><strong>通过并行提高性能</strong></p>
+<ul>
+<li>并行计算通过同时执行多个任务提升性能：<ul>
+<li><strong>指令级并行（ILP）</strong>：处理器在单核内并行执行多条指令。</li>
+<li><strong>线程级并行（TLP）</strong>：多核处理器同时运行多个线程。</li>
+<li><strong>任务级并行</strong>：分布式系统中多个节点协同工作。</li>
+</ul>
+</li>
+<li>现代多核处理器（如Intel Core i7）利用并行性显著提升性能。</li>
+</ul>
+</li>
+<li><p><strong>通过流水线提高性能</strong></p>
+<ul>
+<li>流水线将指令执行分为多个阶段（如取指、解码、执行），每个阶段同时处理不同指令，类似工厂流水线。</li>
+<li>优点：提高吞吐量（单位时间内完成的指令数）。</li>
+<li>缺点：可能因数据依赖或分支预测错误导致流水线停顿。</li>
+</ul>
+</li>
+<li><p><strong>通过预测提高性能</strong></p>
+<ul>
+<li>预测技术通过“猜测”未来行为减少等待时间：<ul>
+<li><strong>分支预测</strong>：预测条件分支的跳转方向，减少流水线停顿。</li>
+<li><strong>数据预测</strong>：预取可能需要的数据到缓存。</li>
+</ul>
+</li>
+<li>现代处理器（如ARM Cortex系列）使用复杂的分支预测算法提升效率。</li>
+</ul>
+</li>
+<li><p><strong>存储层次</strong></p>
+<ul>
+<li>存储系统通过层次化设计平衡速度、容量和成本：<ul>
+<li><strong>寄存器</strong>：最快、最小，位于CPU内部。</li>
+<li><strong>缓存</strong>：快速、容量稍大，靠近处理器。</li>
+<li><strong>主存（DRAM）</strong>：容量较大，速度较慢。</li>
+<li><strong>磁盘&#x2F;SSD</strong>：容量最大，速度最慢。</li>
+</ul>
+</li>
+<li>存储层次利用<strong>局部性原理</strong>（时间局部性和空间局部性）优化数据访问。</li>
+</ul>
+</li>
+<li><p><strong>通过冗余提高可靠性</strong></p>
+<ul>
+<li>冗余技术通过备份或纠错机制提升系统可靠性：<ul>
+<li><strong>奇偶校验</strong>：检测存储器中的单比特错误。</li>
+<li><strong>纠错码（ECC）</strong>：检测并纠正多比特错误，常用于服务器内存。</li>
+<li><strong>RAID</strong>：通过磁盘冗余防止数据丢失。</li>
+</ul>
+</li>
+<li>这些方法在高可靠性场景（如数据中心）尤为重要</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="3-程序之下的世界-Below-Your-Program"><a href="#3-程序之下的世界-Below-Your-Program" class="headerlink" title="3. 程序之下的世界 (Below Your Program)"></a>3. 程序之下的世界 (Below Your Program)</h3><h4 id="核心概念-2"><a href="#核心概念-2" class="headerlink" title="核心概念"></a>核心概念</h4><p>计算机系统是一个分层结构，从用户程序到硬件实现，每一层通过抽象与上下层交互。理解这些层次有助于掌握硬件和软件的协同工作。</p>
+<h4 id="详细说明-2"><a href="#详细说明-2" class="headerlink" title="详细说明"></a>详细说明</h4><ul>
+<li><p><strong>分层结构</strong>：</p>
+<ol>
+<li><strong>应用软件 (Application Software)</strong>：<ul>
+<li>用高级语言（HLL，如 C++、Java、Python）编写，面向用户需求。</li>
+<li>示例：浏览器、游戏、办公软件。</li>
+</ul>
+</li>
+<li><strong>系统软件 (System Software)</strong>：<ul>
+<li><p><strong>编译器</strong>：将高级语言翻译为汇编语言或机器语言。</p>
+<ul>
+<li>过程：源代码 -&gt; 汇编代码 -&gt; 机器代码。</li>
+<li>示例：GCC 编译器将 C 代码翻译为 x86 指令。</li>
+</ul>
+<p><img src="/../image/image-20250503174124224.png" alt="image-20250503174124224"></p>
+</li>
+<li><p><strong>操作系统 (OS)</strong>：</p>
+<ul>
+<li>管理硬件资源（CPU、内存、I&#x2F;O）。</li>
+<li>提供服务（如文件系统、进程管理）。</li>
+<li>示例：Windows、Linux、macOS。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>硬件 (Hardware)</strong>：<ul>
+<li>物理组件，包括处理器、内存、I&#x2F;O 设备。</li>
+<li>处理器执行指令，内存存储数据，I&#x2F;O 设备与外界交互。</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p><strong>层次交互</strong>：</p>
+<ul>
+<li>每一层通过定义良好的接口与上下层通信。例如，操作系统通过系统调用与应用交互，通过硬件驱动与硬件交互。</li>
+<li>这种分层结构降低了复杂性，使开发者无需了解所有细节即可工作。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="4-硬件-软件接口-The-Hardware-Software-Interface"><a href="#4-硬件-软件接口-The-Hardware-Software-Interface" class="headerlink" title="4. 硬件&#x2F;软件接口 (The Hardware&#x2F;Software Interface)"></a>4. 硬件&#x2F;软件接口 (The Hardware&#x2F;Software Interface)</h3><h4 id="核心概念-3"><a href="#核心概念-3" class="headerlink" title="核心概念"></a>核心概念</h4><p>指令集架构 (ISA) 是硬件和软件之间的关键接口，定义了处理器能执行的指令集和操作方式。它是软件和硬件的“契约”，允许不同硬件实现支持相同的软件。</p>
+<h4 id="详细说明-3"><a href="#详细说明-3" class="headerlink" title="详细说明"></a>详细说明</h4><ul>
+<li><p><strong>指令集架构 (ISA)</strong>：</p>
+<ul>
+<li><strong>定义</strong>：ISA 规定了处理器的指令集、寄存器、内存寻址模式和数据类型。</li>
+<li><strong>作用</strong>：<ul>
+<li>软件（编译器、操作系统）根据 ISA 生成机器指令。</li>
+<li>硬件根据 ISA 实现指令的执行。</li>
+</ul>
+</li>
+<li><strong>主要类型</strong>：<ul>
+<li><strong>CISC（复杂指令集计算）</strong>：如 x86，指令复杂且多样，适合复杂任务。</li>
+<li><strong>RISC（精简指令集计算）</strong>：如 ARM、RISC-V，指令简单且统一，适合高效流水线。</li>
+</ul>
+</li>
+<li><strong>示例</strong>：ARM 指令集用于智能手机，x86 用于桌面和服务器。</li>
+</ul>
+</li>
+<li><p><strong>应用程序二进制接口 (ABI)</strong>：</p>
+<ul>
+<li><strong>定义</strong>：ABI 结合了 ISA 和操作系统接口，定义了程序如何与系统交互。</li>
+<li><strong>内容</strong>：包括调用约定（如函数如何传递参数）、系统调用接口。</li>
+<li><strong>作用</strong>：确保二进制代码在兼容的系统上运行。</li>
+<li><strong>示例</strong>：Linux 上的 x86_64 ABI。</li>
+</ul>
+</li>
+<li><p><strong>实现 (Implementation)</strong>：</p>
+<ul>
+<li><strong>定义</strong>：ISA 的具体硬件实现，包括微架构设计。</li>
+<li><strong>特点</strong>：同一 ISA 可有多种实现，性能、功耗和成本不同。</li>
+<li><strong>示例</strong>：<ul>
+<li>x86 ISA：Intel Core 和 AMD Ryzen 是不同实现。</li>
+<li>ARM ISA：Apple M1 和 Qualcomm Snapdragon 是不同实现。</li>
+</ul>
+</li>
+<li><strong>意义</strong>：实现决定了性能和效率，但软件无需修改即可运行。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="5-打开机箱：计算机的组成部分-Under-the-Hood"><a href="#5-打开机箱：计算机的组成部分-Under-the-Hood" class="headerlink" title="5. 打开机箱：计算机的组成部分 (Under the Hood)"></a>5. 打开机箱：计算机的组成部分 (Under the Hood)</h3><h4 id="核心概念-4"><a href="#核心概念-4" class="headerlink" title="核心概念"></a>核心概念</h4><p>任何计算机都由五个基本组成部分构成：输入、输出、存储器、数据通路和控制器。这些组件协同工作以执行程序。</p>
+<h4 id="详细说明-4"><a href="#详细说明-4" class="headerlink" title="详细说明"></a>详细说明</h4><ul>
+<li><p><strong>五个经典组成部分</strong>：</p>
+<ol>
+<li><strong>输入 (Input)</strong>：<ul>
+<li><strong>功能</strong>：接收外部数据或指令。</li>
+<li><strong>设备</strong>：键盘、鼠标、触摸屏、传感器。</li>
+<li><strong>示例</strong>：用户通过键盘输入命令。</li>
+</ul>
+</li>
+<li><strong>输出 (Output)</strong>：<ul>
+<li><strong>功能</strong>：向用户或外部设备展示结果。</li>
+<li><strong>设备</strong>：显示器、打印机、扬声器。</li>
+<li><strong>示例</strong>：屏幕显示计算结果。</li>
+</ul>
+</li>
+<li><strong>存储器 (Memory)</strong>：<ul>
+<li><strong>功能</strong>：存储程序和数据。</li>
+<li><strong>类型</strong>：<ul>
+<li><strong>主存 (Main Memory &#x2F; Primary Memory)</strong>：<ul>
+<li>通常为 DRAM（动态随机访问存储器）。</li>
+<li>特点：快速、易失性（断电丢失数据）。</li>
+<li>示例：运行程序的代码和数据存储在 DRAM 中。</li>
+</ul>
+</li>
+<li><strong>辅存 (Secondary Memory)</strong>：<ul>
+<li>包括硬盘 (HDD)、固态硬盘 (SSD)。</li>
+<li>特点：非易失性、容量大、速度慢。</li>
+<li>示例：操作系统和用户文件存储在 SSD 上。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>数据通路 (Datapath)</strong>：<ul>
+<li><strong>功能</strong>：执行算术和逻辑运算。</li>
+<li><strong>组件</strong>：算术逻辑单元 (ALU)、寄存器。</li>
+<li><strong>示例</strong>：ALU 执行加法或比较操作。</li>
+</ul>
+</li>
+<li><strong>控制器 (Control)</strong>：<ul>
+<li><strong>功能</strong>：根据指令协调数据通路、内存和 I&#x2F;O 的操作。</li>
+<li><strong>组件</strong>：控制单元、程序计数器 (PC)。</li>
+<li><strong>示例</strong>：控制器决定下一条指令的执行顺序。</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p><strong>处理器 (Processor &#x2F; CPU)</strong>：</p>
+<ul>
+<li><strong>定义</strong>：数据通路和控制器的组合，负责执行指令。</li>
+<li><strong>现代特点</strong>：<ul>
+<li><strong>多核处理器</strong>：包含多个独立核心，可并行执行任务。</li>
+<li><strong>缓存</strong>：内置高速缓存存储常用数据。</li>
+</ul>
+</li>
+<li><strong>示例</strong>：Intel i9、AMD Ryzen 9。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="6-从高级语言到机器语言-From-High-Level-Language-to-Machine-Language"><a href="#6-从高级语言到机器语言-From-High-Level-Language-to-Machine-Language" class="headerlink" title="6. 从高级语言到机器语言 (From High-Level Language to Machine Language)"></a>6. 从高级语言到机器语言 (From High-Level Language to Machine Language)</h3><h4 id="核心概念-5"><a href="#核心概念-5" class="headerlink" title="核心概念"></a>核心概念</h4><p>程序从高级语言到可执行机器代码需要多个翻译步骤，涉及编译器、汇编器、链接器和加载器。</p>
+<h4 id="详细说明-5"><a href="#详细说明-5" class="headerlink" title="详细说明"></a>详细说明</h4><ul>
+<li><p><strong>翻译过程</strong>：</p>
+<ol>
+<li><strong>源代码 (Source Code)</strong>：<ul>
+<li>用高级语言编写，如 C 的 <code>hello.c</code>。</li>
+<li>特点：人类可读，独立于硬件。</li>
+</ul>
+</li>
+<li><strong>编译器 (Compiler)</strong>：<ul>
+<li>将高级语言翻译为汇编语言（如 <code>hello.s</code>）。</li>
+<li>汇编语言是 ISA 的文本表示，每条指令对应一条机器指令。</li>
+<li>示例：C 语句 <code>a = b + c</code> 可能翻译为 <code>add</code> 指令。</li>
+</ul>
+</li>
+<li><strong>汇编器 (Assembler)</strong>：<ul>
+<li>将汇编语言 (<code>hello.s</code>) 翻译为机器语言目标文件 (<code>hello.o</code>)。</li>
+<li>目标文件是二进制格式，包含机器指令和数据。</li>
+</ul>
+</li>
+<li><strong>链接器 (Linker)</strong>：<ul>
+<li>将多个目标文件（包括库文件）合并为可执行文件 (<code>hello.exe</code>)。</li>
+<li>解决外部引用（如库函数 <code>printf</code>）。</li>
+</ul>
+</li>
+<li><strong>加载器 (Loader)</strong>：<ul>
+<li>将可执行文件从磁盘加载到内存，初始化运行环境（如分配内存、设置栈）。</li>
+<li>示例：操作系统在运行 <code>hello.exe</code> 时调用加载器。</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p><strong>意义</strong>：</p>
+<ul>
+<li>这一过程将人类友好的代码转换为硬件可执行的指令。</li>
+<li>每一步优化（如编译器优化）都可能显著影响性能。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="7-技术趋势与功耗墙-Technology-Trends-The-Power-Wall"><a href="#7-技术趋势与功耗墙-Technology-Trends-The-Power-Wall" class="headerlink" title="7. 技术趋势与功耗墙 (Technology Trends &amp; The Power Wall)"></a>7. 技术趋势与功耗墙 (Technology Trends &amp; The Power Wall)</h3><h4 id="核心概念-6"><a href="#核心概念-6" class="headerlink" title="核心概念"></a>核心概念</h4><p>技术进步推动了计算机性能的提升，但功耗和散热问题（功耗墙）限制了传统单核性能的增长，促使设计转向并行计算。</p>
+<h4 id="详细说明-6"><a href="#详细说明-6" class="headerlink" title="详细说明"></a>详细说明</h4><ul>
+<li><p><strong>摩尔定律 (Moore’s Law)</strong>：</p>
+<ul>
+<li><strong>定义</strong>：集成电路上的晶体管数量每18-24个月翻倍。</li>
+<li><strong>影响</strong>：<ul>
+<li>晶体管增多带来更强计算能力、更低成本。</li>
+<li>推动了微处理器、内存和存储的快速发展。</li>
+</ul>
+</li>
+<li><strong>现状</strong>：<ul>
+<li>近年来，晶体管缩小难度增加（工艺从 7nm 到 3nm），成本上升。</li>
+<li>摩尔定律放缓，设计者转向专用芯片（如 AI 加速器）和并行架构。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>功耗墙 (The Power Wall)</strong>：</p>
+<ul>
+<li><strong>问题</strong>：<ul>
+<li>晶体管密度增加和时钟频率提高导致功耗激增。</li>
+<li>动态功耗公式：<br>$$ \ [\text{动态功耗} \propto \text{电容负载} \times \text{电压}^2 \times \text{开关频率}] $$</li>
+<li>高功耗导致散热困难，限制了单核性能提升。</li>
+</ul>
+</li>
+<li><strong>应对</strong>：<ul>
+<li>降低电压：但电压降低受限于工艺。</li>
+<li>降低频率：但频率降低影响性能。</li>
+<li>转向多核：通过并行提升性能而非提高单核频率。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>转向并行 (The Switch to Parallelism)</strong>：</p>
+<ul>
+<li><strong>趋势</strong>：<ul>
+<li>现代处理器包含多个核心（如 4核、8核），每个核心独立执行任务。</li>
+<li>GPU 和专用加速器（如 TPU）支持大规模并行计算。</li>
+</ul>
+</li>
+<li><strong>挑战</strong>：<ul>
+<li>软件需重新设计以利用并行硬件（并行编程）。</li>
+<li>通信开销和同步问题可能限制并行效率。</li>
+</ul>
+</li>
+<li><strong>示例</strong>：多核 CPU 用于服务器，GPU 用于机器学习。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="8-性能-Performance"><a href="#8-性能-Performance" class="headerlink" title="8. 性能 (Performance)"></a>8. 性能 (Performance)</h3><h4 id="核心概念-7"><a href="#核心概念-7" class="headerlink" title="核心概念"></a>核心概念</h4><p>性能是计算机设计的核心目标，衡量系统完成任务的速度。性能受多种因素影响，包括算法、软件和硬件设计。</p>
+<h4 id="详细说明-7"><a href="#详细说明-7" class="headerlink" title="详细说明"></a>详细说明</h4><ul>
+<li><p><strong>性能定义</strong>：</p>
+<ul>
+<li><strong>响应时间 (Response Time &#x2F; Execution Time)</strong>：完成单个任务所需时间，适用于交互式应用。</li>
+<li><strong>吞吐量 (Throughput)</strong>：单位时间内完成的任务量，适用于服务器和批量处理。</li>
+<li><strong>目标</strong>：最小化响应时间或最大化吞吐量。</li>
+</ul>
+</li>
+<li><p><strong>CPU 执行时间公式</strong>：<br>$$[<br>\text{CPU Time} &#x3D; \text{指令数} \times \text{每条指令的时钟周期数 (CPI)} \times \text{时钟周期时间}<br>]$$<br>其中：</p>
+<ul>
+<li><p><strong>指令数 (Instruction Count)</strong>：程序执行的指令总数，取决于算法和编译器。</p>
+</li>
+<li><p><strong>CPI (Cycles Per Instruction)</strong>：每条指令平均需要的时钟周期，取决于 ISA 和硬件实现。</p>
+</li>
+<li><p><strong>时钟周期时间 (Clock Cycle Time)</strong>：时钟周期的持续时间，等于 1 &#x2F; 时钟频率。</p>
+</li>
+<li><p>简化公式：</p>
+<p>$$\large[<br>\text{CPU Time} &#x3D; \frac{\text{指令数} \times \text{CPI}}{\text{时钟频率}}<br>]$$</p>
+</li>
+<li><p><img src="/../image/image-20250503210301114.png" alt="image-20250503210301114"></p>
+</li>
+</ul>
+</li>
+<li><p><strong>影响性能的因素</strong>：</p>
+<ol>
+<li><strong>算法</strong>：<ul>
+<li>直接影响指令数。例如，快速排序比冒泡排序指令数少。</li>
+</ul>
+</li>
+<li><strong>编程语言和编译器</strong>：<ul>
+<li>高级语言可能生成更多指令；优化编译器可减少指令数和 CPI。</li>
+</ul>
+</li>
+<li><strong>指令集架构 (ISA)</strong>：<ul>
+<li>影响指令数、CPI 和时钟周期时间。例如，RISC ISA 指令简单但指令数多。</li>
+</ul>
+</li>
+<li><strong>硬件实现</strong>：<ul>
+<li>微架构（如流水线深度、缓存大小）影响 CPI 和时钟周期时间。</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p><strong>功耗与性能的关系</strong>：</p>
+<ul>
+<li><p>动态功耗公式：<br>$$[<br>\text{动态功耗} \propto \text{电容负载} \times \text{电压}^2 \times \text{开关频率}<br>]$$</p>
+</li>
+<li><p>提高性能（增加频率）通常导致功耗平方级增长，需权衡性能和能效。</p>
+</li>
+<li><p>现代设计通过多核和低功耗模式优化能效。</p>
+</li>
+<li><p>MIPS (milli on instructions per second, 每秒百万条指令）</p>
+<p>$$\large MIPS&#x3D;\frac{指令数}{执行时间 \times 10^6}$$</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>第一章为理解计算机系统奠定了理论和实践基础，强调以下关键点：</p>
+<ul>
+<li><strong>分层抽象</strong>：从高级语言到硬件的层次结构通过 ISA 等接口连接，简化设计和开发。</li>
+<li><strong>七大思想</strong>：提供设计计算机系统的指导原则，涵盖性能、复杂性和可靠性。</li>
+<li><strong>技术趋势</strong>：摩尔定律驱动进步，功耗墙推动并行计算，影响现代处理器设计。</li>
+<li><strong>性能优化</strong>：性能是核心目标，需综合考虑算法、软件和硬件，平衡功耗和成本。</li>
+</ul>
+<p>通过这些内容的深入学习，可以更好地理解计算机体系结构的复杂性以及硬件和软件如何协作以实现高效计算。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>bocchi</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://example.com/2025/06/10/Computer%20Abstract/">http://example.com/2025/06/10/Computer%20Abstract/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Orgnization/"># Orgnization</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2025/06/10/Instruction%20Language%20of%20the%20computer/">Instruction Language of the computer</a>
+            
+            
+            <a class="next" rel="next" href="/2025/06/10/B%20The%20Basics%20of%20Logic%20Design/">B The Basics of Logic Design</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© bocchi | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

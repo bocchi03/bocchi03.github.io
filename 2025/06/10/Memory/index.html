@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="bocchi">
+
+
+
+
+
+<title>Memory | my-Blog</title>
+
+
+
+    <link rel="icon" href="/notebook.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Memory</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">bocchi</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">June 10, 2025&nbsp;&nbsp;18:48:50</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/408/">408</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="第5章-大容量和高速度：开发存储器层次结构"><a href="#第5章-大容量和高速度：开发存储器层次结构" class="headerlink" title="第5章 大容量和高速度：开发存储器层次结构"></a>第5章 大容量和高速度：开发存储器层次结构</h2><h3 id="5-1-引言"><a href="#5-1-引言" class="headerlink" title="5.1 引言"></a>5.1 引言</h3><p>本章的核心目标是解决处理器日益增长的速度与相对较慢的主存储器之间的性能差距，即所谓的“存储墙 (Memory Wall)”。理想的存储器应兼具无限容量、无限速度且零成本，但这在现实中无法实现。因此，计算机设计者采用存储器层次结构 (memory hierarchy)。这一结构基于局部性原理 (principle of locality)，它包含两个方面：</p>
+<ul>
+<li><strong>时间局部性 (Temporal Locality)</strong>: 如果一个数据项被访问，那么在不久的将来它很可能再次被访问（例如循环中的变量）。</li>
+<li><strong>空间局部性 (Spatial Locality)</strong>: 如果一个数据项被访问，那么与它地址相近的数据项也很可能在不久的将来被访问（例如顺序执行的指令，数组元素）。</li>
+</ul>
+<p>通过在靠近处理器的位置设置小而快速的存储器（称为高速缓存 Cache）来存放最近使用或预期会使用的数据和指令，可以显著提高平均访存速度，同时利用大而慢但便宜的存储器来保证容量。</p>
+<p><img src="/../image/image-20250529184043418.png" alt="image-20250529184043418"></p>
+<h3 id="5-2-存储器技术"><a href="#5-2-存储器技术" class="headerlink" title="5.2 存储器技术"></a>5.2 存储器技术</h3><p>构成存储器层次结构的物理设备技术。</p>
+<h4 id="5-2-1-SRAM技术-Static-Random-Access-Memory"><a href="#5-2-1-SRAM技术-Static-Random-Access-Memory" class="headerlink" title="5.2.1 SRAM技术 (Static Random Access Memory)"></a>5.2.1 SRAM技术 (Static Random Access Memory)</h4><ul>
+<li><strong>特点</strong>: 访问速度极快（纳秒级，ns），只要供电就能保持数据，无需刷新。功耗相对较高（尤其在空闲时），每比特成本高，集成度较低。</li>
+<li><strong>原理</strong>: 每个比特使用一对交叉耦合的反相器（形成锁存器，通常由4-6个晶体管构成，最常见的是6T单元）来存储状态。</li>
+<li><strong>用途</strong>: 主要用于CPU的高速缓存 (L1, L2, 有时L3 Cache)，寄存器文件。</li>
+</ul>
+<h4 id="5-2-2-DRAM技术-Dynamic-Random-Access-Memory"><a href="#5-2-2-DRAM技术-Dynamic-Random-Access-Memory" class="headerlink" title="5.2.2 DRAM技术 (Dynamic Random Access Memory)"></a>5.2.2 DRAM技术 (Dynamic Random Access Memory)</h4><ul>
+<li><strong>特点</strong>: 每比特成本低，集成度高（容量大），功耗相对较低。但速度慢于SRAM（几十纳秒级），且需要周期性刷新 (periodic refresh) 以维持数据。</li>
+<li><strong>原理</strong>: 每个比特使用一个晶体管和一个电容器 (1T1C单元) 存储电荷。电容器会随时间漏电，因此必须在电荷消失前（通常是几十毫秒）读出并重写。</li>
+<li><strong>类型</strong>:<ul>
+<li><strong>SDRAM (Synchronous DRAM)</strong>: 与系统时钟同步，提高了性能。</li>
+<li><strong>DDR SDRAM (Double Data Rate SDRAM)</strong>: 在时钟的上升沿和下降沿都能传输数据，有效带宽加倍。后续发展出DDR2, DDR3, DDR4, DDR5等，每一代都在速度、带宽、功耗和密度上有所改进。</li>
+</ul>
+</li>
+<li><strong>组织</strong>: DRAM芯片内部组织为二维阵列，通过行地址选通 (RAS) 和列地址选通 (CAS) 访问。</li>
+<li><strong>用途</strong>: 主存储器 (Main Memory)。</li>
+</ul>
+<p><img src="/../image/image-20250529184211005.png" alt="image-20250529184211005"></p>
+<h4 id="5-2-3-闪存-Flash-Memory"><a href="#5-2-3-闪存-Flash-Memory" class="headerlink" title="5.2.3 闪存 (Flash Memory)"></a>5.2.3 闪存 (Flash Memory)</h4><ul>
+<li><strong>特点</strong>: 非易失性 (non-volatile)，即断电后数据不丢失。读写速度介于DRAM和磁盘之间。有限的擦写次数 (endurance)。</li>
+<li><strong>原理</strong>: 基于浮栅晶体管 (Floating Gate MOSFET)，通过在浮栅中存储电荷来表示0或1。擦除操作通常以块 (block) 为单位，写入操作以页 (page) 为单位。</li>
+<li><strong>类型</strong>:<ul>
+<li><strong>NOR Flash</strong>: 读速度快，支持按字节随机访问，适合存储代码（如BIOS）。擦写慢，成本高。</li>
+<li><strong>NAND Flash</strong>: 擦写速度快，密度高，成本低，适合大容量数据存储。读操作以页为单位，不支持字节级随机访问。需要更复杂的错误检测和纠正 (ECC) 机制以及损耗均衡 (wear leveling) 算法来延长寿命。</li>
+</ul>
+</li>
+<li><strong>用途</strong>: 固态硬盘 (Solid State Drives, SSDs)，U盘，存储卡，智能手机存储，嵌入式系统。</li>
+</ul>
+<h4 id="5-2-4-磁盘存储器-Disk-Memory-Magnetic-Disk"><a href="#5-2-4-磁盘存储器-Disk-Memory-Magnetic-Disk" class="headerlink" title="5.2.4 磁盘存储器 (Disk Memory &#x2F; Magnetic Disk)"></a>5.2.4 磁盘存储器 (Disk Memory &#x2F; Magnetic Disk)</h4><ul>
+<li><strong>特点</strong>: 非易失性，容量极大，每比特成本最低。但由于是机械装置，访问速度最慢（毫秒级，ms）。</li>
+<li><strong>原理</strong>: 数据存储在涂有磁性材料的盘片 (platters) 上。盘片高速旋转，磁头 (read&#x2F;write heads) 在执行臂 (actuator arm) 的带动下在盘片半径方向上移动（寻道），进行数据的读写。</li>
+<li><strong>访问时间构成</strong>:<ul>
+<li><strong>寻道时间 (Seek Time)</strong>: 磁头移动到目标磁道所需的时间。</li>
+<li><strong>旋转延迟 (Rotational Latency)</strong>: 等待盘片旋转到目标扇区到达磁头下方所需的时间（平均为盘片旋转半周的时间）。</li>
+<li><strong>传输时间 (Transfer Time)</strong>: 数据从盘片传输到内存或反之所需的时间，取决于转速和数据量。</li>
+<li><strong>控制器开销 (Controller Overhead)</strong>: 控制器处理命令的时间。</li>
+</ul>
+</li>
+<li><strong>用途</strong>: 大容量数据存储（如HDD），备份。逐渐被SSD在许多应用中取代，但在成本敏感的大容量存储领域仍有地位。</li>
+</ul>
+<h3 id="5-3-Cache的基本原理"><a href="#5-3-Cache的基本原理" class="headerlink" title="5.3 Cache的基本原理"></a>5.3 Cache的基本原理</h3><p>CPU Cache 是一个位于CPU和主存之间的小型、快速的SRAM存储器，用于减少CPU访问主存的平均时间。</p>
+<p><img src="/../image/image-20250529184959590.png" alt="image-20250529184959590"></p>
+<h4 id="5-3-1-Cache访问"><a href="#5-3-1-Cache访问" class="headerlink" title="5.3.1 Cache访问"></a>5.3.1 Cache访问</h4><ul>
+<li>当CPU需要访问内存数据时，它首先提供一个内存地址。</li>
+<li>Cache硬件检查该地址对应的数据是否已在Cache中。</li>
+<li><strong>Cache块 (Cache Block &#x2F; Cache Line)</strong>: Cache和主存之间数据传输的最小单位。典型大小为32, 64, 或128字节。</li>
+<li><strong>地址映射</strong>: CPU发出的地址通常被分为三部分：<ul>
+<li><strong>标记 (Tag)</strong>: 用于区分存储在同一个Cache索引位置的不同主存块。</li>
+<li><strong>索引 (Index)</strong>: 用于选择Cache中的某一行 (set)。</li>
+<li><strong>块内偏移 (Block Offset &#x2F; Byte Offset)</strong>: 用于在Cache块中选择所需的字节。</li>
+</ul>
+</li>
+<li><strong>Cache命中 (Cache Hit)</strong>: 如果目标数据在Cache中（通过比较标记和有效位确认），则直接从Cache中读取数据或向Cache写入数据。Hit Time是访问Cache并获取数据的时间。</li>
+<li><strong>Cache缺失 (Cache Miss)</strong>: 如果目标数据不在Cache中，则发生缺失。CPU必须等待数据从下一级存储器（如主存）加载到Cache中。</li>
+</ul>
+<h5 id="示例：直接映射Cache的地址划分"><a href="#示例：直接映射Cache的地址划分" class="headerlink" title="示例：直接映射Cache的地址划分"></a>示例：直接映射Cache的地址划分</h5><p>假设一个直接映射Cache具有以下特性：</p>
+<ul>
+<li><strong>Cache容量</strong>：1024字节 (1KB)</li>
+<li><strong>块大小</strong>：64字节</li>
+<li><strong>主存地址位数</strong>：32位</li>
+</ul>
+<p>计算：</p>
+<ul>
+<li>Cache中的块数 &#x3D; Cache容量 &#x2F; 块大小 &#x3D; (1024 &#x2F; 64 &#x3D; 16) 块。</li>
+<li>块内偏移位数 $$(b &#x3D; \log_2(\text{块大小}) &#x3D; \log_2(64) &#x3D; 6) 位$$。</li>
+<li>索引位数$$ (i &#x3D; \log_2(\text{Cache中的块数}) &#x3D; \log_2(16) &#x3D; 4)$$ 位。</li>
+<li>标记位数 $$(t &#x3D; \text{地址总位数} - i - b &#x3D; 32 - 4 - 6 &#x3D; 22) $$位。</li>
+<li><img src="/../image/image-20250529194350215.png" alt="image-20250529194350215"></li>
+</ul>
+<p>因此，一个32位地址会被这样解释：</p>
+<p><code>| 标记 (22位) | 索引 (4位) | 块内偏移 (6位) |</code></p>
+<p><img src="/../image/image-20250529193800861.png" alt="image-20250529193800861"></p>
+<h5 id="Cache命中-Cache-Hit"><a href="#Cache命中-Cache-Hit" class="headerlink" title="Cache命中 (Cache Hit)"></a>Cache命中 (Cache Hit)</h5><ul>
+<li>使用地址中的索引字段选择Cache中的特定行。</li>
+<li>读取该行的标记字段和有效位 (Valid bit)。</li>
+<li>如果有效位为1，则将读取到的标记与CPU地址中的标记字段进行比较（通过比较器 Comparator）。</li>
+<li>如果两个标记匹配，则发生Cache命中。</li>
+<li>使用地址中的块内偏移字段从Cache行的数据部分选择所需的字节&#x2F;字，并通过多路选择器 (Multiplexer) 发送给CPU。</li>
+</ul>
+<p><strong>Hit Time (命中时间)</strong>: 完成上述查找并返回数据给CPU所需的时间。对于L1 Cache，这通常是1到几个CPU周期。</p>
+<h5 id="Cache缺失-Cache-Miss"><a href="#Cache缺失-Cache-Miss" class="headerlink" title="Cache缺失 (Cache Miss)"></a>Cache缺失 (Cache Miss)</h5><p>如果有效位为0，或者标记不匹配，则发生Cache缺失。CPU必须从下一级存储器获取数据。</p>
+<h4 id="5-3-2-Cache缺失处理"><a href="#5-3-2-Cache缺失处理" class="headerlink" title="5.3.2 Cache缺失处理"></a>5.3.2 Cache缺失处理</h4><ul>
+<li><strong>步骤</strong>:<ol>
+<li>CPU流水线暂停 (stall)。</li>
+<li>向下一级存储器发出读取请求，请求包含缺失数据的整个块 (block)。</li>
+<li>下一级存储器将数据块传输到Cache。</li>
+<li>Cache将该块存入一个合适的位置（可能需要替换一个现有的块，根据替换策略）。</li>
+<li>将所需数据（通常是块中的一个字或字节）转发给CPU。</li>
+<li>CPU恢复执行。</li>
+</ol>
+</li>
+<li><strong>缺失代价 (Miss Penalty)</strong>: 从发出请求到数据返回给CPU并CPU恢复执行的总时间。这是影响性能的关键因素。</li>
+<li><strong>早期重启 (Early Restart)</strong>: 一旦请求的字到达，就立即发送给CPU，允许CPU提前恢复执行，而块的剩余部分继续填充。</li>
+<li><strong>临界字优先 (Critical Word First)</strong>: 请求的字优先从内存中获取并发送到Cache和CPU，然后填充块的其余部分。</li>
+</ul>
+<h4 id="5-3-3-写操作处理"><a href="#5-3-3-写操作处理" class="headerlink" title="5.3.3 写操作处理"></a>5.3.3 写操作处理</h4><ul>
+<li>当CPU执行写指令（如 store）时，数据必须更新。</li>
+<li><strong>写命中 (Write Hit)</strong>:<ul>
+<li><strong>写直通 (Write-Through)</strong>: 数据同时写入Cache和主存（或下一级存储器）。<ul>
+<li><strong>优点</strong>: 实现简单，主存数据始终最新（简化一致性）。</li>
+<li><strong>缺点</strong>: 每次写操作都会访问主存，速度较慢。通常配合写缓冲器 (Write Buffer) 使用，CPU将数据写入写缓冲器后即可继续执行，写缓冲器负责异步将数据写入主存，以减少CPU等待。但写缓冲器满了也会导致CPU暂停。</li>
+</ul>
+</li>
+<li><strong>写回 (Write-Back &#x2F; Copy-Back)</strong>: 数据仅写入Cache块，并将该块标记为“脏 (dirty bit &#x2F; modified bit)”。脏块只有在被替换出Cache时才写回主存。<ul>
+<li><strong>优点</strong>: 写操作速度快（只访问Cache），多次写入同一块只需一次主存写回，减少总线流量。</li>
+<li><strong>缺点</strong>: 实现复杂，主存数据可能不是最新的（需要处理一致性问题），发生替换时若块是脏的，则需要两次内存访问（写回旧块，读入新块）。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>写未命中 (Write Miss)</strong>:<ul>
+<li><strong>写分配 (Write Allocate &#x2F; Fetch on Write)</strong>: 先将缺失的块从主存读入Cache，然后如同写命中一样处理（通常与写回策略配合使用）。利用了写的空间局部性。</li>
+<li><strong>非写分配 (No-Write Allocate &#x2F; Write Around)</strong>: 数据直接写入主存，不将块调入Cache。通常与写直通策略配合使用。适用于不常被后续读写的数据。</li>
+</ul>
+</li>
+</ul>
+<h4 id="5-3-4-Cache实例：Intrinsity-FastMATH处理器"><a href="#5-3-4-Cache实例：Intrinsity-FastMATH处理器" class="headerlink" title="5.3.4 Cache实例：Intrinsity FastMATH处理器"></a>5.3.4 Cache实例：Intrinsity FastMATH处理器</h4><p>这类处理器通常针对数字信号处理 (DSP) 或特定计算任务优化。其Cache设计可能包括：</p>
+<ul>
+<li>分离的L1指令Cache和数据Cache (哈佛结构)。</li>
+<li>特定大小、相联度和块大小，以平衡命中率和访问延迟。</li>
+<li>可能包含特殊的内存访问指令或Scratchpad Memory (一种由软件管理的快速片上内存，不是传统意义上的Cache)。</li>
+</ul>
+<h4 id="5-3-5-小结"><a href="#5-3-5-小结" class="headerlink" title="5.3.5 小结"></a>5.3.5 小结</h4><p>Cache通过利用局部性原理，在CPU和主存之间提供了一个快速的数据通路。其基本操作涉及命中&#x2F;缺失判断、缺失处理以及写策略的选择。这些设计决策对系统性能有重大影响。</p>
+<h3 id="5-4-Cache性能的评估和改进"><a href="#5-4-Cache性能的评估和改进" class="headerlink" title="5.4 Cache性能的评估和改进"></a>5.4 Cache性能的评估和改进</h3><p>主要目标是降低平均访存时间 (Average Memory Access Time, AMAT)。</p>
+<p><img src="/../image/image-20250529195208992.png" alt="image-20250529195208992"></p>
+<p><img src="/../image/image-20250529184538679.png" alt="image-20250529184538679"></p>
+<p>其中：</p>
+<ul>
+<li><strong>Hit Time</strong>: Cache命中所需时间（包括判断是否命中的时间）。</li>
+<li><strong>Miss Rate</strong>: 访问Cache时发生缺失的比例 (Misses &#x2F; Total Accesses)。</li>
+<li><strong>Miss Penalty</strong>: 处理一次Cache缺失所需的额外时间。</li>
+</ul>
+<p>改进Cache性能可从三方面入手：1. 降低缺失率；2. 降低缺失代价；3. 降低命中时间。</p>
+<h4 id="5-4-1-通过更灵活地放置块来减少Cache缺失-Reducing-Miss-Rate-with-More-Flexible-Block-Placement"><a href="#5-4-1-通过更灵活地放置块来减少Cache缺失-Reducing-Miss-Rate-with-More-Flexible-Block-Placement" class="headerlink" title="5.4.1 通过更灵活地放置块来减少Cache缺失 (Reducing Miss Rate with More Flexible Block Placement)"></a>5.4.1 通过更灵活地放置块来减少Cache缺失 (Reducing Miss Rate with More Flexible Block Placement)</h4><ul>
+<li><p><strong>直接映射 (Direct Mapped)</strong>:</p>
+<ul>
+<li><strong>映射规则</strong>: 主存中的每个块只能映射到Cache中的一个固定行。Cache Index &#x3D; (Block Address) MOD (Number of Cache Blocks)。</li>
+<li><strong>查找</strong>: 只需检查一个Cache行的标记。</li>
+<li><strong>优点</strong>: 硬件简单，命中时间短（无需选择），成本低。</li>
+<li><strong>缺点</strong>: 冲突缺失率高。如果程序交替访问多个映射到同一Cache行的主存块，即使Cache远未存满，也会频繁发生替换。例如，若两个常用数组A和B的起始地址模Cache大小后相同，访问 A[i] 和 B[i] 将导致持续冲突。</li>
+</ul>
+</li>
+<li><p><strong>全相联 (Fully Associative)</strong>:</p>
+<ul>
+<li><strong>映射规则</strong>: 主存中的任何块可以放置在Cache中的任何位置。相当于只有一个组，该组包含Cache中所有的块。</li>
+<li><strong>查找</strong>: 需要并行比较地址标记与Cache中所有行的标记。通常使用内容可寻址存储器 (Content-Addressable Memory, CAM) 来实现这种并行比较。</li>
+<li><strong>优点</strong>: 冲突缺失最少（仅当Cache完全满了才会发生替换，此时发生的缺失是容量缺失或强制性缺失）。</li>
+<li><strong>缺点</strong>: 硬件成本极高，查找功耗大，速度相对较慢。因此，通常只用于非常小的Cache，如TLB中的少数条目，或某些特殊用途的小型数据Cache。</li>
+</ul>
+</li>
+<li><p><strong>N路组相联 (N-way Set Associative)</strong>:</p>
+<ul>
+<li><strong>映射规则</strong>: Cache被划分为若干组 (sets)，每组包含N个块位置（称为“路”，ways）。主存块首先映射到一个特定的组 Set Index &#x3D; (Block Address) MOD (Number of Sets)，然后可以放置在该组的N个位置中的任何一个。</li>
+<li><strong>查找</strong>: 使用索引字段找到正确的组。然后，并行地读取该组中N个块的标记，并与地址中的标记进行比较（需要N个比较器）。如果任一匹配且有效，则命中。一个N路选择器会从N个数据路中选出命中的数据。</li>
+<li><strong>示例 (2路组相联)</strong>: 一个块可以放在组内的两个位置之一。替换时，只需从这两个位置中选择一个。</li>
+<li><strong>优点</strong>: 相比直接映射，显著降低冲突缺失。N越大，冲突越少。</li>
+<li><strong>缺点</strong>: 硬件比直接映射复杂（需要N个比较器和1个N选1多路选择器），命中时间可能略长，功耗也更高。</li>
+</ul>
+</li>
+</ul>
+<p><img src="/../image/image-20250529195248603.png" alt="image-20250529195248603"></p>
+<h4 id="5-4-2-在Cache中查找块-Finding-a-Block-in-the-Cache"><a href="#5-4-2-在Cache中查找块-Finding-a-Block-in-the-Cache" class="headerlink" title="5.4.2 在Cache中查找块 (Finding a Block in the Cache)"></a>5.4.2 在Cache中查找块 (Finding a Block in the Cache)</h4><ul>
+<li>对于直接映射，使用地址中的索引部分找到Cache行，然后比较该行的标记和地址中的标记部分。</li>
+<li>对于N路组相联，使用地址中的索引部分找到Cache组，然后并行比较该组中N个块的标记与地址中的标记。如果任一匹配且有效位为1，则命中。通常需要N个比较器。</li>
+<li>对于全相联，需要并行比较Cache中所有块的标记。</li>
+<li><strong>有效位 (Valid Bit)</strong>: 每个Cache行都有一个有效位，指示该行中的数据是否有效。初始化时或Cache行被替换后，有效位清零。</li>
+</ul>
+<h4 id="5-4-3-替换块的选择-Choosing-Which-Block-to-Replace-on-a-Miss"><a href="#5-4-3-替换块的选择-Choosing-Which-Block-to-Replace-on-a-Miss" class="headerlink" title="5.4.3 替换块的选择 (Choosing Which Block to Replace on a Miss)"></a>5.4.3 替换块的选择 (Choosing Which Block to Replace on a Miss)</h4><p>当Cache发生缺失且目标组&#x2F;Cache已满时，需要选择一个块进行替换。</p>
+<ul>
+<li><p><strong>随机 (Random)</strong>: 随机选择组中的一个块。实现简单，不需要额外的状态位。性能通常略逊于LRU，但在高度相联的Cache中表现尚可。</p>
+</li>
+<li><p><strong>最近最少使用 (Least Recently Used, LRU)</strong>: 替换掉组中最长时间未被访问的块。</p>
+<ul>
+<li><strong>原理</strong>: 基于时间局部性，认为最近最少使用的块在将来也最不可能被访问。</li>
+<li><strong>实现</strong>: 真正的LRU对于N&gt;2路组相联来说硬件实现复杂。例如，对于4路组相联，每个组需要维护4个块的访问顺序，可能需要多个计数器或状态位以及复杂的更新逻辑。</li>
+</ul>
+</li>
+<li><p><strong>近似LRU (Pseudo-LRU)</strong>: 教科书中常介绍一种基于每块一个引用位 (reference bit) 的近似方案。当块被访问时，其引用位置1。替换时，控制器可能扫描组内的块，寻找引用位为0的块作为牺牲者。如果所有引用位都为1，则可能将它们全部清0，然后随机选择一个或按特定顺序（如FIFO）选择。另一种树型伪LRU (tree-based pseudo-LRU) 使用一组方向位来指向下一个可能的牺牲者。</p>
+</li>
+<li><p><strong>先进先出 (First-In, First-Out, FIFO &#x2F; Round Robin)</strong>: 替换最早进入该组的块。使用一个简单的循环指针或队列实现。简单，但可能替换掉仍被频繁使用的“老”块（称为Belady异常的一种表现，尽管Belady异常特指页替换）。</p>
+</li>
+</ul>
+<h4 id="5-4-4-使用多级Cache结构减少缺失代价-Reducing-Miss-Penalty-with-Multilevel-Caches"><a href="#5-4-4-使用多级Cache结构减少缺失代价-Reducing-Miss-Penalty-with-Multilevel-Caches" class="headerlink" title="5.4.4 使用多级Cache结构减少缺失代价 (Reducing Miss Penalty with Multilevel Caches)"></a>5.4.4 使用多级Cache结构减少缺失代价 (Reducing Miss Penalty with Multilevel Caches)</h4><p>现代处理器通常采用2到3级Cache：</p>
+<ul>
+<li><strong>L1 Cache</strong>: 最小（几十KB到几百KB），最快（SRAM），直接集成在CPU核心内。通常分为指令Cache (L1I) 和数据Cache (L1D)（哈佛结构）。命中时间短，对整体AMAT贡献大。</li>
+<li><strong>L2 Cache</strong>: 比L1大（几百KB到几MB），稍慢，可能在核心内或核心外但在同一芯片上。作为L1缺失的后备。</li>
+<li><strong>L3 Cache</strong>: 比L2更大（几MB到几十MB），更慢，通常由多个核心共享。作为L2缺失的后备，有助于减少访问主存的次数。</li>
+</ul>
+<p><strong>工作原理</strong>: CPU先访问L1。若L1缺失，则访问L2。若L2缺失，则访问L3（如果有）。若L3也缺失，才访问主存。</p>
+<ul>
+<li><p><strong>局部缺失率 (Local Miss Rate)</strong>: 该级Cache的缺失次数 &#x2F; 到达该级Cache的访问次数。</p>
+</li>
+<li><p><strong>全局缺失率 (Global Miss Rate)</strong>: 该级Cache的缺失次数 &#x2F; CPU发出的总访问次数。</p>
+</li>
+<li><p><strong>AMAT (多级)</strong>:<br>$$[<br>\text{AMAT} &#x3D; \text{Hit Time}<em>{\text{L1}} + \text{Miss Rate}</em>{\text{L1}} \times (\text{Hit Time}<em>{\text{L2}} + \text{Miss Rate}</em>{\text{L2-local}} \times \text{Miss Penalty}_{\text{L2}})<br>]$$<br>(对于两级Cache，Miss Penalty<sub>L2</sub> 是访问主存的时间)</p>
+</li>
+<li><p><strong>包含策略 (Inclusion Policy)</strong>:</p>
+<ul>
+<li><strong>Inclusive</strong>: 上一级Cache中的内容必须是下一级Cache内容的子集。简化一致性，但浪费空间。</li>
+<li><strong>Exclusive</strong>: 上一级Cache中的内容不能在下一级Cache中。最大化利用Cache空间，但管理复杂。</li>
+<li><strong>Non-inclusive</strong>: 内容之间没有严格的包含关系。</li>
+</ul>
+</li>
+</ul>
+<h4 id="5-4-5-小结"><a href="#5-4-5-小结" class="headerlink" title="5.4.5 小结"></a>5.4.5 小结</h4><p>提高Cache性能是一个复杂的权衡过程，涉及Cache大小、块大小、相联度、替换策略和写策略的选择。多级Cache是平衡命中时间、缺失率和缺失代价的有效手段。</p>
+<h4 id="5-4-6-通过分块进行软件优化-Software-Optimization-via-Blocking-Tiling"><a href="#5-4-6-通过分块进行软件优化-Software-Optimization-via-Blocking-Tiling" class="headerlink" title="5.4.6 通过分块进行软件优化 (Software Optimization via Blocking&#x2F;Tiling)"></a>5.4.6 通过分块进行软件优化 (Software Optimization via Blocking&#x2F;Tiling)</h4><p>程序员可以通过改变代码的数据访问模式来提高Cache的利用率，特别是针对具有大量数据重用的算法（如矩阵运算、图像处理）。</p>
+<ul>
+<li><strong>分块 (Blocking &#x2F; Tiling)</strong>: 将大的数据集划分为能在Cache中容纳的小块进行处理。这样可以最大化对已加载到Cache中的数据的重用，减少容量缺失和冲突缺失。</li>
+<li><strong>示例 (矩阵乘法)</strong>: 对于 ( C &#x3D; A * B )，标准的三重循环会导致对A的行和B的列的重复扫描，如果矩阵很大，会造成Cache的反复换入换出。通过分块，可以将A、B、C的子矩阵读入Cache并完成子矩阵的乘积累加，然后再处理下一组子矩阵。</li>
+</ul>
+<h3 id="5-5-可信存储器层次-Dependable-Memory-Hierarchy"><a href="#5-5-可信存储器层次-Dependable-Memory-Hierarchy" class="headerlink" title="5.5 可信存储器层次 (Dependable Memory Hierarchy)"></a>5.5 可信存储器层次 (Dependable Memory Hierarchy)</h3><p>确保存储器系统即使在出现硬件故障时也能可靠地工作。</p>
+<h4 id="5-5-1-失效的定义-Fault-Error-Failure"><a href="#5-5-1-失效的定义-Fault-Error-Failure" class="headerlink" title="5.5.1 失效的定义 (Fault, Error, Failure)"></a>5.5.1 失效的定义 (Fault, Error, Failure)</h4><ul>
+<li><strong>故障 (Fault)</strong>: 硬件的物理缺陷（如芯片制造缺陷、宇宙射线导致的位翻转）或软件的设计错误。</li>
+<li><strong>错误 (Error)</strong>: 故障在系统内部状态上的体现，即系统内部的某个值与正确值不符。</li>
+<li><strong>失效 (Failure)</strong>: 当错误传播到系统外部，导致系统提供的服务偏离其预期规范时，即为失效。</li>
+<li><strong>目标</strong>是通过容错 (fault tolerance) 机制防止故障演变成失效。</li>
+</ul>
+<h4 id="5-5-2-汉明编码-Hamming-Code-SEC-DED"><a href="#5-5-2-汉明编码-Hamming-Code-SEC-DED" class="headerlink" title="5.5.2 汉明编码 (Hamming Code) (SEC&#x2F;DED)"></a>5.5.2 汉明编码 (Hamming Code) (SEC&#x2F;DED)</h4><ul>
+<li><p>汉明码是一种线性纠错码，广泛用于检测和纠正内存中的单位错误，并检测双位错误。</p>
+<h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><p>为 ( m ) 位数据增加 ( p ) 个校验位 (parity bits)。这些校验位的值由数据位的特定子集通过异或 (XOR) 运算决定。</p>
+<ul>
+<li><strong>SEC (Single Error Correction)</strong>: 要能纠正一位错误，校验位数 ( p ) 必须满足不等式：<br>$[<br>2^p \ge m + p + 1<br>]$<br>这个不等式确保了 ( 2^p ) 种可能的校验子组合足以覆盖“无错误”状态以及“数据位中任何一位出错”或“校验位中任何一位出错”的所有状态。</li>
+</ul>
+<h4 id="汉明距离-Hamming-Distance"><a href="#汉明距离-Hamming-Distance" class="headerlink" title="汉明距离 (Hamming Distance)"></a>汉明距离 (Hamming Distance)</h4><p>两个等长码字之间对应位置上不同符号的个数。汉明码通过精心设计使得任意两个有效码字之间的汉明距离至少为3，这使得它能纠正1位错误并检测2位错误。</p>
+<h4 id="示例：-7-4-汉明码"><a href="#示例：-7-4-汉明码" class="headerlink" title="示例：(7,4)汉明码"></a>示例：(7,4)汉明码</h4><p>假设4位数据为 ( D_3, D_2, D_1, D_0 )，3位校验位为 ( P_2, P_1, P_0 )。</p>
+<p><strong>码字位置 (1到7)</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>位置</th>
+<th>7</th>
+<th>6</th>
+<th>5</th>
+<th>4</th>
+<th>3</th>
+<th>2</th>
+<th>1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>内容</td>
+<td>( D_3 )</td>
+<td>( D_2 )</td>
+<td>( D_1 )</td>
+<td>( P_2 )</td>
+<td>( D_0 )</td>
+<td>( P_1 )</td>
+<td>( P_0 )</td>
+</tr>
+</tbody></table>
+<p><strong>校验位计算规则 (偶校验，也可采用奇校验)</strong>：</p>
+<ul>
+<li>( P_0 ) 校验位 1, 3, 5, 7: ( P_0 &#x3D; D_0 \oplus D_1 \oplus D_3 )</li>
+<li>( P_1 ) 校验位 2, 3, 6, 7: ( P_1 &#x3D; D_0 \oplus D_2 \oplus D_3 )</li>
+<li>( P_2 ) 校验位 4, 5, 6, 7: ( P_2 &#x3D; D_1 \oplus D_2 \oplus D_3 )</li>
+</ul>
+<p>假设数据为 ( 1011 ) (即 ( D_3&#x3D;1, D_2&#x3D;0, D_1&#x3D;1, D_0&#x3D;1 ))：</p>
+<ul>
+<li>( P_0 &#x3D; 1 \oplus 1 \oplus 1 &#x3D; 1 )</li>
+<li>( P_1 &#x3D; 1 \oplus 0 \oplus 1 &#x3D; 0 )</li>
+<li>( P_2 &#x3D; 1 \oplus 0 \oplus 1 &#x3D; 0 )</li>
+</ul>
+<p>发送的码字为 ( 1010101 )。</p>
+<h4 id="错误检测与纠正"><a href="#错误检测与纠正" class="headerlink" title="错误检测与纠正"></a>错误检测与纠正</h4><p>接收端重新计算校验位，得到 ( P’_2, P’_1, P’_0 )。然后计算校验子 (Syndrome) ( S_2, S_1, S_0 )：</p>
+<ul>
+<li>( S_0 &#x3D; P_0 \oplus P’_0 )</li>
+<li>( S_1 &#x3D; P_1 \oplus P’_1 )</li>
+<li>( S_2 &#x3D; P_2 \oplus P’_2 )</li>
+</ul>
+<p>校验子 ( (S_2 S_1 S_0)_2 ) 的二进制值直接指示了错误位的位置。如果为000，则无错误。</p>
+<p>例如，如果接收到的码字第5位 (即 ( D_1 )) 发生翻转，从 ( 1010101 ) 变为 ( 1000101 ) (错误在 ( D_1 ))。接收到的数据部分为 ( D’_3&#x3D;1, D’_2&#x3D;0, D’_1&#x3D;0, D’_0&#x3D;1 )。</p>
+<ul>
+<li>( P’_0 &#x3D; D’_0 \oplus D’_1 \oplus D’_3 &#x3D; 1 \oplus 0 \oplus 1 &#x3D; 0 )</li>
+<li>( P’_1 &#x3D; D’_0 \oplus D’_2 \oplus D’_3 &#x3D; 1 \oplus 0 \oplus 1 &#x3D; 0 )</li>
+<li>( P’_2 &#x3D; D’_1 \oplus D’_2 \oplus D’_3 &#x3D; 0 \oplus 0 \oplus 1 &#x3D; 1 )</li>
+</ul>
+<p>接收到的校验位是 ( P_2&#x3D;0, P_1&#x3D;0, P_0&#x3D;1 )（假设校验位未出错）。</p>
+<ul>
+<li>( S_0 &#x3D; P_0 \oplus P’_0 &#x3D; 1 \oplus 0 &#x3D; 1 )</li>
+<li>( S_1 &#x3D; P_1 \oplus P’_1 &#x3D; 0 \oplus 0 &#x3D; 0 )</li>
+<li>( S_2 &#x3D; P_2 \oplus P’_2 &#x3D; 0 \oplus 1 &#x3D; 1 )</li>
+</ul>
+<p>校验子为 ( (101)_2 &#x3D; 5 )，指示第5位出错。由于第5位是 ( D_1 )，将其翻转即可纠正。</p>
+</li>
+</ul>
+<h3 id="5-6-虚拟机-Virtual-Machines-VMs"><a href="#5-6-虚拟机-Virtual-Machines-VMs" class="headerlink" title="5.6 虚拟机 (Virtual Machines, VMs)"></a>5.6 虚拟机 (Virtual Machines, VMs)</h3><p>虚拟机技术允许在单个物理硬件平台上创建和运行一个或多个独立的、隔离的执行环境，每个环境（客户机操作系统及其应用程序）都认为自己独占硬件。</p>
+<h4 id="5-6-1-虚拟机监视器-Virtual-Machine-Monitor-VMM-Hypervisor-的必备条件"><a href="#5-6-1-虚拟机监视器-Virtual-Machine-Monitor-VMM-Hypervisor-的必备条件" class="headerlink" title="5.6.1 虚拟机监视器 (Virtual Machine Monitor, VMM) &#x2F; Hypervisor 的必备条件"></a>5.6.1 虚拟机监视器 (Virtual Machine Monitor, VMM) &#x2F; Hypervisor 的必备条件</h4><p>VMM是实现虚拟化的核心软件层。根据Popek和Goldberg的经典定义，一个VMM必须满足三个特性：</p>
+<ul>
+<li><strong>等效性&#x2F;保真度 (Equivalence&#x2F;Fidelity)</strong>: 客户机程序在VM中执行的行为应与在同等裸机上执行时基本一致（除了性能差异或资源限制）。</li>
+<li><strong>资源控制&#x2F;安全性 (Resource Control&#x2F;Safety)</strong>: VMM必须完全控制所有物理资源（CPU、内存、I&#x2F;O），并能安全地将这些资源分配给各个VM，确保VM之间的隔离。</li>
+<li><strong>效率&#x2F;性能 (Efficiency&#x2F;Performance)</strong>: 客户机操作系统中绝大多数的非特权指令应该由物理硬件直接执行，而不需要VMM的介入和模拟，以获得可接受的性能。</li>
+</ul>
+<h4 id="5-6-2-指令集体系结构-ISA-对虚拟机的支持"><a href="#5-6-2-指令集体系结构-ISA-对虚拟机的支持" class="headerlink" title="5.6.2 指令集体系结构 (ISA) 对虚拟机的支持"></a>5.6.2 指令集体系结构 (ISA) 对虚拟机的支持</h4><ul>
+<li><p><strong>传统虚拟化 (Trap-and-Emulate)</strong>:</p>
+<ul>
+<li><strong>敏感指令 (Sensitive Instructions)</strong>: 改变或查询处理器模式或物理资源的指令。</li>
+<li><strong>特权指令 (Privileged Instructions)</strong>: 只能在特定处理器模式（如内核模式）下执行的指令。</li>
+<li>如果一个ISA的所有敏感指令都是特权指令，那么它是可虚拟化 (virtualizable) 的。当客户机OS试图执行这样的指令时，会产生陷阱 (trap) 进入VMM，VMM模拟该指令的效果，然后返回客户机。</li>
+<li>早期的x86 ISA存在一些敏感但非特权的指令，给虚拟化带来困难，需要更复杂的技术如二进制翻译 (binary translation)。</li>
+</ul>
+</li>
+<li><p><strong>硬件辅助虚拟化 (Hardware-assisted Virtualization)</strong>:</p>
+<ul>
+<li>现代ISA（如Intel VT-x 和 AMD-V）提供了硬件支持，简化VMM设计并提高性能。</li>
+<li><strong>特性包括</strong>:<ul>
+<li>新的CPU操作模式 (如Intel的VMX root&#x2F;non-root operation)，允许VMM在更高权限下运行，客户机OS在受限模式下运行。</li>
+<li>硬件控制的指令陷阱，精确指定哪些指令或事件会导致从客户机退出 (VM Exit) 到VMM。</li>
+<li>扩展页表 (EPT) &#x2F; 嵌套页表 (NPT): 硬件支持两级地址转换（客户虚拟地址 -&gt; 客户物理地址 -&gt; 主机物理地址），避免了VMM进行影子页表的复杂管理。</li>
+<li>虚拟化中断处理。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="5-6-3-保护和指令集体系结构"><a href="#5-6-3-保护和指令集体系结构" class="headerlink" title="5.6.3 保护和指令集体系结构"></a>5.6.3 保护和指令集体系结构</h4><ul>
+<li>ISA提供的保护机制（如用户模式&#x2F;内核模式、内存保护单元MPU、内存管理单元MMU）是操作系统正确运行的基础。</li>
+<li>VMM利用这些机制来保护自身不受客户机OS的干扰，并保护客户机OS之间相互隔离。</li>
+<li>例如，VMM运行在最高特权级，客户机OS的内核运行在次一级，客户机应用程序运行在最低特权级。</li>
+</ul>
+<h3 id="5-7-虚拟存储器-Virtual-Memory"><a href="#5-7-虚拟存储器-Virtual-Memory" class="headerlink" title="5.7 虚拟存储器 (Virtual Memory)"></a>5.7 虚拟存储器 (Virtual Memory)</h3><p>虚拟存储器是一种内存管理技术，它为每个进程提供了一个独立的、连续的、巨大的虚拟地址空间 (Virtual Address Space, VAS)，而物理内存可能是不连续且有限的。它有三个主要目的：</p>
+<p><img src="/../image/image-20250529190307062.png" alt="image-20250529190307062"></p>
+<ul>
+<li>允许多个进程安全地共享主存：每个进程有自己的私有地址空间，操作系统负责映射到物理内存，防止进程间干扰。</li>
+<li>提供比物理内存更大的地址空间：通过将部分不常用的虚拟地址空间内容存放在磁盘（称为交换空间 (swap space) 或分页文件 (paging file)）上，实现按需调页 (demand paging)。</li>
+<li>简化内存管理：程序员不必关心物理内存的实际布局和大小。</li>
+</ul>
+<p><img src="/../image/image-20250529191914065.png" alt="image-20250529191914065"></p>
+<h4 id="5-7-1-页的存放和查找-Page-Placement-and-Finding"><a href="#5-7-1-页的存放和查找-Page-Placement-and-Finding" class="headerlink" title="5.7.1 页的存放和查找 (Page Placement and Finding)"></a>5.7.1 页的存放和查找 (Page Placement and Finding)</h4><ul>
+<li><strong>虚拟地址 (Virtual Address, VA)</strong>: CPU（进程）发出的地址。</li>
+<li><strong>物理地址 (Physical Address, PA)</strong>: 实际在主存中使用的地址。</li>
+<li><strong>页 (Page)</strong>: 虚拟地址空间被划分为固定大小的块。典型大小为4KB, 8KB, 或更大。</li>
+<li><strong>页帧 (Page Frame)</strong>: 物理内存被划分为与页大小相同的块。</li>
+<li><strong>页表 (Page Table)</strong>: 由操作系统为每个进程维护的数据结构，存储虚拟页号 (VPN) 到物理页帧号 (PFN) 的映射关系。每个条目称为页表项 (Page Table Entry, PTE)。<ul>
+<li><strong>PTE内容</strong>: PFN, 有效位 (valid bit) (指示该页是否在物理内存中), 访问权限位 (protection bits) (读&#x2F;写&#x2F;执行), 修改位 (dirty bit), 存在位 (present bit), 访问位 (accessed bit) 等。</li>
+</ul>
+</li>
+<li><strong>地址转换</strong>: VA通常分为虚拟页号 (VPN) 和页内偏移 (Page Offset)。VPN用于索引页表找到PTE，如果有效位为1，则取出PFN，与页内偏移组合形成PA。PA &#x3D; PFN | Page Offset。</li>
+</ul>
+<p><img src="/../image/image-20250529192003725.png" alt="image-20250529192003725"></p>
+<ul>
+<li><strong>页表结构</strong>:<ul>
+<li><strong>线性页表</strong>: 简单，但如果虚拟地址空间大，页表本身可能非常大。</li>
+<li><strong>多级页表 (Hierarchical Page Table)</strong>: 如二级或三级页表，通过将页表分级来减少页表所占空间（只有实际使用的部分才需要分配页表页）。x86-64使用四级页表。</li>
+<li><strong>倒排页表 (Inverted Page Table)</strong>: 系统中只有一个页表，按物理页帧索引，存储占用该页帧的&lt;进程ID, 虚拟页号&gt;。查找较慢，通常配合哈希表。</li>
+</ul>
+</li>
+<li><strong>页表基址寄存器 (Page Table Base Register, PTBR)</strong>: CPU中的一个特殊寄存器，指向当前进程活动页表的起始物理地址。</li>
+</ul>
+<h4 id="5-7-2-缺页故障-Page-Fault"><a href="#5-7-2-缺页故障-Page-Fault" class="headerlink" title="5.7.2 缺页故障 (Page Fault)"></a>5.7.2 缺页故障 (Page Fault)</h4><ul>
+<li><p>当进程访问一个虚拟页，而其对应的PTE中的有效位&#x2F;存在位为0（表示该页不在物理内存中，可能在磁盘上或尚未分配）时，发生缺页故障 (硬件异常)。</p>
+</li>
+<li><p><strong>处理过程 (由操作系统处理)</strong>:</p>
+<ol>
+<li>硬件捕获缺页，将控制权转交给操作系统内核的缺页处理程序。</li>
+<li>保存出错进程的状态。</li>
+<li>操作系统检查PTE以确定原因（例如，页在磁盘上）。</li>
+<li>在磁盘上定位该页（通常在交换空间）。</li>
+<li>如果物理内存已满，选择一个牺牲页 (victim page)（根据页面替换算法），如果该牺牲页是“脏”的（被修改过），则将其写回磁盘。</li>
+<li>将所需的页从磁盘读入一个空闲的或刚腾出的物理页帧。</li>
+<li>更新该页的PTE（设置PFN，有效位为1，清空修改位等）。</li>
+<li>恢复出错进程的状态，并重新执行导致缺页的指令。</li>
+</ol>
+</li>
+<li><p><strong>按需调页 (Demand Paging)</strong>: 只有在实际访问某页时才将其调入内存。</p>
+</li>
+</ul>
+<p><img src="/../image/image-20250529192105094.png" alt="image-20250529192105094"></p>
+<h4 id="5-7-3-关于写操作-Handling-Writes"><a href="#5-7-3-关于写操作-Handling-Writes" class="headerlink" title="5.7.3 关于写操作 (Handling Writes)"></a>5.7.3 关于写操作 (Handling Writes)</h4><ul>
+<li>当对一个在物理内存中的页进行写操作时，硬件会设置PTE中的修改位 (Dirty Bit &#x2F; Modified Bit)。</li>
+<li>这对于页面替换非常重要：如果一个页被选为牺牲页，操作系统会检查其修改位。如果修改位为1，则该页必须写回磁盘以保存更改；如果为0，则可以直接丢弃（因为磁盘上的副本仍然是最新的）。这避免了不必要的磁盘写操作。</li>
+</ul>
+<h4 id="5-7-4-加快地址转换：TLB-Translation-Lookaside-Buffer"><a href="#5-7-4-加快地址转换：TLB-Translation-Lookaside-Buffer" class="headerlink" title="5.7.4 加快地址转换：TLB (Translation Lookaside Buffer)"></a>5.7.4 加快地址转换：TLB (Translation Lookaside Buffer)</h4><ul>
+<li><strong>问题</strong>: 每次内存访问（指令或数据）都可能需要进行地址转换，而访问页表本身也需要读内存（对于多级页表甚至是多次读内存），这会极大地降低性能。</li>
+<li><strong>TLB</strong>: 是页表项 (PTEs) 的一个专用硬件Cache，位于CPU内部。它存储了最近使用过的VPN到PFN的映射。</li>
+<li><strong>TLB结构</strong>: 通常是小型、高度相联（甚至是全相联）的Cache。每个条目包含VPN, PFN, 有效位, 保护位, 修改位等。</li>
+<li><strong>TLB访问</strong>: 当CPU生成一个VA时，VPN会并行地发送给TLB和Cache（对于某些Cache设计）。<ul>
+<li><p><strong>TLB命中 (TLB Hit)</strong>: VPN在TLB中找到，并且有效。PFN从TLB中快速获取，用于形成PA。地址转换非常快（通常1个时钟周期）。</p>
+</li>
+<li><p><strong>TLB缺失 (TLB Miss)</strong>: VPN不在TLB中。这时需要访问内存中的页表（称为页表遍历 Page Table Walk）。</p>
+<ul>
+<li><strong>硬件管理TLB (Hardware-Managed TLB)</strong>: 如x86，硬件负责遍历页表，找到PTE并将其加载到TLB中。如果PTE指示缺页，则产生缺页异常。</li>
+<li><strong>软件管理TLB (Software-Managed TLB)</strong>: 如MIPS, RISC-V，TLB缺失会产生一个特殊的TLB缺失异常，由操作系统内核的专用处理程序负责查找页表并将PTE加载到TLB中。这提供了灵活性，但处理速度可能较慢。</li>
+</ul>
+<p><img src="/../image/image-20250529192202605.png" alt="image-20250529192202605"></p>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/../image/image-20250529192418587.png" alt="image-20250529192418587"></p>
+<h4 id="5-7-5-集成虚拟存储器、TLB和Cache-Integrating-VM-TLB-and-Cache"><a href="#5-7-5-集成虚拟存储器、TLB和Cache-Integrating-VM-TLB-and-Cache" class="headerlink" title="5.7.5 集成虚拟存储器、TLB和Cache (Integrating VM, TLB, and Cache)"></a>5.7.5 集成虚拟存储器、TLB和Cache (Integrating VM, TLB, and Cache)</h4><p>CPU发出的虚拟地址如何与TLB和Cache协同工作：</p>
+<ul>
+<li><p><strong>物理寻址Cache (Physically Addressed, Physically Tagged - PIPT)</strong>:</p>
+<ul>
+<li>VA -&gt; TLB -&gt; PA</li>
+<li>PA -&gt; Cache (索引和标记都用PA)</li>
+<li><strong>优点</strong>: 简单，无歧义 (aliasing) 问题。</li>
+<li><strong>缺点</strong>: TLB查找和Cache访问串行，命中时间较长。</li>
+</ul>
+</li>
+<li><p><strong>虚拟寻址Cache (Virtually Addressed, Virtually Tagged - VIVT)</strong>:</p>
+<ul>
+<li>VA -&gt; Cache (索引和标记都用VA)</li>
+<li>同时 VA -&gt; TLB (用于权限检查等，如果命中Cache)</li>
+<li><strong>优点</strong>: Cache访问可以与TLB查找并行，速度快。</li>
+<li><strong>缺点</strong>:<ul>
+<li><strong>歧义问题 (Aliasing&#x2F;Synonyms)</strong>: 不同的虚拟地址可能映射到同一个物理地址（例如共享内存或不同进程的相同物理页）。如果这些不同的VA都映射到Cache的不同位置但内容相同，会浪费Cache空间并可能导致一致性问题。如果它们映射到Cache的同一位置，则需要额外的处理。</li>
+<li><strong>上下文切换</strong>: 进程切换时，由于虚拟地址空间改变，VIVT Cache可能需要刷新 (flush) 或使用地址空间标识符 (ASID) 来区分不同进程的条目。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>虚拟索引、物理标记Cache (Virtually Indexed, Physically Tagged - VIPT)</strong>:</p>
+<ul>
+<li>VA的索引部分 -&gt; Cache (用于选择Cache组&#x2F;行)</li>
+<li>同时 VA的VPN -&gt; TLB -&gt; PFN</li>
+<li>PA的标记部分 (来自PFN) 与Cache行的物理标记比较。</li>
+<li><strong>优点</strong>: 结合了PIPT和VIVT的优点。Cache索引和TLB查找可以并行进行。由于标记是物理的，避免了歧义问题（只要Cache索引位数 + 块内偏移位数 ( \leq ) 页大小位数）。</li>
+<li><strong>缺点</strong>: 如果Cache索引位数大于页大小的索引位数，可能仍有部分歧义问题，需要特殊处理。</li>
+</ul>
+</li>
+<li><p>这是现代处理器中常见的Cache设计。</p>
+</li>
+</ul>
+<h4 id="5-7-6-虚拟存储器中的保护-Protection-in-Virtual-Memory"><a href="#5-7-6-虚拟存储器中的保护-Protection-in-Virtual-Memory" class="headerlink" title="5.7.6 虚拟存储器中的保护 (Protection in Virtual Memory)"></a>5.7.6 虚拟存储器中的保护 (Protection in Virtual Memory)</h4><ul>
+<li>通过PTE中的保护位 (R&#x2F;W&#x2F;X - Read&#x2F;Write&#x2F;Execute) 实现。</li>
+<li>每次地址转换时，硬件（MMU）会检查PTE中的保护位与当前操作类型（读、写、执行指令）以及处理器模式（用户&#x2F;内核）是否匹配。</li>
+<li>如果不匹配（如用户试图写入只读页，或执行不可执行页），则产生保护性故障 (Protection Fault) 或段错误 (Segmentation Fault) 异常，由操作系统### 5.4.6 通过分块进行软件优化 (Software Optimization via Blocking&#x2F;Tiling)<br>程序员可以通过改变代码的数据访问模式来提高Cache的利用率，特别是针对具有大量数据重用的算法（如矩阵运算、图像处理）。</li>
+<li><strong>分块 (Blocking &#x2F; Tiling)</strong>: 将大的数据集划分为能在Cache中容纳的小块进行处理。这样可以最大化对已加载到Cache中的数据的重用，减少容量缺失和冲突缺失。</li>
+<li><strong>示例 (矩阵乘法)</strong>: 对于 ( C &#x3D; A \times B )，标准的三重循环会导致对 ( A ) 的行和 ( B ) 的列的重复扫描，如果矩阵很大，会造成Cache的反复换入换出。通过分块，可以将 ( A )、( B )、( C ) 的子矩阵读入Cache并完成子矩阵的乘积累加，然后再处理下一组子矩阵。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (ii = <span class="number">0</span>; ii &lt; N; ii += NB)</span><br><span class="line">    <span class="keyword">for</span> (jj = <span class="number">0</span>; jj &lt; N; jj += NB)</span><br><span class="line">        <span class="keyword">for</span> (kk = <span class="number">0</span>; kk &lt; N; kk += NB)</span><br><span class="line">            <span class="comment">// Mini-MMM on blocks of size NBxNB</span></span><br><span class="line">            <span class="keyword">for</span> (i = ii; i &lt; min(ii + NB, N); i++)</span><br><span class="line">                <span class="keyword">for</span> (j = jj; j &lt; min(jj + NB, N); j++)</span><br><span class="line">                    <span class="keyword">for</span> (k = kk; k &lt; min(kk + NB, N); k++)</span><br><span class="line">                        C[i][j] += A[i][k] * B[k][j];</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-8-存储器层次结构的一般框架"><a href="#5-8-存储器层次结构的一般框架" class="headerlink" title="5.8 存储器层次结构的一般框架"></a>5.8 存储器层次结构的一般框架</h3><p>存储器层次结构的设计可以通过回答以下四个基本问题来统一理解，这些问题适用于层次结构中的每一级（如Cache, 虚拟内存&#x2F;主存, 主存&#x2F;磁盘）。</p>
+<h4 id="5-8-1-问题1：块放在何处-Where-can-a-block-be-placed-in-the-upper-level"><a href="#5-8-1-问题1：块放在何处-Where-can-a-block-be-placed-in-the-upper-level" class="headerlink" title="5.8.1 问题1：块放在何处 (Where can a block be placed in the upper level?)"></a>5.8.1 问题1：块放在何处 (Where can a block be placed in the upper level?)</h4><ul>
+<li><p>决定了块的放置灵活性，影响冲突缺失。</p>
+</li>
+<li><p><strong>Cache</strong>:</p>
+<ul>
+<li><strong>直接映射</strong>: 固定位置。</li>
+<li><strong>组相联</strong>: N个可能位置之一。</li>
+<li><strong>全相联</strong>: 任何位置。</li>
+</ul>
+</li>
+<li><p><strong>虚拟存储器 (主存作为磁盘的Cache)</strong>: 通常是全相联的。任何虚拟页可以放置在任何可用的物理页帧中。操作系统通过软件管理这种灵活性。</p>
+</li>
+</ul>
+<h4 id="5-8-2-问题2：如何找到块-How-is-a-block-found-if-it-is-in-the-upper-level"><a href="#5-8-2-问题2：如何找到块-How-is-a-block-found-if-it-is-in-the-upper-level" class="headerlink" title="5.8.2 问题2：如何找到块 (How is a block found if it is in the upper level?)"></a>5.8.2 问题2：如何找到块 (How is a block found if it is in the upper level?)</h4><ul>
+<li>涉及地址划分和比较逻辑。</li>
+<li><strong>Cache</strong>: 通过索引查找行&#x2F;组，然后比较标记。硬件实现。</li>
+<li><strong>虚拟存储器</strong>:<ul>
+<li><strong>TLB</strong>: 硬件Cache，并行查找VPN。</li>
+<li><strong>页表</strong>: 软件或硬件遍历数据结构，查找VPN。</li>
+</ul>
+</li>
+</ul>
+<h4 id="5-8-3-Cache缺失时替换哪一块-Which-block-should-be-replaced-on-a-miss"><a href="#5-8-3-Cache缺失时替换哪一块-Which-block-should-be-replaced-on-a-miss" class="headerlink" title="5.8.3 Cache缺失时替换哪一块 (Which block should be replaced on a miss?)"></a>5.8.3 Cache缺失时替换哪一块 (Which block should be replaced on a miss?)</h4><ul>
+<li><p>当上一级存储已满时，需要选择一个块被替换出去。</p>
+</li>
+<li><p><strong>Cache</strong>:</p>
+<ul>
+<li><strong>LRU (Least Recently Used)</strong>: 性能好，实现复杂。</li>
+<li><strong>FIFO (First-In, First-Out)</strong>: 实现简单。</li>
+<li><strong>Random</strong>: 实现简单，性能尚可。</li>
+</ul>
+</li>
+<li><p><strong>虚拟存储器 (页面替换算法)</strong>: 由操作系统实现，目标是替换未来最不可能被访问的页。</p>
+<ul>
+<li>LRU近似算法: 如时钟算法 (Clock Algorithm &#x2F; Second Chance) 或Not Recently Used (NRU)，因为纯LRU对所有页跟踪成本太高。</li>
+</ul>
+</li>
+</ul>
+<h4 id="5-8-4-写操作如何处理-What-happens-on-a-write"><a href="#5-8-4-写操作如何处理-What-happens-on-a-write" class="headerlink" title="5.8.4 写操作如何处理 (What happens on a write?)"></a>5.8.4 写操作如何处理 (What happens on a write?)</h4><ul>
+<li><p>确保写入的数据最终能正确反映到较低层级的存储器中。</p>
+</li>
+<li><p><strong>Cache</strong>:</p>
+<ul>
+<li><strong>写直通 (Write-Through)</strong>: 同时写Cache和主存。</li>
+<li><strong>写回 (Write-Back)</strong>: 只写Cache，使用修改位，替换时写回。</li>
+</ul>
+</li>
+<li><p><strong>虚拟存储器</strong>: 几乎总是写回。PTE中的修改位指示页是否被修改，缺页替换时脏页需要写回磁盘。</p>
+</li>
+</ul>
+<h4 id="5-8-5-3C模型：理解存储器层次结构行为-The-3Cs-Model-for-Cache-Misses"><a href="#5-8-5-3C模型：理解存储器层次结构行为-The-3Cs-Model-for-Cache-Misses" class="headerlink" title="5.8.5 3C模型：理解存储器层次结构行为 (The 3Cs Model for Cache Misses)"></a>5.8.5 3C模型：理解存储器层次结构行为 (The 3Cs Model for Cache Misses)</h4><p>这是一个将Cache缺失分类以帮助理解其来源的模型，对于全相联或组相联Cache：</p>
+<ul>
+<li><strong>强制性缺失 (Compulsory Misses &#x2F; Cold Start Misses)</strong>: 第一次访问一个块时发生的缺失。即使有无限大的Cache也无法避免。可以通过增大块大小（利用空间局部性）或预取来减少其影响。</li>
+<li><strong>容量缺失 (Capacity Misses)</strong>: 当Cache无法容纳程序在特定时间段内需要访问的所有块（即工作集大于Cache容量）时发生的缺失。即使是全相联Cache也会发生。只能通过增大Cache容量来减少。</li>
+<li><strong>冲突缺失 (Conflict Misses &#x2F; Collision Misses)</strong>: 在直接映射或组相联Cache中，由于多个块竞争同一个Cache位置（索引或组）而导致的缺失。即使Cache整体有空闲空间，也可能因为映射冲突而发生。可以通过提高相联度或改进哈希函数（用于索引）来减少。</li>
+</ul>
+<p>（对于直接映射Cache，冲突缺失是主要考虑因素，容量缺失的定义是基于全相联Cache的）</p>
+<h3 id="5-9-使用有限状态机控制简单Cache-Finite-State-Machine-for-a-Simple-Cache-Controller"><a href="#5-9-使用有限状态机控制简单Cache-Finite-State-Machine-for-a-Simple-Cache-Controller" class="headerlink" title="5.9 使用有限状态机控制简单Cache (Finite State Machine for a Simple Cache Controller)"></a>5.9 使用有限状态机控制简单Cache (Finite State Machine for a Simple Cache Controller)</h3><p>Cache控制器负责处理CPU的读写请求，与Cache存储体（标记和数据阵列）以及下一级存储器交互。其行为可以用有限状态机 (FSM) 来描述。</p>
+<h4 id="5-9-1-一个简单的Cache-Example-Direct-Mapped-Write-Through-Cache"><a href="#5-9-1-一个简单的Cache-Example-Direct-Mapped-Write-Through-Cache" class="headerlink" title="5.9.1 一个简单的Cache (Example: Direct-Mapped, Write-Through Cache)"></a>5.9.1 一个简单的Cache (Example: Direct-Mapped, Write-Through Cache)</h4><ul>
+<li><strong>组件</strong>: CPU接口，Cache数据RAM，Cache标记RAM，比较器，主存接口。</li>
+<li><strong>信号</strong>: CPU地址，CPU读&#x2F;写信号，CPU数据（用于写），Cache数据（用于读），主存地址，主存读&#x2F;写信号，主存数据。</li>
+</ul>
+<h4 id="5-9-2-有限状态机-Finite-State-Machine-FSM"><a href="#5-9-2-有限状态机-Finite-State-Machine-FSM" class="headerlink" title="5.9.2 有限状态机 (Finite State Machine, FSM)"></a>5.9.2 有限状态机 (Finite State Machine, FSM)</h4><ul>
+<li><strong>定义</strong>: 一个抽象机器，有有限数量的状态 (States)。在任何给定时间，它只能处于一种状态。它可以从一个状态转换到另一个状态以响应输入 (Inputs) 和&#x2F;或条件。转换时可能产生输出 (Outputs)。</li>
+<li><strong>组成</strong>: 当前状态寄存器，组合逻辑（计算下一状态和输出）。</li>
+</ul>
+<h4 id="5-9-3-简单Cache控制器的有限状态机实现"><a href="#5-9-3-简单Cache控制器的有限状态机实现" class="headerlink" title="5.9.3 简单Cache控制器的有限状态机实现"></a>5.9.3 简单Cache控制器的有限状态机实现</h4><p>一个典型的FSM用于直接映射Cache的读操作可能包含以下状态：</p>
+<ul>
+<li><p><strong>空闲 (Idle)</strong>: 等待CPU请求。</p>
+<ul>
+<li><strong>输入</strong>: CPU请求 (读&#x2F;写，地址)。</li>
+<li><strong>动作</strong>: 接收地址。</li>
+<li><strong>下一状态</strong>: 比较标记。</li>
+</ul>
+</li>
+<li><p><strong>比较标记 (Compare Tag)</strong>:</p>
+<ul>
+<li><strong>动作</strong>: 用地址索引Cache，读取标记和数据。比较地址标记和Cache标记，检查有效位。</li>
+<li><strong>下一状态</strong>:<ul>
+<li>如果命中且是读操作: 发送数据给CPU (Send Data to CPU)。</li>
+<li>如果命中且是写操作: 写Cache和主存 (Write Cache &amp; Memory) (对于写直通)。</li>
+<li>如果缺失: 分配&#x2F;从主存读取 (Allocate &#x2F; Read from Memory)。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>发送数据给CPU (Send Data to CPU)</strong> (读命中时):</p>
+<ul>
+<li><strong>动作</strong>: 将Cache中的数据发送给CPU，发出”完成”信号。</li>
+<li><strong>下一状态</strong>: 空闲。</li>
+</ul>
+</li>
+<li><p><strong>分配&#x2F;从主存读取 (Allocate &#x2F; Read from Memory)</strong> (缺失时):</p>
+<ul>
+<li><strong>动作</strong>:<ul>
+<li>向主存发送读请求（地址为缺失块的地址）。</li>
+<li>等待主存响应 (Memory Ready信号)。</li>
+</ul>
+</li>
+<li><strong>下一状态</strong>: 写Cache块 (Write Cache Block)。</li>
+</ul>
+</li>
+<li><p><strong>写Cache块 (Write Cache Block)</strong> (数据从主存返回后):</p>
+<ul>
+<li><strong>动作</strong>: 将从主存读取的数据写入Cache数据阵列，更新标记，设置有效位。</li>
+<li><strong>下一状态</strong>: 比较标记 (重新检查，或直接发送数据)。</li>
+</ul>
+</li>
+</ul>
+<p>写操作和写回策略会引入更多状态（如处理脏块写回，管理写缓冲器）。</p>
+<p><img src="/../image/image-20250529193409494.png" alt="image-20250529193409494"></p>
+<h3 id="5-10-并行与存储器层次结构：Cache一致性-Parallelism-and-Memory-Hierarchy-Cache-Coherence"><a href="#5-10-并行与存储器层次结构：Cache一致性-Parallelism-and-Memory-Hierarchy-Cache-Coherence" class="headerlink" title="5.10 并行与存储器层次结构：Cache一致性 (Parallelism and Memory Hierarchy: Cache Coherence)"></a>5.10 并行与存储器层次结构：Cache一致性 (Parallelism and Memory Hierarchy: Cache Coherence)</h3><p>在多处理器系统 (Multiprocessor Systems) 中，每个处理器通常拥有自己的私有Cache。如果多个处理器Cache了同一内存块的副本，并且至少有一个处理器修改了该副本，就可能导致不同处理器对该内存位置看到不同的值，这就是Cache一致性问题 (Cache Coherence Problem)。</p>
+<ul>
+<li><strong>一致性 (Coherence)</strong> 定义: 确保所有处理器对任何内存位置的读操作都能获得该位置最近写入的值。</li>
+<li><strong>一致性与同步 (Consistency)</strong>: 一致性关注单个内存位置的值，而存储器连贯性模型（Consistency Model）定义了不同内存位置的写操作相对于其他处理器而言变得可见的顺序。</li>
+</ul>
+<h4 id="5-10-1-实现一致性的基本方案-Basic-Schemes-for-Enforcing-Coherence"><a href="#5-10-1-实现一致性的基本方案-Basic-Schemes-for-Enforcing-Coherence" class="headerlink" title="5.10.1 实现一致性的基本方案 (Basic Schemes for Enforcing Coherence)"></a>5.10.1 实现一致性的基本方案 (Basic Schemes for Enforcing Coherence)</h4><ul>
+<li><p><strong>目录协议 (Directory-based Coherence)</strong>:</p>
+<ul>
+<li>一个集中的目录 (directory) 结构（通常分布在主存控制器中）跟踪每个内存块的状态以及哪些Cache拥有该块的副本。</li>
+<li>当一个处理器需要访问一个块时，它会查询目录。目录协调不同Cache之间的操作（如发送无效或更新消息）。</li>
+<li><strong>优点</strong>: 可扩展性好，适用于大规模多处理器系统（如NUMA架构）。</li>
+<li><strong>缺点</strong>: 目录本身可能成为瓶颈，延迟较高。</li>
+</ul>
+</li>
+<li><p><strong>监听协议 (Snooping Coherence)</strong>:</p>
+<ul>
+<li>所有Cache控制器都监视（”snoop” on）一个共享的互连介质（通常是总线或交换网络），观察所有内存事务。</li>
+<li>当一个Cache控制器检测到可能影响其Cache块一致性的事务时，它会采取相应动作（如使其副本无效或更新其副本）。</li>
+<li><strong>优点</strong>: 实现相对简单，延迟较低（对于总线系统）。</li>
+<li><strong>缺点</strong>: 总线带宽会成为瓶颈，不适合大规模系统。</li>
+</ul>
+</li>
+</ul>
+<h4 id="5-10-2-监听协议-Snooping-Protocols"><a href="#5-10-2-监听协议-Snooping-Protocols" class="headerlink" title="5.10.2 监听协议 (Snooping Protocols)"></a>5.10.2 监听协议 (Snooping Protocols)</h4><p>每个Cache块都有一个状态。当处理器或总线发生事件时，根据当前状态和事件类型转换到新状态。</p>
+<ul>
+<li><p><strong>写无效协议 (Write-Invalidate Protocols)</strong>:</p>
+<ul>
+<li>当一个处理器要写入一个共享块时，它首先在总线上广播一个无效 (invalidate) 信号。其他所有持有该块副本的Cache在收到此信号后，会将其副本标记为无效。</li>
+<li>写入处理器然后可以修改其本地副本。</li>
+<li>这是最常用的监听协议类型。</li>
+</ul>
+</li>
+<li><p><strong>写更新协议 (Write-Update &#x2F; Write-Broadcast Protocols)</strong>:</p>
+<ul>
+<li>当一个处理器写入一个共享块时，它将新数据广播到总线上。其他所有持有该块副本的Cache会用新数据更新其副本。</li>
+<li><strong>缺点</strong>: 如果数据被频繁写入但很少被其他处理器读取，会产生大量不必要的总线流量。</li>
+</ul>
+</li>
+<li><p><strong>MESI协议 (Modified, Exclusive, Shared, Invalid)</strong>: 一种常见的写无效监听协议。每个Cache块可以处于以下四种状态之一：</p>
+<ul>
+<li><strong>Modified (M)</strong>: 该Cache块已被修改（脏），内存中的副本是过时的。该处理器是此块的唯一拥有者。如果其他处理器请求此块，该Cache必须先将数据写回内存。</li>
+<li><strong>Exclusive (E)</strong>: 该Cache块与内存副本一致，且没有其他Cache持有此块的副本（干净的独占副本）。可以直接写入而无需通知其他Cache（状态变为M）。</li>
+<li><strong>Shared (S)</strong>: 该Cache块与内存副本一致，但可能有其他Cache也持有此块的副本（干净的共享副本）。读取是允许的。写入前必须先发送无效信号，使其他副本变为I，本副本变为M或E（取决于实现）。</li>
+<li><strong>Invalid (I)</strong>: 该Cache块中的数据无效（或不存在）。</li>
+</ul>
+</li>
+<li><p><strong>状态转换</strong>: 基于处理器操作 (PrRd - Processor Read, PrWr - Processor Write) 和总线操作 (BusRd - Bus Read, BusRdX - Bus Read Exclusive&#x2F;Invalidate, BusUpd - Bus Update)。例如：</p>
+<ul>
+<li>一个处于Shared状态的块，当本地处理器执行PrWr时，会发出BusRdX（或BusUpgr）信号，使其他S副本变为I，本副本变为M。</li>
+<li>一个处于Invalid状态的块，当本地处理器执行PrRd时，会发出BusRd信号。如果其他Cache有M副本，它会响应并将数据写回内存，所有副本（包括请求者）变为S。如果没有M副本，则从内存读取，变为E（如果无其他分享者）或S（如果有其他分享者）。</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-11-并行与存储器层次结构：廉价冗余磁盘阵列（RAID）"><a href="#5-11-并行与存储器层次结构：廉价冗余磁盘阵列（RAID）" class="headerlink" title="5.11 并行与存储器层次结构：廉价冗余磁盘阵列（RAID）"></a>5.11 并行与存储器层次结构：廉价冗余磁盘阵列（RAID）</h3><p>(Redundant Array of Inexpensive&#x2F;Independent Disks)<br>RAID是一种将多个独立的磁盘驱动器组合成一个逻辑单元的技术，旨在提高I&#x2F;O性能、数据冗余或两者兼备。</p>
+<ul>
+<li><p><strong>RAID 0 (Striping - 分条)</strong>:</p>
+<ul>
+<li><strong>原理</strong>: 数据被分成条带，交错存储在多个磁盘上。</li>
+<li><strong>最小磁盘数</strong>: 2。</li>
+<li><strong>容量</strong>: ( N \times \text{最小磁盘容量} ) (N为磁盘数)。</li>
+<li><strong>容错性</strong>: 无。任何一个磁盘故障都会导致所有数据丢失。</li>
+<li><strong>性能</strong>: 读写吞吐量近似提高N倍（并行访问）。</li>
+<li><strong>用途</strong>: 对性能要求高但对数据丢失不敏感的应用（如视频编辑的临时存储）。</li>
+</ul>
+</li>
+<li><p><strong>RAID 1 (Mirroring - 镜像)</strong>:</p>
+<ul>
+<li><strong>原理</strong>: 数据完全复制到两个（或更多）磁盘上。</li>
+<li><strong>最小磁盘数</strong>: 2。</li>
+<li><strong>容量</strong>: 单个磁盘的容量 (( N&#x2F;2 \times \text{磁盘容量} )，如果N个磁盘两两镜像)。</li>
+<li><strong>容错性</strong>: 高。可以容忍一个磁盘（在一对镜像中）故障。</li>
+<li><strong>性能</strong>: 读性能可能提高（可以从任一磁盘读），写性能与单个磁盘相当或稍差（需写入两个磁盘）。</li>
+<li><strong>用途</strong>: 对可靠性要求高的应用（如操作系统盘，数据库）。</li>
+</ul>
+</li>
+<li><p><strong>RAID 3 (Bit-interleaved Parity - 位交叉奇偶校验)</strong>:</p>
+<ul>
+<li><strong>原理</strong>: 数据按位或字节分条存储在数据磁盘上，一个专用磁盘存储所有数据磁盘对应位的奇偶校验信息。</li>
+<li><strong>最小磁盘数</strong>: 3。</li>
+<li><strong>容量</strong>: ( (N-1) \times \text{磁盘容量} )。</li>
+<li><strong>容错性</strong>: 可以容忍一个磁盘故障。</li>
+<li><strong>性能</strong>: 对于大块顺序读写性能好。小块随机写性能差（校验盘成为瓶颈）。已较少使用。</li>
+</ul>
+</li>
+<li><p><strong>RAID 4 (Block-interleaved Parity - 块交叉奇偶校验)</strong>:</p>
+<ul>
+<li><strong>原理</strong>: 数据按块分条，一个专用磁盘存储奇偶校验块。</li>
+<li><strong>最小磁盘数</strong>: 3。</li>
+<li><strong>容量</strong>: ( (N-1) \times \text{磁盘容量} )。</li>
+<li><strong>容错性</strong>: 可以容忍一个磁盘故障。</li>
+<li><strong>性能</strong>: 随机读性能好。小块随机写仍有校验盘瓶颈（每次写数据块都要更新校验块）。</li>
+</ul>
+</li>
+<li><p><strong>RAID 5 (Block-interleaved Distributed Parity - 分布式奇偶校验)</strong>:</p>
+<ul>
+<li><strong>原理</strong>: 类似于RAID 4，但奇偶校验块交错分布在所有磁盘上，而不是集中在一个专用校验盘上。</li>
+<li><strong>最小磁盘数</strong>: 3。</li>
+<li><strong>容量</strong>: ( (N-1) \times \text{磁盘容量} )。</li>
+<li><strong>容错性</strong>: 可以容忍一个磁盘故障。</li>
+<li><strong>性能</strong>: 随机读写性能均较好，克服了RAID 4的校验盘瓶颈。但写操作仍有写惩罚 (write penalty)：更新一个数据块需要读旧数据块、读旧校验块、计算新校验块、写新数据块、写新校验块（优化后可能为2读2写）。</li>
+<li><strong>用途</strong>: 广泛用于需要性能、容量和一定冗余的企业存储。</li>
+</ul>
+</li>
+<li><p><strong>RAID 6 (P+Q Redundancy &#x2F; Dual Parity - 双校验)</strong>:</p>
+<ul>
+<li><strong>原理</strong>: 采用两种独立的奇偶校验方案（如Reed-Solomon码），奇偶校验块也分布式存储。</li>
+<li><strong>最小磁盘数</strong>: 4。</li>
+<li><strong>容量</strong>: ( (N-2) \times \text{磁盘容量} )。</li>
+<li><strong>容错性</strong>: 非常高。可以容忍任意两个磁盘同时故障。</li>
+<li><strong>性能</strong>: 读性能好，写惩罚比RAID 5更高。</li>
+<li><strong>用途</strong>: 对数据冗余和可用性要求极高的关键应用。</li>
+</ul>
+</li>
+<li><p><strong>嵌套RAID (Nested RAID &#x2F; Hybrid RAID)</strong>:</p>
+<ul>
+<li><strong>RAID 1+0 (RAID 10)</strong>: 先镜像再分条 (Stripe of Mirrors)。高性能和高冗余。最小4个盘。</li>
+<li><strong>RAID 0+1</strong>: 先分条再镜像 (Mirror of Stripes)。不如RAID 10常用，因为单个磁盘故障会使整个条带失效，降低冗余性。</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-12-高级内容：实现Cache控制器"><a href="#5-12-高级内容：实现Cache控制器" class="headerlink" title="5.12 高级内容：实现Cache控制器"></a>5.12 高级内容：实现Cache控制器</h3><p>这部分会深入探讨Cache控制器的具体实现逻辑，可能包括：</p>
+<ul>
+<li><p>**流水线化的Cache访问 (<strong>Pipelined Cache Access)</strong>: 将Cache访问（如地址解码、标记比较、数据读取）分解为多个流水线阶段，以提高吞吐量和时钟频率。</p>
+</li>
+<li><p><strong>非阻塞Cache (Non-Blocking Caches &#x2F; Lockup-free Caches)</strong>:</p>
+<ul>
+<li><strong>Hit-under-miss</strong>: 允许在处理一次Cache缺失（访问主存）的同时，继续处理后续的Cache命中请求。</li>
+<li><strong>Miss-under-miss (Multiple outstanding misses)</strong>: 允许Cache处理多个并发的缺失请求，进一步减少CPU等待时间。需要<strong>MSHR (Miss Status Holding Registers)</strong> 来跟踪每个未完成的缺失。</li>
+</ul>
+</li>
+<li><p><strong>硬件预取 (Hardware Prefetching)</strong>: Cache控制器根据历史访问模式（如流式访问）预测未来可能需要的数据块，并提前将其从主存调入Cache。</p>
+<ul>
+<li><strong>流缓冲器 (Stream Buffers)</strong>: 检测顺序访问流。</li>
+</ul>
+</li>
+<li><p><strong>写缓冲器 (Write Buffer)</strong> 的深度管理。</p>
+</li>
+<li><p><strong>与总线接口和仲裁逻辑的交互</strong>。</p>
+</li>
+<li><p><strong>错误检测和处理逻辑 (ECC in Cache)</strong>。</p>
+</li>
+</ul>
+<h3 id="5-13-实例分析"><a href="#5-13-实例分析" class="headerlink" title="5.13 实例分析"></a>5.13 实例分析</h3><p>分析具体商用处理器的存储器层次结构设计。</p>
+<h4 id="ARM-Cortex-A53的存储器层次结构-Example-Features"><a href="#ARM-Cortex-A53的存储器层次结构-Example-Features" class="headerlink" title="ARM Cortex-A53的存储器层次结构 (Example Features)"></a>ARM Cortex-A53的存储器层次结构 (Example Features)</h4><ul>
+<li><strong>L1 Cache</strong>: 通常是分离的指令Cache (I-Cache) 和数据Cache (D-Cache)。例如，每核心32KB I-Cache 和 32KB D-Cache，4路组相联，64字节块大小。VIPT。</li>
+<li><strong>L2 Cache</strong>: 可选的、统一的L2 Cache，由集群内的多个核心共享（如512KB - 2MB，8路或16路组相联）。通常是PIPT。</li>
+<li><strong>TLB</strong>: 每核心分离的指令TLB和数据TLB，例如主TLB（如48项全相联）和微型TLB（更小但更快）。硬件页表遍历。</li>
+<li><strong>Cache一致性</strong>: 支持MESI协议，用于多核集群内的一致性。</li>
+<li><strong>特性</strong>: 面向低功耗和面积效率。</li>
+</ul>
+<h4 id="Intel-Core-i7的存储器层次结构-Example-Features-Broadwell-Skylake-era"><a href="#Intel-Core-i7的存储器层次结构-Example-Features-Broadwell-Skylake-era" class="headerlink" title="Intel Core i7的存储器层次结构 (Example Features - Broadwell&#x2F;Skylake era)"></a>Intel Core i7的存储器层次结构 (Example Features - Broadwell&#x2F;Skylake era)</h4><ul>
+<li><strong>L1 Cache</strong>: 每核心32KB 8路组相联指令Cache (VIPT) 和 32KB 8路组相联数据Cache (VIPT, 写回)。64字节块。</li>
+<li><strong>L2 Cache</strong>: 每核心256KB 8路组相联统一Cache (PIPT)。</li>
+<li><strong>L3 Cache (Last Level Cache, LLC)</strong>: 由所有核心共享，例如8MB 16路组相联 (PIPT)。通常是Inclusive或Non-Inclusive，取决于具体微架构。采用复杂的环形总线 (Ring Bus) 或网状互连 (Mesh Interconnect) 连接核心与L3。</li>
+<li><strong>TLB</strong>: 多级TLB结构。例如，L1 DTLB (如64项4路)，L1 ITLB，共享的L2 TLB (如1536项，12路)。</li>
+<li><strong>Cache一致性</strong>: 先进的MESI&#x2F;MESIF&#x2F;MOESI变种协议，通过监听和目录（在L3&#x2F;内存控制器中）结合的方式实现，支持QPI&#x2F;UPI互连。包含Snoop Filter 来减少不必要的监听流量。</li>
+<li><strong>预取器 (Prefetchers)</strong>: L1和L2中复杂的硬件预取机制。</li>
+</ul>
+<h3 id="5-14-加速技术"><a href="#5-14-加速技术" class="headerlink" title="5.14 加速技术"></a>5.14 加速技术</h3><ul>
+<li><strong>Cache分块和矩阵乘法优化 (Cache Blocking and Matrix Multiply Optimization)</strong>:<ul>
+<li><strong>回顾</strong>: 矩阵乘法 ( C[i][j] +&#x3D; A[i][k] * B[k][j] )。</li>
+<li><strong>问题</strong>: 若矩阵太大，内层循环访问 ( B ) 的一列会导致Cache行被反复替换（如果 ( B ) 是行主序存储）。访问 ( A ) 的一行则有较好的空间局部性。</li>
+<li><strong>分块策略</strong>: 将 ( A )、( B )、( C ) 矩阵逻辑上划分为 ( N_B \times N_B ) 的子块 (tiles)，使得三个子块 (A的一个子块, B的一个子块, C的一个累加子块) 能够同时放入Cache中。</li>
+<li><strong>循环变换</strong>: 改变循环顺序并引入新的分块循环。例如，将原来的三层循环 ( i,j,k ) 改为六层循环，外三层控制块的选择 ( ii, jj, kk )，内三层在块内进行计算 ( i, j, k )。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (ii = <span class="number">0</span>; ii &lt; N; ii += NB)</span><br><span class="line">    <span class="keyword">for</span> (jj = <span class="number">0</span>; jj &lt; N; jj += NB)</span><br><span class="line">        <span class="keyword">for</span> (kk = <span class="number">0</span>; kk &lt; N; kk += NB)</span><br><span class="line">            <span class="comment">// Mini-MMM on blocks of size NBxNB</span></span><br><span class="line">            <span class="keyword">for</span> (i = ii; i &lt; min(ii + NB, N); i++)</span><br><span class="line">                <span class="keyword">for</span> (j = jj; j &lt; min(jj + NB, N); j++)</span><br><span class="line">                    <span class="keyword">for</span> (k = kk; k &lt; min(kk + NB, N); k++)</span><br><span class="line">                        C[i][j] += A[i][k] * B[k][j];</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>效果</strong>: 显著提高Cache命中率，减少访存次数，从而大幅提升性能。( NB ) 的选择依赖于Cache大小和块大小。</li>
+<li><strong>其他软件优化</strong>: 数据结构对齐、循环展开、数据布局变换 (如Z-Morton序) 等。</li>
+</ul>
+<h3 id="5-15-谬误与陷阱-Fallacies-and-Pitfalls"><a href="#5-15-谬误与陷阱-Fallacies-and-Pitfalls" class="headerlink" title="5.15 谬误与陷阱 (Fallacies and Pitfalls)"></a>5.15 谬误与陷阱 (Fallacies and Pitfalls)</h3><p>在设计、使用或评估存储器层次结构时常见的错误观念和需要注意的问题。</p>
+<ul>
+<li><p><strong>谬误1</strong>: 增加Cache大小总是能线性提高性能。</p>
+<ul>
+<li><strong>真相</strong>: 性能提升遵循收益递减规律。当Cache大到能容纳大部分工作集后，进一步增大带来的性能提升会变小，但成本和功耗会增加。还可能增加命中时间。</li>
+</ul>
+</li>
+<li><p><strong>谬误2</strong>: 程序员可以忽略Cache的存在，编译器会自动优化。</p>
+<ul>
+<li><strong>真相</strong>: 虽然编译器会做一些优化，但对于复杂的访存模式，程序员对数据结构和算法的精心设计（如分块）能带来编译器难以企及的性能提升。</li>
+</ul>
+</li>
+<li><p><strong>谬误3</strong>: AMAT (平均访存时间) 是衡量Cache性能的唯一指标。</p>
+<ul>
+<li><strong>真相</strong>: 虽然AMAT很重要，但功耗、面积、带宽、以及对特定工作负载的适应性也是关键。例如，低缺失率但命中时间很长的Cache可能不如一个命中时间短但缺失率稍高的Cache。</li>
+</ul>
+</li>
+<li><p><strong>谬误4</strong>: 写直通Cache由于其简单性总是比写回Cache差。</p>
+<ul>
+<li><strong>真相</strong>: 对于写操作不密集或需要强一致性的场景，配合高效的写缓冲器，写直通可以表现良好，且实现更简单，恢复更快。</li>
+</ul>
+</li>
+<li><p><strong>陷阱1</strong>: 过分关注缺失率而忽略命中时间或缺失代价。</p>
+<ul>
+<li>例如，极高相联度的Cache可能降低冲突缺失，但会增加命中时间和硬件复杂度。</li>
+</ul>
+</li>
+<li><p><strong>陷阱2</strong>: 假设LRU总是最佳替换策略且易于实现。</p>
+<ul>
+<li>完美LRU硬件开销大，实际多用近似算法。某些特定访问模式下，LRU甚至不如FIFO或随机。</li>
+</ul>
+</li>
+<li><p><strong>陷阱3</strong>: 在虚拟寻址Cache中忽略歧义 (aliasing) 问题。</p>
+<ul>
+<li>可能导致数据不一致或安全漏洞。VIPT设计需要小心确保Cache索引不跨越页边界。</li>
+</ul>
+</li>
+<li><p><strong>陷阱4</strong>: 忘记TLB的存在或其对性能的影响。</p>
+<ul>
+<li>TLB缺失代价虽小于页错误，但仍可观。TLB的覆盖范围（TLB Reach &#x3D; TLB条目数 * 页大小）对处理大数据集很重要。</li>
+</ul>
+</li>
+<li><p><strong>陷阱5</strong>: 为所有类型的缺失（3C）采用同一种优化策略。</p>
+<ul>
+<li>强制性缺失需要预取或增大块。容量缺失需要增大Cache。冲突缺失需要提高相联度或改进映射。</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-16-本章小结"><a href="#5-16-本章小结" class="headerlink" title="5.16 本章小结"></a>5.16 本章小结</h3><p>本章深入探讨了存储器层次结构的设计原理和实现技术。从SRAM, DRAM, Flash, Disk等基础存储技术出发，详细介绍了Cache的基本工作原理（访问、缺失处理、写策略）、性能评估与改进方法（降低缺失率、缺失代价、命中时间，如多级Cache、各种映射和替换策略）。进一步讨论了虚拟存储器机制（页表、TLB、缺页处理、保护），并将其纳入存储器层次结构的通用框架。最后，还涉及了存储系统的可靠性（ECC）、并行环境下的Cache一致性（监听协议、MESI）、磁盘阵列（RAID）以及软件优化技术（分块）。理解存储器层次是理解现代计算机系统性能的关键。</p>
+<h3 id="5-17-历史观点和拓展阅读"><a href="#5-17-历史观点和拓展阅读" class="headerlink" title="5.17 历史观点和拓展阅读"></a>5.17 历史观点和拓展阅读</h3><ul>
+<li><p><strong>历史</strong>:</p>
+<ul>
+<li>早期计算机没有Cache，CPU直接访问主存。</li>
+<li>IBM System&#x2F;360 Model 85 (1968) 是最早引入Cache的商用计算机之一。</li>
+<li>虚拟存储器的概念可以追溯到Atlas计算机 (1962)。</li>
+<li>多级Cache、TLB、硬件预取等技术是逐步发展和完善的。</li>
+</ul>
+</li>
+<li><p><strong>拓展阅读</strong>:</p>
+<ul>
+<li>经典论文：Smith的Cache综述，Popek和Goldberg的虚拟机论文。</li>
+<li>更高级的Cache一致性协议 (如MOESI, MESIF)。</li>
+<li>非易失性内存 (NVM) 如PCM, ReRAM, STT-MRAM 作为新兴存储层次成员。</li>
+<li>内存压缩技术。</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-18-自学"><a href="#5-18-自学" class="headerlink" title="5.18 自学"></a>5.18 自学</h3><ul>
+<li>研究特定现代处理器（如最新Intel&#x2F;AMD&#x2F;ARM芯片）的详细存储器层次结构参数和特性。</li>
+<li>探索不同操作系统如何实现页面替换算法。</li>
+<li>了解不同类型的SSD控制器及其对性能和寿命的影响。</li>
+<li>研究新兴存储技术（如相变存储器PCM、磁阻随机存取存储器MRAM）及其在存储层次中的潜在角色。</li>
+</ul>
+<h3 id="5-19-练习题"><a href="#5-19-练习题" class="headerlink" title="5.19 练习题"></a>5.19 练习题</h3><p>本章练习题会围绕以下方面设计：</p>
+<ul>
+<li>计算AMAT。</li>
+<li>Cache地址映射与查找（给定地址，判断命中&#x2F;缺失，找出标记&#x2F;索引&#x2F;偏移）。</li>
+<li>不同Cache组织（直接映射、组相联、全相联）的比较。</li>
+<li>替换策略的行为分析。</li>
+<li>虚拟地址到物理地址的转换过程（使用页表和TLB）。</li>
+<li>缺页和TLB缺失的处理。</li>
+<li>RAID级别的性能和可靠性分析。</li>
+<li>Cache一致性协议的状态转换。</li>
+<li>基于3C模型分析Cache行为。</li>
+</ul>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>bocchi</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://example.com/2025/06/10/Memory/">http://example.com/2025/06/10/Memory/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Orgnization/"># Orgnization</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2025/06/10/The%20Processor/">The Processor</a>
+            
+            
+            <a class="next" rel="next" href="/2025/06/10/Instruction%20Language%20of%20the%20computer/">Instruction Language of the computer</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© bocchi | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

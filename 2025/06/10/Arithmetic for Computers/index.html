@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="bocchi">
+
+
+
+
+
+<title>Arithmetic for Computers | my-Blog</title>
+
+
+
+    <link rel="icon" href="/notebook.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Arithmetic for Computers</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">bocchi</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">June 10, 2025&nbsp;&nbsp;18:48:50</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/408/">408</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="计算机的算术运算"><a href="#计算机的算术运算" class="headerlink" title="计算机的算术运算"></a>计算机的算术运算</h1><h2 id="3-1-引言"><a href="#3-1-引言" class="headerlink" title="3.1 引言"></a>3.1 引言</h2><p>计算机算术运算是计算机体系结构的核心部分，直接影响计算机的性能和功能。本章主要讨论计算机如何执行基本的算术运算：加法、减法、乘法、除法以及浮点运算。我们将研究这些运算的基本原理、实现方法、优化技术，以及它们在MIPS架构中的具体应用。</p>
+<p>计算机算术运算面临几个主要挑战：</p>
+<ul>
+<li>速度：如何设计快速的算术电路</li>
+<li>准确性：如何处理有限位数导致的精度问题</li>
+<li>表示范围：如何在有限的比特位数内表示足够大的数值范围</li>
+<li>能效：如何在保证性能的同时减少能源消耗</li>
+</ul>
+<h2 id="3-2-加法和减法"><a href="#3-2-加法和减法" class="headerlink" title="3.2 加法和减法"></a>3.2 加法和减法</h2><h3 id="二进制加法"><a href="#二进制加法" class="headerlink" title="二进制加法"></a>二进制加法</h3><p>二进制加法的基本原理与十进制类似，但只有0和1两个数字。加法规则如下：</p>
+<ul>
+<li>0 + 0 &#x3D; 0</li>
+<li>0 + 1 &#x3D; 1</li>
+<li>1 + 0 &#x3D; 1</li>
+<li>1 + 1 &#x3D; 0，并向高位进位1</li>
+</ul>
+<p>在硬件实现中，加法器是基本的电路单元，分为半加器和全加器：</p>
+<p><strong>半加器</strong>：计算两个一位二进制数的和，产生和(Sum)和进位(Carry)两个输出。<br><strong>全加器</strong>：除了处理两个一位二进制数外，还接受来自低位的进位输入，产生当前位的和和向高位的进位。</p>
+<p>多位二进制加法可以通过级联多个全加器实现，称为行波进位加法器(Ripple Carry Adder)。但该设计的延迟随位数线性增长，因此实际应用中常采用先行进位加法器(Carry Look-ahead Adder)等更快速的设计。</p>
+<h3 id="二进制减法"><a href="#二进制减法" class="headerlink" title="二进制减法"></a>二进制减法</h3><p>计算机实现减法的主要方法是”加补码”。对于A-B操作：</p>
+<ol>
+<li>将B转换为其二进制补码表示（取反加一）</li>
+<li>将A与B的补码相加</li>
+<li>忽略最高位的进位</li>
+</ol>
+<p>补码的优势在于统一了加法和减法操作，简化了硬件设计。在有符号数表示中，最高位表示符号（0为正，1为负），剩余位表示绝对值（对于负数是其补码形式）。</p>
+<h3 id="溢出检测"><a href="#溢出检测" class="headerlink" title="溢出检测"></a>溢出检测</h3><p>在有符号数运算中，需要检测溢出情况。溢出检测的规则是：</p>
+<ul>
+<li>当两个正数相加结果为负数时，发生溢出</li>
+<li>当两个负数相加结果为正数时，发生溢出</li>
+<li>正数与负数相加不会发生溢出</li>
+</ul>
+<p>在硬件实现中，可以通过检查最高位的进位和结果的符号位来判断是否发生溢出。</p>
+<h2 id="3-3-乘法"><a href="#3-3-乘法" class="headerlink" title="3.3 乘法"></a>3.3 乘法</h2><h3 id="3-3-1-顺序的乘法算法和硬件"><a href="#3-3-1-顺序的乘法算法和硬件" class="headerlink" title="3.3.1 顺序的乘法算法和硬件"></a>3.3.1 顺序的乘法算法和硬件</h3><p>二进制乘法原理与十进制类似，但更简单，因为乘数只有0和1两种可能。基本步骤如下：</p>
+<ol>
+<li>如果乘数的当前位为1，将被乘数复制到部分积</li>
+<li>如果乘数的当前位为0，部分积为0</li>
+<li>根据位置，对部分积进行适当的左移</li>
+<li>将所有部分积相加得到最终结果</li>
+</ol>
+<p>示例：计算5 × 3（二进制表示为101 × 11）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">  101  (5)</span><br><span class="line">× 11   (3)</span><br><span class="line">-----</span><br><span class="line">  101  (从右数第1位为1，复制101)</span><br><span class="line"> 101   (从右数第2位为1，复制101并左移1位)</span><br><span class="line">------</span><br><span class="line"> 1111  (结果为15)</span><br></pre></td></tr></table></figure>
+
+<p>硬件实现上，可以设计一个顺序乘法器，包含以下组件：</p>
+<ul>
+<li>乘数寄存器</li>
+<li>被乘数寄存器</li>
+<li>部分积寄存器</li>
+<li>加法器</li>
+<li>移位逻辑</li>
+</ul>
+<p>算法执行时，逐位检查乘数，根据当前位决定是否将被乘数加到部分积中，然后对部分积右移一位。完成所有位后，部分积寄存器中包含最终结果。</p>
+<h3 id="3-3-2-有符号乘法"><a href="#3-3-2-有符号乘法" class="headerlink" title="3.3.2 有符号乘法"></a>3.3.2 有符号乘法</h3><p>处理有符号数乘法的主要方法是Booth算法，它能有效处理正负数乘法。基本思想是：</p>
+<ol>
+<li>将乘数扩展一位（最低位为0）</li>
+<li>从低位开始，每次考虑两个相邻位</li>
+<li>如果两位相同（00或11），部分积保持不变</li>
+<li>如果从0变为1，加被乘数</li>
+<li>如果从1变为0，减被乘数</li>
+<li>每步完成后右移部分积</li>
+</ol>
+<p>Booth算法的优势在于处理连续的1时效率更高，尤其对于补码表示的负数（有长串1）特别有效。</p>
+<h3 id="3-3-3-更快速的乘法"><a href="#3-3-3-更快速的乘法" class="headerlink" title="3.3.3 更快速的乘法"></a>3.3.3 更快速的乘法</h3><p>传统顺序乘法对于n位乘法需要n步操作，为提高效率，可采用以下优化方法：</p>
+<p><strong>Wallace树</strong>：一种用于快速计算部分积和的算法，使用压缩器将多个部分积并行压缩，大幅减少加法延迟。</p>
+<p><strong>Dadda乘法器</strong>：与Wallace树类似，但更强调减少硬件复杂度。</p>
+<p><strong>Booth编码</strong>：改进的Booth算法可以一次处理多位乘数，减少部分积数量。</p>
+<p><strong>乘法流水线</strong>：将乘法操作分解为多个阶段，各阶段并行执行不同乘法操作，提高吞吐量。</p>
+<h3 id="3-3-4-MIPS中的乘法"><a href="#3-3-4-MIPS中的乘法" class="headerlink" title="3.3.4 MIPS中的乘法"></a>3.3.4 MIPS中的乘法</h3><p>MIPS架构中的乘法指令包括：</p>
+<p><strong>mult (Multiply)</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mult $s1, $s2</span><br></pre></td></tr></table></figure>
+<p>将两个32位寄存器相乘，产生64位结果。结果存储在特殊的hi和lo寄存器中，其中hi存储高32位，lo存储低32位。</p>
+<p><strong>mfhi, mflo (Move From Hi&#x2F;Lo)</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mfhi $s3  # 将hi寄存器内容移至$s3</span><br><span class="line">mflo $s4  # 将lo寄存器内容移至$s4</span><br></pre></td></tr></table></figure>
+
+<p><strong>mul (Multiply)</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mul $s0, $s1, $s2  # $s0 = $s1 * $s2（仅保留低32位）</span><br></pre></td></tr></table></figure>
+
+<p><strong>multu (Multiply Unsigned)</strong>：处理无符号整数乘法。</p>
+<p>MIPS还提供了一些乘法变种指令，如乘加指令(madd)，可以在一条指令中完成乘法和加法操作。</p>
+<h3 id="3-3-5-小结"><a href="#3-3-5-小结" class="headerlink" title="3.3.5 小结"></a>3.3.5 小结</h3><p>乘法操作比加减法复杂得多，需要更多的硬件资源和执行时间。主要优化方向包括：</p>
+<ul>
+<li>减少部分积数量（如Booth编码）</li>
+<li>加速部分积求和（如Wallace树）</li>
+<li>并行化和流水线化</li>
+<li>硬件优化（如专用乘法器）</li>
+</ul>
+<p>现代处理器通常采用混合策略，根据操作数特性选择最优算法，并通过流水线设计提高吞吐量。</p>
+<h2 id="3-4-除法"><a href="#3-4-除法" class="headerlink" title="3.4 除法"></a>3.4 除法</h2><h3 id="3-4-1-除法算法和硬件"><a href="#3-4-1-除法算法和硬件" class="headerlink" title="3.4.1 除法算法和硬件"></a>3.4.1 除法算法和硬件</h3><p>二进制除法的基本原理类似于十进制长除法，主要步骤如下：</p>
+<ol>
+<li>将除数与被除数的最高几位比较</li>
+<li>如果除数小于或等于这几位，记商为1，并从这几位中减去除数</li>
+<li>如果除数大于这几位，记商为0，不做减法</li>
+<li>向右移动考虑位置，重复上述步骤</li>
+</ol>
+<p>例如，计算29 ÷ 3（二进制表示为11101 ÷ 11）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">     <span class="number">1001</span>  (商)</span><br><span class="line">   -----</span><br><span class="line"><span class="number">11</span> ) <span class="number">11101</span> (被除数<span class="number">29</span>)</span><br><span class="line">     <span class="number">11</span></span><br><span class="line">    ---</span><br><span class="line">     <span class="number">01</span></span><br><span class="line">      <span class="number">0</span></span><br><span class="line">     ---</span><br><span class="line">      <span class="number">11</span></span><br><span class="line">      <span class="number">11</span></span><br><span class="line">     ---</span><br><span class="line">       <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>商为1001（二进制9），余数为0。</p>
+<p>在硬件实现上，除法器通常包含以下组件：</p>
+<ul>
+<li>除数寄存器</li>
+<li>被除数&#x2F;余数寄存器</li>
+<li>商寄存器</li>
+<li>加减法单元</li>
+<li>控制逻辑</li>
+</ul>
+<p>常用的除法算法是恢复余数除法算法和不恢复余数除法算法。</p>
+<p><strong>恢复余数除法算法</strong>：</p>
+<ol>
+<li>初始化商为0，余数为被除数</li>
+<li>将余数左移一位</li>
+<li>用余数减去除数</li>
+<li>如果结果为负，恢复余数（加回除数），商的最低位设为0；否则，保留减法结果，商的最低位设为1</li>
+<li>重复步骤2-4直到处理完所有位</li>
+</ol>
+<p><strong>不恢复余数除法算法</strong>：优化了恢复余数的过程，通过调整下一步操作（加或减）来避免恢复操作。</p>
+<h3 id="3-4-2-有符号除法"><a href="#3-4-2-有符号除法" class="headerlink" title="3.4.2 有符号除法"></a>3.4.2 有符号除法</h3><p>处理有符号数除法的基本方法是：</p>
+<ol>
+<li>记录被除数和除数的符号</li>
+<li>对被除数和除数取绝对值</li>
+<li>使用无符号除法算法计算绝对值的商和余数</li>
+<li>根据原始符号确定最终商和余数的符号</li>
+</ol>
+<p>需要注意的特殊情况：</p>
+<ul>
+<li>除以零：产生除法错误异常</li>
+<li>溢出：在二进制补码表示中，当被除数为最小负数且除数为-1时，可能发生溢出</li>
+</ul>
+<h3 id="3-4-3-更快速的除法"><a href="#3-4-3-更快速的除法" class="headerlink" title="3.4.3 更快速的除法"></a>3.4.3 更快速的除法</h3><p>传统除法算法对于n位除法需要n步操作，为提高效率，可采用以下优化方法：</p>
+<p><strong>SRT除法</strong>：通过允许商的每一位取-1、0或1三个值，减少迭代次数。</p>
+<p><strong>除法流水线</strong>：将除法操作分解为多个阶段，各阶段并行执行不同除法操作，提高吞吐量。</p>
+<p><strong>牛顿-拉夫森迭代法</strong>：将除法转换为求倒数然后乘法的过程，通过迭代快速逼近结果。</p>
+<p><strong>查表法</strong>：对常见除数预先计算倒数，存储在查找表中，减少计算时间。</p>
+<p><strong>除法的乘法实现</strong>：通过计算倒数的近似值，然后使用乘法完成除法操作。</p>
+<h3 id="3-4-4-MIPS中的除法"><a href="#3-4-4-MIPS中的除法" class="headerlink" title="3.4.4 MIPS中的除法"></a>3.4.4 MIPS中的除法</h3><p>MIPS架构中的除法指令包括：</p>
+<p><strong>div (Divide)</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">div $s1, $s2</span><br></pre></td></tr></table></figure>
+<p>将$s1除以$s2，商存储在lo寄存器，余数存储在hi寄存器。</p>
+<p><strong>mfhi, mflo</strong>：与乘法相同，用于获取结果。</p>
+<p><strong>divu (Divide Unsigned)</strong>：处理无符号整数除法。</p>
+<p>MIPS处理器对除零操作会产生异常，由操作系统处理。</p>
+<h3 id="3-4-5-小结"><a href="#3-4-5-小结" class="headerlink" title="3.4.5 小结"></a>3.4.5 小结</h3><p>除法是基本算术运算中最复杂且耗时的操作。主要优化方向包括：</p>
+<ul>
+<li>算法改进（如SRT除法、不恢复余数算法）</li>
+<li>转换为乘法操作（利用倒数）</li>
+<li>并行化和流水线化</li>
+<li>硬件优化（如专用除法器、查找表）</li>
+</ul>
+<p>除法与乘法相比，更难并行化，因此现代处理器通常投入更多资源优化除法性能。</p>
+<h2 id="3-5-浮点运算"><a href="#3-5-浮点运算" class="headerlink" title="3.5 浮点运算"></a>3.5 浮点运算</h2><h3 id="3-5-1-浮点表示"><a href="#3-5-1-浮点表示" class="headerlink" title="3.5.1 浮点表示"></a>3.5.1 浮点表示</h3><p>浮点数是计算机表示实数的主要方式，遵循IEEE 754标准。浮点数由三部分组成：</p>
+<ul>
+<li>符号位(Sign)：表示正负，0为正，1为负</li>
+<li>指数(Exponent)：表示数值的量级</li>
+<li>尾数(Mantissa&#x2F;Significand)：表示数值的精确部分</li>
+</ul>
+<p>IEEE 754定义了两种主要格式：</p>
+<ul>
+<li>单精度(32位)：1位符号，8位指数，23位尾数</li>
+<li>双精度(64位)：1位符号，11位指数，52位尾数</li>
+</ul>
+<p>浮点数的值计算为：(-1)^符号 × 1.尾数 × 2^(指数-偏置值)</p>
+<p>其中偏置值为127(单精度)或1023(双精度)，用于处理负指数。</p>
+<p>IEEE 754还定义了特殊值：</p>
+<ul>
+<li>零：指数和尾数全为0</li>
+<li>无穷大：指数全为1，尾数为0</li>
+<li>NaN(Not a Number)：指数全为1，尾数非0</li>
+<li>非规格化数：指数全为0，尾数非0，用于表示接近零的小数</li>
+</ul>
+<h3 id="3-5-2-浮点加法"><a href="#3-5-2-浮点加法" class="headerlink" title="3.5.2 浮点加法"></a>3.5.2 浮点加法</h3><p>浮点加法的基本步骤如下：</p>
+<ol>
+<li>对齐指数：将较小数的尾数右移，使两数指数相等</li>
+<li>相加尾数</li>
+<li>规格化结果：调整尾数，使其满足1.xxx形式</li>
+<li>舍入结果：根据舍入模式处理多余位</li>
+<li>处理特殊情况和溢出</li>
+</ol>
+<p>浮点加法的硬件实现比整数加法复杂得多，需要处理指数比较、尾数对齐、规格化和舍入等额外步骤。</p>
+<h3 id="3-5-3-浮点乘法"><a href="#3-5-3-浮点乘法" class="headerlink" title="3.5.3 浮点乘法"></a>3.5.3 浮点乘法</h3><p>浮点乘法的基本步骤如下：</p>
+<ol>
+<li>计算结果符号：两操作数符号异或</li>
+<li>相加指数：两指数相加后减去偏置值</li>
+<li>相乘尾数：两尾数（连同隐含的前导1）相乘</li>
+<li>规格化结果：调整尾数，使其满足1.xxx形式</li>
+<li>舍入结果：根据舍入模式处理多余位</li>
+<li>处理特殊情况和溢出</li>
+</ol>
+<p>浮点乘法的优势是不需要对齐操作，但乘法本身及后续的规格化和舍入仍然复杂。</p>
+<h3 id="3-5-4-MIPS中的浮点指令"><a href="#3-5-4-MIPS中的浮点指令" class="headerlink" title="3.5.4 MIPS中的浮点指令"></a>3.5.4 MIPS中的浮点指令</h3><p>MIPS架构中的浮点运算通过协处理器1(CP1)实现，拥有独立的浮点寄存器组($f0-$f31)。主要指令包括：</p>
+<p><strong>加载和存储</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lwc1 $f0, 0($t0)  # 从内存加载单精度浮点数到$f0</span><br><span class="line">ldc1 $f2, 0($t0)  # 从内存加载双精度浮点数到$f2,$f3</span><br><span class="line">swc1 $f0, 0($t0)  # 将$f0中的单精度浮点数存储到内存</span><br><span class="line">sdc1 $f2, 0($t0)  # 将$f2,$f3中的双精度浮点数存储到内存</span><br></pre></td></tr></table></figure>
+
+<p><strong>算术运算</strong>：</p>
+<figure class="highlight arm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">add.s</span> $<span class="built_in">f0</span>, $<span class="built_in">f1</span>, $<span class="built_in">f2</span>  # 单精度加法</span><br><span class="line"><span class="symbol">add.d</span> $<span class="built_in">f0</span>, $<span class="built_in">f2</span>, $<span class="built_in">f4</span>  # 双精度加法</span><br><span class="line"><span class="symbol">sub.s</span> $<span class="built_in">f0</span>, $<span class="built_in">f1</span>, $<span class="built_in">f2</span>  # 单精度减法</span><br><span class="line"><span class="symbol">mul.s</span> $<span class="built_in">f0</span>, $<span class="built_in">f1</span>, $<span class="built_in">f2</span>  # 单精度乘法</span><br><span class="line"><span class="symbol">div.s</span> $<span class="built_in">f0</span>, $<span class="built_in">f1</span>, $<span class="built_in">f2</span>  # 单精度除法</span><br></pre></td></tr></table></figure>
+
+<p><strong>比较和分支</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">c.eq.s $f0, $f1  # 比较$f0和$f1是否相等</span><br><span class="line">bc1t label       # 如果比较结果为真，跳转到label</span><br></pre></td></tr></table></figure>
+
+<p><strong>转换</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cvt.s.w $f0, $f1  # 将整数转换为单精度浮点数</span><br><span class="line">cvt.d.s $f0, $f2  # 将单精度浮点数转换为双精度浮点数</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-5-5-算术精确性"><a href="#3-5-5-算术精确性" class="headerlink" title="3.5.5 算术精确性"></a>3.5.5 算术精确性</h3><p>浮点运算面临几个精度问题：</p>
+<p><strong>舍入误差</strong>：由于有限的位数表示，可能导致精度损失。IEEE 754定义了四种舍入模式：</p>
+<ul>
+<li>向最接近值舍入（默认）</li>
+<li>向零舍入</li>
+<li>向正无穷舍入</li>
+<li>向负无穷舍入</li>
+</ul>
+<p><strong>溢出&#x2F;下溢</strong>：当结果超出可表示范围时发生。溢出产生无穷大，下溢产生零或非规格化数。</p>
+<p><strong>精度问题</strong>：浮点运算不满足结合律和分配律，计算顺序可能影响结果。</p>
+<p><strong>特殊值处理</strong>：如NaN和无穷大的处理需要特殊考虑。</p>
+<p>为提高精度，可以使用双精度或更高精度的浮点表示，或采用区间算术、Kahan求和算法等技术。</p>
+<h3 id="3-5-6-小结"><a href="#3-5-6-小结" class="headerlink" title="3.5.6 小结"></a>3.5.6 小结</h3><p>浮点运算是计算机科学中最复杂的基本运算之一，需要处理符号、指数和尾数的特殊要求。IEEE 754标准的采用使各种计算机系统的浮点运算行为更加一致和可预测。</p>
+<p>现代处理器通常包含专用的浮点运算单元(FPU)，有的甚至配备了向量化的SIMD浮点单元，用于加速科学计算和图形处理等应用。</p>
+<h2 id="3-6-并行性和计算机算术：子字并行"><a href="#3-6-并行性和计算机算术：子字并行" class="headerlink" title="3.6 并行性和计算机算术：子字并行"></a>3.6 并行性和计算机算术：子字并行</h2><p>子字并行(Subword Parallelism)是一种利用单一指令操作多个数据元素的技术，也称为SIMD(Single Instruction Multiple Data)。基本思想是：</p>
+<ul>
+<li>将一个宽寄存器划分为多个窄数据字段</li>
+<li>对这些字段并行执行相同的操作</li>
+<li>在一个指令周期内完成多个数据操作</li>
+</ul>
+<p>例如，一个64位寄存器可以用于：</p>
+<ul>
+<li>8个8位操作数</li>
+<li>4个16位操作数</li>
+<li>2个32位操作数</li>
+</ul>
+<p>子字并行尤其适合媒体处理、图像处理和科学计算等领域，这些应用通常需要对大量同类数据执行相同操作。</p>
+<p>实现子字并行的关键是设计能对独立数据段操作的功能单元，并提供适当的指令集扩展。当运算结果不会影响相邻数据段时（即不会发生进位传播等），子字并行可以获得接近线性的性能提升。</p>
+<h2 id="3-7-实例：x86中的流处理-SIMD-扩展和高级向量扩展"><a href="#3-7-实例：x86中的流处理-SIMD-扩展和高级向量扩展" class="headerlink" title="3.7 实例：x86中的流处理 SIMD 扩展和高级向量扩展"></a>3.7 实例：x86中的流处理 SIMD 扩展和高级向量扩展</h2><p>x86架构经历了多代SIMD扩展，每一代都增加了新功能和更宽的寄存器：</p>
+<p><strong>MMX(MultiMedia eXtensions)</strong>：</p>
+<ul>
+<li>1997年引入，Intel Pentium处理器</li>
+<li>8个64位MMX寄存器（复用浮点寄存器）</li>
+<li>支持整数SIMD操作</li>
+</ul>
+<p><strong>SSE(Streaming SIMD Extensions)</strong>：</p>
+<ul>
+<li>1999年引入，Intel Pentium III处理器</li>
+<li>8个128位XMM寄存器</li>
+<li>支持单精度浮点和整数操作</li>
+<li>后续扩展包括SSE2、SSE3、SSSE3、SSE4</li>
+</ul>
+<p><strong>AVX(Advanced Vector Extensions)</strong>：</p>
+<ul>
+<li>2011年引入，Intel Sandy Bridge和AMD Bulldozer架构</li>
+<li>16个256位YMM寄存器（扩展自XMM）</li>
+<li>增强的浮点和整数SIMD操作</li>
+</ul>
+<p><strong>AVX2</strong>：</p>
+<ul>
+<li>2013年引入，Intel Haswell架构</li>
+<li>扩展了整数SIMD指令</li>
+<li>引入融合乘加(FMA)指令</li>
+</ul>
+<p><strong>AVX-512</strong>：</p>
+<ul>
+<li>2016年引入，Intel Xeon Phi和Skylake-X架构</li>
+<li>32个512位ZMM寄存器</li>
+<li>更多的掩码寄存器和指令变种</li>
+</ul>
+<p>这些SIMD扩展提供了丰富的指令集，包括：</p>
+<ul>
+<li>基本算术运算（加、减、乘、除）</li>
+<li>逻辑运算</li>
+<li>比较运算</li>
+<li>洗牌(Shuffle)和混合(Blend)操作</li>
+<li>数据格式转换</li>
+<li>特殊函数（如平方根倒数近似值）</li>
+</ul>
+<p>SIMD扩展极大提高了多媒体处理、图形渲染、科学计算和密码学等应用的性能，成为现代x86处理器的关键功能。</p>
+<h2 id="3-8-加速：子字并行和矩阵乘法"><a href="#3-8-加速：子字并行和矩阵乘法" class="headerlink" title="3.8 加速：子字并行和矩阵乘法"></a>3.8 加速：子字并行和矩阵乘法</h2><p>矩阵乘法是科学计算、机器学习和图形处理中的核心操作，其性能直接影响许多应用的效率。子字并行可以显著加速矩阵乘法。</p>
+<p><strong>基本矩阵乘法</strong>：对于两个n×n矩阵的乘法，传统算法需要O(n³)次操作。</p>
+<p><strong>使用SIMD优化的矩阵乘法</strong>：</p>
+<ol>
+<li>将矩阵数据按SIMD寄存器宽度分块</li>
+<li>利用SIMD指令并行处理多个元素</li>
+<li>使用循环展开减少分支预测失误</li>
+<li>重排内存访问模式提高缓存利用率</li>
+</ol>
+<p>以AVX-512为例，一条指令可以并行执行：</p>
+<ul>
+<li>16个32位浮点乘法</li>
+<li>8个64位浮点乘法</li>
+</ul>
+<p>结合融合乘加(FMA)指令，每个时钟周期可以完成16&#x2F;8个乘加操作，理论上提供了接近16&#x2F;8倍的性能提升。</p>
+<p><strong>实际优化策略</strong>：</p>
+<ul>
+<li>分块(Blocking)：根据缓存大小分割矩阵，提高缓存命中率</li>
+<li>预取(Prefetching)：提前加载数据到缓存</li>
+<li>寄存器重用：减少内存访问</li>
+<li>指令级并行：重排指令减少依赖</li>
+<li>多线程并行：跨多核并行处理</li>
+</ul>
+<p>现代深度学习框架和科学计算库（如MKL、cuBLAS等）采用了这些优化技术，结合子字并行，使矩阵运算性能比朴素实现提高了几个数量级。</p>
+<h2 id="3-9-谬误与陷阱"><a href="#3-9-谬误与陷阱" class="headerlink" title="3.9 谬误与陷阱"></a>3.9 谬误与陷阱</h2><p><strong>谬误1：浮点运算满足代数法则</strong><br>浮点运算不满足结合律和分配律。例如，(a+b)+c可能不等于a+(b+c)，因为舍入误差会导致不同结果。这在科学计算中尤其重要，需要注意计算顺序。</p>
+<p><strong>谬误2：整数运算不会出错</strong><br>整数运算可能发生溢出，导致意外结果。例如，在32位表示中，2^31 + 2^31 结果为负数，因为溢出了。开发者需要检测和处理溢出情况。</p>
+<p><strong>陷阱1：忽略除零检查</strong><br>除零会导致异常或不确定结果。程序应该始终检查除数是否为零，并适当处理。</p>
+<p><strong>陷阱2：浮点比较使用精确相等</strong><br>由于舍入误差，直接比较两个浮点数是否相等通常不可靠。应该使用允许小误差的比较方法，如比较差值是否小于某个阈值。</p>
+<p><strong>陷阱3：混淆有符号和无符号运算</strong><br>有符号和无符号运算的溢出行为不同，混用可能导致意外结果。例如，(-1 &lt; 1U)在C语言中是false，因为-1被转换为较大的无符号数。</p>
+<p><strong>陷阱4：假设所有NaN值相等</strong><br>IEEE 754标准中，NaN不等于任何值，包括它自己。比较NaN &#x3D;&#x3D; NaN结果为false，需要使用专门的isnan()函数检测。</p>
+<h2 id="3-10-本章小结"><a href="#3-10-本章小结" class="headerlink" title="3.10 本章小结"></a>3.10 本章小结</h2><p>本章探讨了计算机算术运算的基本原理和实现方法，包括：</p>
+<ol>
+<li><p><strong>加法和减法</strong>：通过补码表示统一了加减法运算，简化了硬件设计。</p>
+</li>
+<li><p><strong>乘法</strong>：从基本的顺序乘法到高效的算法（如Booth算法、Wallace树），乘法器设计追求速度和能效的平衡。</p>
+</li>
+<li><p><strong>除法</strong>：最复杂的基本运算，通过不恢复余数算法、SRT除法等优化提高性能，或转换为乘法运算提高效率。</p>
+</li>
+<li><p><strong>浮点运算</strong>：遵循IEEE 754标准，处理实数表示和运算，需要特别注意精度、舍入和特殊值处理。</p>
+</li>
+<li><p><strong>并行性</strong>：子字并行(SIMD)技术通过在单一指令中处理多个数据元素，显著提高算术性能，尤其适合媒体处理和科学计算。</p>
+</li>
+</ol>
+<p>现代处理器中，算术单元经过精心优化，采用流水线设计、并行处理和专用硬件加速器，实现高性能计算。了解这些基本原理有助于理解计算机性能特性和编写高效代码。</p>
+<h2 id="3-11-历史观点和拓展阅读"><a href="#3-11-历史观点和拓展阅读" class="headerlink" title="3.11 历史观点和拓展阅读"></a>3.11 历史观点和拓展阅读</h2><p>计算机算术运算的发展史与计算机本身的发展紧密相连：</p>
+<p><strong>早期发展</strong>：</p>
+<ul>
+<li>查尔斯·巴贝奇的差分机(1822)和分析机(1837)是早期机械计算设备</li>
+<li>1930年代，阿兰·图灵和约翰·冯·诺依曼奠定了现代计算理论基础</li>
+<li>1940年代，ENIAC等早期电子计算机使用十进制运算</li>
+</ul>
+<p><strong>关键里程碑</strong>：</p>
+<ul>
+<li>1947年，冯·诺依曼提出浮点数表示方案</li>
+<li>1951年，Booth算法发表，优化二进制乘法</li>
+<li>1960年代，Wallace树算法提出，加速部分积求和</li>
+<li>1985年，IEEE 754浮点标准确立，统一了浮点表示和运算</li>
+<li>1990年代末，SIMD指令集开始在主流处理器中普及</li>
+</ul>
+<p><strong>现代发展</strong>：</p>
+<ul>
+<li>专用计算单元：如GPU中的tensor核心，针对机器学习优化</li>
+<li>近似计算：在可接受误差范围内追求更高性能和能效</li>
+<li>量子计算：探索全新的计算模型和算法</li>
+</ul>
+<p><strong>拓展阅读</strong>：</p>
+<ul>
+<li>Goldberg, D. “What Every Computer Scientist Should Know About Floating-Point Arithmetic”</li>
+<li>Koren, I. “Computer Arithmetic Algorithms”</li>
+<li>Muller, J.M. et al. “Handbook of Floating-Point Arithmetic”</li>
+<li>Hennessy, J.L. and Patterson, D.A. “Computer Architecture: A Quantitative Approach”</li>
+</ul>
+<h2 id="3-12-自学"><a href="#3-12-自学" class="headerlink" title="3.12 自学"></a>3.12 自学</h2><p>要深入理解计算机算术运算，可以从以下方面入手：</p>
+<ol>
+<li><strong>实现基本算术电路</strong>：<ul>
+<li>使用逻辑门实现半加器、全加器</li>
+<li>实现行波进位加法器和先行进位加法器</li>
+<li>比较它们的延迟和面积</li>
+</ul>
+</li>
+<li><strong>探索高级算法</strong>：<ul>
+<li>实现Booth乘法算法</li>
+<li>实现Wallace树乘法器</li>
+<li>实现SRT除法算法</li>
+</ul>
+</li>
+<li><strong>浮点运算实验</strong>：<ul>
+<li>手动转换十进制数到IEEE 754格式</li>
+<li>分析不同浮点运算序列的精度损失</li>
+<li>实现基本的浮点加法和乘法算法</li>
+</ul>
+</li>
+<li><strong>SIMD编程练习</strong>：<ul>
+<li>使用SSE&#x2F;AVX指令优化简单算法</li>
+<li>比较标量实现和SIMD实现的性能差异</li>
+<li>尝试用SIMD指令优化矩阵乘法</li>
+</ul>
+</li>
+</ol>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>bocchi</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://example.com/2025/06/10/Arithmetic%20for%20Computers/">http://example.com/2025/06/10/Arithmetic%20for%20Computers/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Orgnization/"># Orgnization</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2025/06/10/B%20The%20Basics%20of%20Logic%20Design/">B The Basics of Logic Design</a>
+            
+            
+            <a class="next" rel="next" href="/2025/06/09/Persistence/">Persistence</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© bocchi | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
